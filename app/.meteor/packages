@@ -6,3 +6,6 @@
 standard-app-packages
 autopublish
 insecure
+jade
+stylus-multi
+iron-router
