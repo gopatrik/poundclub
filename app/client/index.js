@@ -13,6 +13,10 @@ Router.map(function() {
 		path: '/',
 		template:'index'
 	});
+	this.route('highscore', {
+		path: '/highscore',
+		template:'toplist'
+	});
 });
 
 
