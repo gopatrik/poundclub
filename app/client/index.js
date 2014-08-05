@@ -65,7 +65,9 @@ if (Meteor.isClient) {
 	  	    		audio.pause();
 	  	    	}
 	  	    	audio = new Audio(response.tracks[0].preview_url);
-	  	    	// audio.play();
+	  	    	audio.play();
+
+	  	    	Session.set("playingsong", response.tracks[0].name);
 	  	        // Session.set("toptrack", response.tracks[0].preview_url);
 	  	    }
 	  	});
@@ -82,6 +84,10 @@ if (Meteor.isClient) {
 	Template.index.related = function () {
 		return Session.get("related");
 	};
+
+	Template.index.songname = function () {
+		return Session.get("playingsong");
+	}
 
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
@@ -104,7 +110,6 @@ if (Meteor.isClient) {
 		setActiveArtist(artist)
 		fetchRelatedArtists(artist.id);
 		getTopTrackFromArtist(artist.id);
-		
 	};
 
 	Template.artistBox.events({
@@ -132,7 +137,7 @@ if (Meteor.isClient) {
 		    	}
 		    	break;
 		    case 39: // right
-		    	if(selectedIndex < 6){
+		    	if(selectedIndex < 5){
 		    		setSelected(selectedIndex + 1);
 		    	}
 		    	break;

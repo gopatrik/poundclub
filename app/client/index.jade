@@ -9,15 +9,21 @@ template(name="main")
 
 template(name="index")
 	if artist
-		h1.page-title.center Artists related to #{artist.name}
-		
-		section.center-contents
-		if related
-			ul.related-artists.inline-list
-				each related
-					li
-						+artistBox
-
+		//- img(src=artist.images[0].url)
+		//- each artist.images
+		//- 	img(src=url)
+		section.artist-area
+			h1.page-title.center= artist.name
+			p.center.big Still a long way to go
+			if related
+				ul.related-artists.inline-list.mt-large
+					each related
+						li
+							+artistBox
+		.absoluteBottomRight
+			p.bold.small Now playing
+			p.medium= artist.name
+			p.big.mt= songname
 
 template(name="artistBox")
 	.artistBoxContainer

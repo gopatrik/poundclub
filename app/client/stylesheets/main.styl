@@ -1,9 +1,14 @@
-body,html
-	min-height 100%
-	width 100%
+html
+	height: 100%
+
+body
+	min-height: 100%
 
 html
 	background black
+
+p
+	color white
 
 section.background
 	position fixed
@@ -39,6 +44,12 @@ section.background
 		opacity 0
 
 
+section.artist-area
+	// align(b)
+	margin-top 200px
+	// width 100%
+
+
 ul.related-artists
 	center(1200px)
 	li
@@ -46,12 +57,17 @@ ul.related-artists
 			// position relative
 			height 200px
 			.image
-				height 100%
-				width 100%
+				margin auto
+				height 95%
+				width 95%
 				background-size cover
 				background-repeat no-repeat
+				transition all .1s
 				&.selected
-					outline 10px solid pink
+					box-shadow 0 0 8px 1px white
+					height 100%
+					width 100%
+
 				// transition all 1s
 
 			h3
