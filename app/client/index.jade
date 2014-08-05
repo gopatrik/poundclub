@@ -5,30 +5,30 @@ body
 
 template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
-	if splash
-		+splasha
-
 	+yield
 
 template(name="splasha")
-	section.center.splash
+	section.center.splash.mt-large
 		h1.page-title.center Hello, Stranger!
-		p.bold.large You are listening to ______
-		p.large These are the most similar artists them
-		p You have been tasked with using them to get to ______
+		p.bold.large You are listening to #{artist.name}
+		p.large These artists below are the most similar to #{artist.name} that we could find
+		p You have been tasked with using them to get to the artist ______
 
 
 template(name="index")
+	if splash
+		+splasha
 	if artist
 		//- img(src=artist.images[0].url)
 		//- each artist.images
 		//- 	img(src=url)
 		.full-center-contents
 			section.artist-area
-				h1.page-title.center= artist.name
-				p.center.big Still a long way to go
+				.titles.hide
+					h1.page-title.center= artist.name
+					p.center.big Still a long way to go
 				if related
-					ul.related-artists.inline-list
+					ul.related-artists.inline-list.mt-large
 						each related
 							li
 								+artistBox
