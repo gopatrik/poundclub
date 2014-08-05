@@ -30,6 +30,7 @@ if (Meteor.isClient) {
 		    success: function (response) {
 
 		        Session.set("artist", response);
+		        Session.set("artistImage", response.images[0].url);
 		    }
 		});
 	}
@@ -38,27 +39,45 @@ if (Meteor.isClient) {
 	  	$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 	  	    success: function (response) {
-	  	        Session.set("related", response);
+	  	        Session.set("related", response.artists.slice(0,5));
 	  	    }
 	  	});
 	}
 
+	function getTopTrackFromArtist (artistId) {
+		$.ajax({
+	  	    url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
+	  	    success: function (response) {
+	  	    	// console.log(response.tracks[0].preview_url);
+
+	  	    	// var audio = new Audio(response.tracks[0].preview_url);
+	  	    	// audio.play();
+	  	        // Session.set("toptrack", response.tracks[0].preview_url);
+	  	    }
+	  	});
+	}
+
+	Template.main.artistImage = function () {
+		return Session.get("artistImage");
+	}
+
 	
 
-  Template.index.artist = function () {
-  	return Session.get("artist");
-  };
+	Template.index.artist = function () {
+		return Session.get("artist");
+	};
 
-  Template.index.related = function () {
-  	return Session.get("related");
-  };
+	Template.index.related = function () {
+		return Session.get("related");
+	};
 
-  Template.index.events({
-  	'click ul.related-artists li': function () {
-  		fetchActiveArtist(this.id);
-  		fetchRelatedArtists(this.id);
-  	}
-  });
+	Template.index.events({
+		'click ul.related-artists li': function () {
+			fetchActiveArtist(this.id);
+			fetchRelatedArtists(this.id);
+			getTopTrackFromArtist(this.id);
+		}
+	});
 
 }
 
