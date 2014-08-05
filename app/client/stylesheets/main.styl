@@ -115,13 +115,6 @@ input.round
 .white
 	color #ffffff
 
-
-
-
-
-
-
-
 .full-center-contents
 	position fixed
 	top 0
@@ -129,3 +122,18 @@ input.round
 	min-width 100%
 	min-height 100%
 	align(b)
+
+.splash
+	// margin-top 40px
+.hide
+	opacity 0
+
+.fade-in-full
+	animation fade-in-full .4s
+	-webkit-animation @animation	
+
+@keyframes fade-in-full
+	from
+		opacity 0
+	to
+		opacity 1

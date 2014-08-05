@@ -80,6 +80,10 @@ if (Meteor.isClient) {
 		return Session.get("splash");
 	};
 
+	Template.splasha.artist = function () {
+		return Session.get("artist");
+	};
+
 	Template.main.artistImage = function () {
 		return Session.get("artistImage");
 	}
@@ -116,7 +120,11 @@ if (Meteor.isClient) {
 		if(Session.get("splash")){
 			$('.splash').hide(200, function () {
 				Session.set("splash", false);
+				var titles = $('.titles');
+				titles.removeClass('hide');
+				titles.addClass('.fade-in-full')
 			});
+
 		};
 
 		setActiveArtist(artist)

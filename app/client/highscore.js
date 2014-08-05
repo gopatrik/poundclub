@@ -1,8 +1,13 @@
 
+Highscores = new Meteor.Collection('highscores');
+
+
 if (Meteor.isClient) {
 	Meteor.startup(function () {
 	
-		
+	
+
+
 
 
 
@@ -12,26 +17,23 @@ if (Meteor.isClient) {
 		Template.toplist.finalScore = function () {
 			return Session.get("finalScore");
 		};
-
+		
 		Template.toplist.events = {
-		    'click button[name=submitYo]': function () {
-			    var yoName = document.getElementById("yoText").value;
+		    'submit form.yo': function (e) {
+		    	e.preventDefault();
+			    var yoName = $("#yoText").val();
+
+			    console.log(yoName)
 
 
 			    $.ajax({
 			    	type: "POST",
 				    url: 'http://api.justyo.co/yo/',
-				    data: 'api_token=fce99102-c646-b2f4-b1bc-ae21530fd23c&username=' + yoName,
+				    data: 'api_token=797471a2-1e3f-0e8e-ee3d-342bf3b86f43&username=' + yoName,
 				    success: function (response) {
-
-				       alert('yo?');
-		   			}, error: function (response) {
-		   				
-		   				console.log(response);
-		   				alert('sfk,fm')
+				    	//do nothing
 		   			}
 				});
-
 		    }
 		};
 
@@ -39,6 +41,12 @@ if (Meteor.isClient) {
 }
 
 
-
 if (Meteor.isServer) {
+	Meteor.methods({
+		insertHighscore: function (object) {
+			Highscores.insert(object, function (e,t) {
+				console.log(e,t);
+			});
+		}
+	});
 }
