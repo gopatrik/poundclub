@@ -16,32 +16,49 @@ section.background
 	z-index -1
 	background-size cover
 	background-repeat no-repeat
-	opacity 0.4
+	opacity 0.2
+
+.fade-in
+	animation fade-in .2s
+	-webkit-animation @animation
+
+@keyframes fade-in
+	from
+		opacity 0
+	to
+		opacity 0.2
+
+.fade-out
+	animation fade-out .2s
+	-webkit-animation @animation
+
+@keyframes fade-out
+	from
+		opacity 0.2
+	to
+		opacity 0
 
 
 ul.related-artists
 	center(1200px)
 	li
-		// position relative
-		height 200px
-		.image
-			height 100%
-			width 100%
-			background-size cover
-			background-repeat no-repeat
-			transition all 1s
-			&:hover
-				position absolute
-				top 0
-				left 0
-				width 80%
-				height 80%
+		.artistBoxContainer
+			// position relative
+			height 200px
+			.image
+				height 100%
+				width 100%
+				background-size cover
+				background-repeat no-repeat
+				&.selected
+					outline 10px solid pink
+				// transition all 1s
 
-		h3
-			font-size 18px
-			font-weight bold
-			font-family avenir
-			color white
+			h3
+				font-size 18px
+				font-weight bold
+				font-family avenir
+				color white
 		col(1/5)
 		cursor pointer
 			

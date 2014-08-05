@@ -26,6 +26,7 @@ if (Meteor.isClient) {
 	  	
 		fetchActiveArtist(artists["jonsi"].id);
 		fetchRelatedArtists(artists["jonsi"].id);
+		setSelected(1);
 	});
 
 	function fetchActiveArtist(artistId) {
@@ -85,15 +86,71 @@ if (Meteor.isClient) {
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
 		Session.set("artistImage", artist.images[0].url);
+	};
+
+
+	var selectedIndex = 1;
+	function setSelected (index) {
+		console.log(index);
+		$("ul.related-artists li:nth-child("+selectedIndex+") .image").removeClass("selected");
+
+		var sbox = $("ul.related-artists li:nth-child("+index+") .image");
+		sbox.addClass("selected");
+		selectedIndex = index;
+
 	}
 
-	Template.index.events({
-		'click ul.related-artists li': function () {
-			setActiveArtist(this)
-			fetchRelatedArtists(this.id);
-			getTopTrackFromArtist(this.id);
+	function loadArtist (artist) {
+		setActiveArtist(artist)
+		fetchRelatedArtists(artist.id);
+		getTopTrackFromArtist(artist.id);
+		
+	};
+
+	Template.artistBox.events({
+		'click .image': function (e) {
+			loadArtist(this);
+			setSelected($(e.target).parent().index()+1);
 		}
 	});
+
+	// Template.main.events({
+	// 	'keypress body': function () {
+	// 		console.log("key");
+	// 	}
+	// });
+
+	document.onkeyup = KeyPressed;
+	  function KeyPressed( e )
+	  {
+	    var key = ( window.event ) ? event.keyCode : e.keyCode;
+
+	    switch(key){
+		    case 37: // left
+		    	if(selectedIndex > 1){
+		    		setSelected(selectedIndex - 1);
+		    	}
+		    	break;
+		    case 39: // right
+		    	if(selectedIndex < 6){
+		    		setSelected(selectedIndex + 1);
+		    	}
+		    	break;
+		    case 32: // space
+		    case 38: // up
+		    case 40: // down
+				$("section.background").addClass('fade-out');
+		    	$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").slideUp(100, function () {
+		    		loadArtist(Session.get("related")[selectedIndex-1]);
+					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").fadeIn(400);
+					$("section.background").removeClass('fade-out');
+					$("section.background").removeClass('fade-in');
+					$("section.background").addClass('fade-in');
+
+		    	});
+		    	break;
+	    }
+	  }
 
 }
 

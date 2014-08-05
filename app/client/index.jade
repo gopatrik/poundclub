@@ -16,5 +16,10 @@ template(name="index")
 			ul.related-artists.inline-list
 				each related
 					li
-						.image(style="background-image: url(#{coverImage.url})")
-						h3.center= name
+						+artistBox
+
+
+template(name="artistBox")
+	.artistBoxContainer
+		.image(style="background-image: url(#{coverImage.url})")
+		h3.center= name
