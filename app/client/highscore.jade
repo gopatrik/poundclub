@@ -1,12 +1,18 @@
 template(name="toplist")
-	h1.center.page-title Highscore
+	
+	.textblurbs
+		h1.center.page-title Highscore
 
-	h1.center.page-title Score: #{finalScore}
+		p.center.large.bold.white Score: #{finalScore}
 
-	h1.center.page-title Want to get notified when someone beats your highscore on this level? 
+		p.center.large.bold.white Want to get notified when someone beats your highscore on this level? 
 
-	h1.center.page-title Enter Yo Username: 
+		p.center.large.bold.white Enter Yo Username: 
 
-	form.center
-		input.round(type="text", name="time", value="gjg")
+	.inputs
+		form.center
+			input.round(type="text", name="time", id="yoText")
 		
+			.buttonContainer
+				button.oversized(name="submitYo") Submit
+			
