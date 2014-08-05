@@ -1,0 +1,225 @@
+@import 'vars'
+@import 'functions'
+
+html, body
+	height 100%
+
+body
+	background-image url('images/in.jpg')
+	background-size cover
+	background-position center center
+	margin 0
+	background-attachment fixed
+	// background bg
+
+h1,h2,h3,h4,h5,h6,p
+	font-family avenir, helvetica, arial, sans
+	color black
+
+ul
+	list-style-type none
+	padding-left 0
+	font-family avenir
+
+h1
+	font-size 30px
+
+h1
+	font-weight bold
+p
+	font-weight normal
+
+
+button,input
+	text-align center
+	background none
+	font-family avenir
+	font-weight normal
+	font-size 30px
+	v(border-radius, 8px)
+	padding 8px 18px
+	border 4px solid white
+	outline none
+	cursor pointer
+
+	&.over-image
+		color #2D2D2D
+		font-weight bold
+		font-size 20px
+		padding auto
+		height 50px
+
+
+
+form.log-in
+	font-size 14px
+	background white
+	border-radius 5px
+
+ul.inline-list
+	list-style-type none
+	li
+		display inline-block
+
+button.foreground
+	border-color black
+	color black
+
+header.page-header
+	text-align center
+	padding-top 20px
+
+
+.content-area
+	v(border-top-left-radius, 100% 120px)
+	v(border-top-right-radius, 100% 120px)
+	// v(border-radius, "0 0 100px 100px  "/" 0 0 25px 25px")
+
+	min-height 600px
+	background bg
+
+div.radius-border
+	overflow hidden
+	height 70px
+	max-width 100%
+	// position relative
+	margin-top -@height
+	// v(border-top-left-radius, 50% 25%)
+	// v(border-top-right-radius, 50% 25%)
+	// background bg
+	// text-align center
+	// align(b)
+	// text-align center
+	// overflow hidden
+	.circ-cont
+		position relative
+		right 50%
+		text-align center
+
+		.big-circle
+			// position absolute
+			display inline-block
+			width 2200px
+			// margin-left -(@width / (8/3))
+			height (@width/5)
+			background bg
+			v(border-radius, 50%)
+			margin-right -100%
+
+
+	i.fa.fa-bookmark
+		font-size 69px
+		margin-top -80px
+		color red
+		v(transform, rotate(180deg))
+
+div.apply-container
+	background white
+	// border 2px solid white
+	display inline-block
+	v(transition, width .3s)
+	v(border-radius, 5px)
+	width 250px
+	height 50px
+	// margin-top 20px
+	// padding 5px 20px
+
+
+	&.expand
+		// col(1)
+		// v(animation, expand .2s)
+		width 320px
+		// min-height 200px
+		// background black
+		//
+		input
+			text-align center
+			col(1)
+			padding 12px 0px
+			margin 0
+			border none
+			v(border-radius, 0)
+
+
+
+
+// :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder
+
+
+
+
+
+span.break
+	col(1)
+	margin 20px 0
+	border-bottom 2px solid superSubtle
+
+i.fa.large
+	font-size 150px
+
+.center-content
+	align(b)
+
+section.row
+	background bg
+	border-bottom 1px solid superSubtle
+	margin-bottom 120px
+	padding-top 100px
+	padding-bottom 100px
+	col(1)
+
+
+header.site-header
+	min-height 250px
+	padding 20px
+	// background-image url('images/in.jpg')
+	background-size cover
+	background-position center center
+	// border-bottom: 10px solid modal
+
+	.titles
+		display inline-block
+
+	&.splash
+		min-height 100%
+		text-align center
+		align(b)			
+
+		.titles
+			h1
+				font-family mission script
+				font-size 150px
+				line-height 80px
+				margin 0
+			// 
+	h1
+		margin 0
+		font-weight bold
+		a.nolink
+			color modal
+			text-decoration none
+
+	h1, p
+		color modal
+		text-shadow 0 0 4px black	
+		// text-shadow 0 0 8px rgba(black,0.5)
+
+	p.subheader
+		font-family avenir
+		font-size 25px
+
+
+
+	// border-bottom 3px solid rgba(black, 0.2)
+footer.site-footer
+	background bg
+	// margin-top 100px
+	min-height 100px
+	// height 100px
+
+div.content
+	padding-top 20px
+	center(mainWidth,30px)
+	&.center-column
+		center(mainWidth)
+
