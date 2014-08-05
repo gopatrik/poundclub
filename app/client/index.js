@@ -8,6 +8,9 @@ var artists = {
 	'The Black Keys': {id:"7mnBLXK823vNxN3UWB7Gfz"}
 }
 
+window.startArtistId = artists["jonsi"].id;
+window.goalArtistId = artists["The Black Keys"].id;
+
 
 Router.map(function() {
 	this.route('home', {

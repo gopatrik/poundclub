@@ -1,36 +1,25 @@
 if (Meteor.isClient) {
 	Meteor.startup(function () {
+		Session.set("score", 0);
+	});
 	
-	
+	Template.toplist.finalScore = function () {
+		return Session.get("finalScore");
+	};
 
-
-
-
-		Session.set("finalScore", 1000);
-		Session.set("tag", 'username');
-		Session.set("startingArtistId", '12345');
-		Session.set("endingArtistId", '54321');
-
-
-		Template.toplist.finalScore = function () {
-			return Session.get("finalScore");
-		};
-
-		Template.toplist.events = {
-
-			
-
-
-		    'submit form.yo': function (e) {
-
-		    var score = Session.get("finalScore");
+	Template.toplist.events = {
+	    'submit form.yo': function (e) {
+		    var score = Session.get("score");
 			var yoName = $("#yoText").val();
-			var id1 = Session.get("startingArtistId");
-			var id2 = Session.get("endingArtistId");
 
+			Highscores.insert({
+				score: score,
+				name: yoName,
+				start: window.startArtistId,
+				goal: window.goaldArtistId
+			});
 
-
-			Highscores.insert({score: score, name: yoName, id1: id1, id2: id2 });
+			// console.log(score, yoName, window.startArtistId, window.goalArtistId);
 
 	    	e.preventDefault();
 
@@ -42,10 +31,8 @@ if (Meteor.isClient) {
 			    	//do nothing
 	   			}
 			});
-		    }
-		};
-
-	});
+	    }
+	};
 }
 
 
