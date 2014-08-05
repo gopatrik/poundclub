@@ -1,16 +1,18 @@
 head
 	title Related Artists Game
 
-
 body
 
 template(name="main")
 	+yield
 
 template(name="index")
-	if dump
-		h1 Artists related to #{dump.name}
+	if artist
+		h1 Artists related to #{artist.name}
+		//- img(src=artist.images[0].url)
+		each artist.images
+			img(src=url)
 		if related
-			ul
+			ul.related-artists
 				each related.artists
 					li= name
