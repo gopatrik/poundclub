@@ -29,8 +29,12 @@ Router.map(function() {
 
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		fetchActiveArtist(artists["jonsi"].id);
-		fetchRelatedArtists(artists["jonsi"].id);
+		fetchActiveArtist(artists["The Black Keys"].id);
+		fetchRelatedArtists(artists["The Black Keys"].id, function () {
+			Session.set("related", Session.get("related-fetched"));
+		});
+
+
 		Session.set("splash", true);
 		setSelected(1);
 	});
@@ -47,7 +51,7 @@ if (Meteor.isClient) {
 		});
 	}
 
-	function fetchRelatedArtists(artistId) {
+	function fetchRelatedArtists(artistId, callback) {
 	  	$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 	  	    success: function (response) {
@@ -56,7 +60,13 @@ if (Meteor.isClient) {
 	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[1];
 	  	    	};
 
+
+	  	    	Session.set("fetchingRelated", false);
+	  	        // Session.set("related-fetched", relatedArtists);
 	  	        Session.set("related", relatedArtists);
+	  	        // if(callback){
+	  	        // 	callback();
+	  	        // };
 	  	    }
 	  	});
 	}
@@ -68,10 +78,16 @@ if (Meteor.isClient) {
 	  	    	// console.log(response.tracks[0].preview_url);
 
 	  	    	if(audio){
-	  	    		audio.pause();
+	  	    		// audio.pause();
+	  	    		$(audio).animate({volume:0}, 2000);
 	  	    	}
-	  	    	audio = new Audio(response.tracks[0].preview_url);
-	  	    	audio.play();
+	  	    	newAudio = new Audio(response.tracks[0].preview_url);
+	  	    	newAudio.play();
+	  	    	// newAudio.volume = 0;
+
+	  	    	// $(newAudio).animate({volume: 100}, 1000)
+
+	  	    	audio = newAudio;
 
 	  	    	Session.set("playingsong", response.tracks[0].name);
 	  	        // Session.set("toptrack", response.tracks[0].preview_url);
@@ -111,9 +127,9 @@ if (Meteor.isClient) {
 
 	var selectedIndex = 1;
 	function setSelected (index) {
-		$("ul.related-artists li:nth-child("+selectedIndex+") .image").removeClass("selected");
+		$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass("selected");
 
-		var sbox = $("ul.related-artists li:nth-child("+index+") .image");
+		var sbox = $("ul.related-artists li:nth-child("+index+") .artistBoxContainer");
 		sbox.addClass("selected");
 		selectedIndex = index;
 
@@ -130,26 +146,39 @@ if (Meteor.isClient) {
 
 		};
 
-		setActiveArtist(artist)
+
+
+		Session.set("fetchingRelated", true);
+
 		fetchRelatedArtists(artist.id);
 		getTopTrackFromArtist(artist.id);
+		// function  (argument) {
+
+		setActiveArtist(artist)
+
+		// $('ul.related-artists li:nth-child('+selectedIndex+') .image').addClass('swosh-out');
+		// $("ul.related-artists").animate({
+
+		// }, 200, "linear", function () {
+		// 	if(!Session.get("fetchingRelated")){
+		// 		Session.set("related", Session.get("related-fetched"));
+		// 	}
+
+		// })
+
 	};
 
 	Template.artistBox.events({
 		'click .image': function (e) {
 			loadArtist(this);
 			setSelected($(e.target).parent().index()+1);
+			Session.set("score", Session.get("score")+1);
 		}
 	});
 
-	
-
-	// Template.main.events({
-	// 	'keypress body': function () {
-	// 		console.log("key");
-	// 	}
-	// });
-
+	Template.score.clicks = function () {
+		return Session.get("score");
+	}
 
 	document.onkeydown = function KeyPressed( e )
 	  {
@@ -159,25 +188,43 @@ if (Meteor.isClient) {
 		    case 37: // left
 		    	if(selectedIndex > 1){
 		    		setSelected(selectedIndex - 1);
+		    	}else{
+		    		setSelected(5);
 		    	}
 		    	break;
 		    case 39: // right
 		    	if(selectedIndex < 5){
 		    		setSelected(selectedIndex + 1);
+		    	}else{
+		    		setSelected(1);
 		    	}
 		    	break;
 		    case 32: // space
 		    case 38: // up
 		    case 40: // down
+		    	Session.set("score", Session.get("score")+1);
 
-				$("section.background").addClass('fade-out');
-		    	$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").slideUp(100, function () {
-		    		loadArtist(Session.get("related")[selectedIndex-1]);
-					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").fadeIn(400);
-					$("section.background").removeClass('fade-out');
-					$("section.background").removeClass('fade-in');
-					$("section.background").addClass('fade-in');
-		    	});
+				// $("section.background").addClass('fade-out');
+
+				$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").addClass('move-up');
+
+				setTimeout(function () {
+					$("ul.related-artists").addClass('move-down');
+					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass('move-up');
+					loadArtist(Session.get("related")[selectedIndex-1]);
+					setTimeout(function () {
+						$("ul.related-artists").removeClass('move-down');
+						$("ul.related-artists").addClass('swosh-in');
+					},200);
+				},200);
+
+		   //  	$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").slideUp(100, function () {
+		   //  		loadArtist(Session.get("related")[selectedIndex-1]);
+					// $("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").fadeIn(400);
+					// $("section.background").removeClass('fade-out');
+					// $("section.background").removeClass('fade-in');
+					// $("section.background").addClass('fade-in');
+		   //  	});
 		    	break;
 	    }
 	  }

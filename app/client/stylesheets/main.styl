@@ -45,6 +45,7 @@ section.background
 
 
 section.artist-area
+	margin-top -100px
 	width 100%
 	// align(b)
 	// margin-top 200px
@@ -52,11 +53,11 @@ section.artist-area
 
 
 ul.related-artists
-	center(1200px)
+	center(1500px)
 	li
 		.artistBoxContainer
 			// position relative
-			height 200px
+			height 300px
 			.image
 				margin auto
 				height 95%
@@ -64,23 +65,34 @@ ul.related-artists
 				background-size cover
 				background-repeat no-repeat
 				transition all .1s
-				&.selected
+
+			&.selected, &:hover
+				.image
 					box-shadow 0 0 8px 1px white
 					height 100%
 					width 100%
+					-webkit-animation: jelly .7s linear both;
+					animation: jelly .7s linear both;
+				h3
+					margin-top 30px
+
+				
+
 
 				// transition all 1s
 
 			h3
+				margin-top 10px
 				font-size 18px
 				font-weight bold
 				font-family avenir
 				color white
+
 		col(1/5)
 		cursor pointer
 			
 
-h1.page-title
+.page-title
 	font-weight bold
 	color white
 	font-family avenir
