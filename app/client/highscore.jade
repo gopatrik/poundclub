@@ -1,24 +1,31 @@
 template(name="toplist")
 	
+	
 	.textblurbs
-		h1.center.page-title Highscore
+			h1.center.page-title Highscores
+	.inputs.center.mt
 
-		p.center.large.bold.white Score: #{finalScore}
-
-		p.center.large.bold.white Want to get notified when someone beats your highscore on route? 
-
-		p.center.large.bold.white Enter Yo Username: 
-
-	.inputs
-		form.center.yo
-			input.round(type="text", name="time", id="yoText")
 		
-			.buttonContainer
+		.scoreblurb.mb
+			p.center.dark.mbs Final score
+			p.center.large.bold.dark.mbs #{finalScore}
+
+		p.center.large.bold.white 
+		p.center.light.yoText (Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!) 
+		form.center.yo.submitForm
+			input.round(type="text", name="time", id="yoText", placeholder="Name")
+		
+			.buttonContainer.nm
 				button.oversized(name="submitYo") Submit
+	+highscoreList
 
 template(name="highscoreList")
-	ul.toplist
-		each highscore
-			li
-				p= tag
-				p= highscore	
+
+	.inputs.mt
+		ul.toplist.center.mb
+			p.white.large.bold Name/Score
+			each highscore
+				li
+					.submitform
+						span.white.large.left= name
+						span.white.large.right= score	

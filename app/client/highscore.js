@@ -1,10 +1,10 @@
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		Session.set("score", 0);
+		Session.set("score", 1000);
 	});
 	
 	Template.toplist.finalScore = function () {
-		return Session.get("finalScore");
+		return Session.get("score");
 	};
 
 	Template.toplist.events = {
@@ -16,10 +16,10 @@ if (Meteor.isClient) {
 				score: score,
 				name: yoName,
 				start: window.startArtistId,
-				goal: window.goaldArtistId
+				goal: window.goalArtistId
 			});
 
-			// console.log(score, yoName, window.startArtistId, window.goalArtistId);
+			console.log(score, yoName, window.startArtistId, window.goalArtistId);
 
 	    	e.preventDefault();
 
@@ -33,6 +33,11 @@ if (Meteor.isClient) {
 			});
 	    }
 	};
+
+	Template.highscoreList.highscore = function () {
+
+		return Highscores.find({start: window.startArtistId, goal: window.goalArtistId});
+	}
 }
 
 
