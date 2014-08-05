@@ -2,12 +2,12 @@ template(name="toplist")
 	
 	
 	.textblurbs
-			h1.center.page-title Highscores
+			h1.center.page-title Top scores on this ArtistHunt
 	.inputs.center.mt
 
 		
 		.scoreblurb.mb
-			p.center.dark.mbs Final score
+			p.center.dark.mbs Your final score
 			p.center.large.bold.dark.mbs #{finalScore}
 
 		p.center.large.bold.white 
@@ -28,4 +28,5 @@ template(name="highscoreList")
 				li
 					.submitform
 						span.white.large.left= name
+						span.white.large |
 						span.white.large.right= score	
