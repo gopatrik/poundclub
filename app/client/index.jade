@@ -5,9 +5,6 @@ body
 
 template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
-	if splash
-		+splasha
-
 	+yield
 
 template(name="splasha")
@@ -19,6 +16,8 @@ template(name="splasha")
 
 
 template(name="index")
+	if splash
+		+splasha
 	if artist
 		//- img(src=artist.images[0].url)
 		//- each artist.images

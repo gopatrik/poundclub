@@ -76,7 +76,7 @@ if (Meteor.isClient) {
 	  	});
 	}
 
-	Template.main.splash = function () {
+	Template.index.splash = function () {
 		return Session.get("splash");
 	};
 
@@ -104,7 +104,6 @@ if (Meteor.isClient) {
 
 	var selectedIndex = 1;
 	function setSelected (index) {
-		console.log(index);
 		$("ul.related-artists li:nth-child("+selectedIndex+") .image").removeClass("selected");
 
 		var sbox = $("ul.related-artists li:nth-child("+index+") .image");
@@ -115,7 +114,7 @@ if (Meteor.isClient) {
 
 	function loadArtist (artist) {
 		if(Session.get("splash")){
-			$('.splash').slideUp(200, function () {
+			$('.splash').hide(200, function () {
 				Session.set("splash", false);
 			});
 		};
