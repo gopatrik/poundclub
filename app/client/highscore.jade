@@ -15,4 +15,10 @@ template(name="toplist")
 		
 			.buttonContainer
 				button.oversized(name="submitYo") Submit
-			
+
+template(name="highscoreList")
+	ul.toplist
+		each highscore
+			li
+				p= tag
+				p= highscore	
