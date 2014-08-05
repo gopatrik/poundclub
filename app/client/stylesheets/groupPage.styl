@@ -1,0 +1,44 @@
+@import 'vars'
+@import 'functions'
+
+.circle-bar
+	center(mainWidth)
+	position relative
+	height 200px
+	// top -(@height/2)
+	top -((@height) - (@height/1.618))
+	list-style-type none
+	text-align center
+	padding 0
+	// padding-bottom 300px
+	li
+		display inline-block
+		width 20%
+		text-align center
+
+
+.circle
+	display inline-block
+	background bg
+	width 160px
+	height @width
+	margin 0 20px
+	background-position center center
+	background-size 100% auto
+	v(border-radius, 50%)
+	border 12px solid bg
+
+
+// responsive
+bp(mainWidth, false)
+.circle-bar
+	height 110px
+	margin-top -(@height - (@height/1.618))
+
+.circle
+	width 110px
+	height @width
+	border-width 8px
+
+
+endbp()
