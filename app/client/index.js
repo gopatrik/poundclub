@@ -1,3 +1,4 @@
+
 Router.configure({
 	layoutTemplate: 'main'
 });
@@ -11,21 +12,23 @@ var artists = {
 Router.map(function() {
 	this.route('home', {
 		path: '/',
-		template:'index'
+		template:'index',
+		waitOn: function () {
+			return Meteor.subscribe('hello');
+		}
 	});
+
 	this.route('highscore', {
 		path: '/highscore',
 		template:'toplist'
 	});
 });
 
-
-
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-	  	
 		fetchActiveArtist(artists["jonsi"].id);
 		fetchRelatedArtists(artists["jonsi"].id);
+		Session.set("splash", true);
 		setSelected(1);
 	});
 
@@ -73,6 +76,10 @@ if (Meteor.isClient) {
 	  	});
 	}
 
+	Template.main.splash = function () {
+		return Session.get("splash");
+	};
+
 	Template.main.artistImage = function () {
 		return Session.get("artistImage");
 	}
@@ -107,6 +114,12 @@ if (Meteor.isClient) {
 	}
 
 	function loadArtist (artist) {
+		if(Session.get("splash")){
+			$('.splash').slideUp(200, function () {
+				Session.set("splash", false);
+			});
+		};
+
 		setActiveArtist(artist)
 		fetchRelatedArtists(artist.id);
 		getTopTrackFromArtist(artist.id);
@@ -119,14 +132,16 @@ if (Meteor.isClient) {
 		}
 	});
 
+	
+
 	// Template.main.events({
 	// 	'keypress body': function () {
 	// 		console.log("key");
 	// 	}
 	// });
 
-	document.onkeyup = KeyPressed;
-	  function KeyPressed( e )
+
+	document.onkeydown = function KeyPressed( e )
 	  {
 	    var key = ( window.event ) ? event.keyCode : e.keyCode;
 
@@ -144,6 +159,7 @@ if (Meteor.isClient) {
 		    case 32: // space
 		    case 38: // up
 		    case 40: // down
+
 				$("section.background").addClass('fade-out');
 		    	$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").slideUp(100, function () {
 		    		loadArtist(Session.get("related")[selectedIndex-1]);
@@ -151,15 +167,9 @@ if (Meteor.isClient) {
 					$("section.background").removeClass('fade-out');
 					$("section.background").removeClass('fade-in');
 					$("section.background").addClass('fade-in');
-
 		    	});
 		    	break;
 	    }
 	  }
 
-}
-
-
-
-if (Meteor.isServer) {
 }

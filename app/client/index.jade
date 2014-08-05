@@ -5,21 +5,33 @@ body
 
 template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
+	if splash
+		+splasha
+
 	+yield
+
+template(name="splasha")
+	section.center.splash
+		h1.page-title.center Hello, Stranger!
+		p.bold.large You are listening to ______
+		p.large These are the most similar artists them
+		p You have been tasked with using them to get to ______
+
 
 template(name="index")
 	if artist
 		//- img(src=artist.images[0].url)
 		//- each artist.images
 		//- 	img(src=url)
-		section.artist-area
-			h1.page-title.center= artist.name
-			p.center.big Still a long way to go
-			if related
-				ul.related-artists.inline-list.mt-large
-					each related
-						li
-							+artistBox
+		.full-center-contents
+			section.artist-area
+				h1.page-title.center= artist.name
+				p.center.big Still a long way to go
+				if related
+					ul.related-artists.inline-list
+						each related
+							li
+								+artistBox
 		.absoluteBottomRight
 			p.bold.small Now playing
 			p.medium= artist.name
