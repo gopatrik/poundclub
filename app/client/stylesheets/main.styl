@@ -16,21 +16,41 @@ section.background
 	z-index -1
 	background-size cover
 	background-repeat no-repeat
-	opacity 0.6
+	opacity 0.4
 
 
 ul.related-artists
 	center(1200px)
 	li
+		// position relative
 		height 200px
-		background white
+		.image
+			height 100%
+			width 100%
+			background-size cover
+			background-repeat no-repeat
+			transition all 1s
+			&:hover
+				position absolute
+				top 0
+				left 0
+				width 80%
+				height 80%
+
+		h3
+			font-size 18px
+			font-weight bold
+			font-family avenir
+			color white
 		col(1/5)
 		cursor pointer
+			
 
 h1.page-title
 	font-weight bold
 	color white
 	font-family avenir
+
 
 input.round
 	font-weight bold
@@ -41,3 +61,4 @@ input.round
 	text-transform uppercase
 	font-family avenir
 	color #2b2b2b
+

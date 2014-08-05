@@ -17,4 +17,6 @@ template(name="index")
 		if related
 			ul.related-artists.inline-list
 				each related
-					li= name
+					li
+						.image(style="background-image: url(#{coverImage.url})")
+						h3.center= name

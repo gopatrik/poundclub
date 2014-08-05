@@ -33,8 +33,9 @@ if (Meteor.isClient) {
 		    url: 'https://api.spotify.com/v1/artists/'+artistId,
 		    success: function (response) {
 
-		        Session.set("artist", response);
-		        Session.set("artistImage", response.images[0].url);
+		        // Session.set("artist", response);
+		        // Session.set("artistImage", response.images[0].url);
+		        setActiveArtist(response);
 		    }
 		});
 	}
@@ -43,18 +44,26 @@ if (Meteor.isClient) {
 	  	$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 	  	    success: function (response) {
-	  	        Session.set("related", response.artists.slice(0,5));
+	  	    	var relatedArtists = response.artists.slice(0,5);
+	  	    	for (var i = relatedArtists.length - 1; i >= 0; i--) {
+	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[1];
+	  	    	};
+
+	  	        Session.set("related", relatedArtists);
 	  	    }
 	  	});
 	}
-
+	var audio;
 	function getTopTrackFromArtist (artistId) {
 		$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
 	  	    success: function (response) {
 	  	    	// console.log(response.tracks[0].preview_url);
 
-	  	    	// var audio = new Audio(response.tracks[0].preview_url);
+	  	    	if(audio){
+	  	    		audio.pause();
+	  	    	}
+	  	    	audio = new Audio(response.tracks[0].preview_url);
 	  	    	// audio.play();
 	  	        // Session.set("toptrack", response.tracks[0].preview_url);
 	  	    }
@@ -65,8 +74,6 @@ if (Meteor.isClient) {
 		return Session.get("artistImage");
 	}
 
-	
-
 	Template.index.artist = function () {
 		return Session.get("artist");
 	};
@@ -75,9 +82,14 @@ if (Meteor.isClient) {
 		return Session.get("related");
 	};
 
+	function setActiveArtist(artist){
+		Session.set("artist", artist);
+		Session.set("artistImage", artist.images[0].url);
+	}
+
 	Template.index.events({
 		'click ul.related-artists li': function () {
-			fetchActiveArtist(this.id);
+			setActiveArtist(this)
 			fetchRelatedArtists(this.id);
 			getTopTrackFromArtist(this.id);
 		}
