@@ -28,7 +28,7 @@ template(name="index")
 					h1.page-title.center= artist.name
 					p.center.big Still a long way to go
 				if related
-					ul.related-artists.inline-list.mt-large
+					ul.related-artists.inline-list.mt-large.swosh-in
 						each related
 							li
 								+artistBox
@@ -41,3 +41,6 @@ template(name="artistBox")
 	.artistBoxContainer
 		.image(style="background-image: url(#{coverImage.url})")
 		h3.center= name
+
+//- template(name="score")
+//- 	.abs
