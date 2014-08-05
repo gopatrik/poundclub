@@ -1,6 +1,9 @@
 head
 	title Related Artists Game
 
+	//- TODO
+	//- SEARCHING FOR SUGAR MAN
+
 body
 
 template(name="main")
@@ -25,18 +28,27 @@ template(name="index")
 		.full-center-contents
 			section.artist-area
 				.titles.hide
-					h1.page-title.center= artist.name
-					p.center.big Still a long way to go
+					unless splash
+						+score
+					p.center.medium.np Listening to
+					h1.page-title.center.np= artist.name
+
+					//- p.page-title.large.center #{artist.name}, REALLY?
 				if related
 					ul.related-artists.inline-list.mt-large.swosh-in
 						each related
 							li
 								+artistBox
+
 		.absoluteBottomRight
 			p.bold.small Now playing
 			p.medium= artist.name
 			p.big.mt= songname
-	+score
+
+		.absoluteUpRight
+			p.medium.bold Hunting
+			p.big Bob Marley
+	
 
 template(name="artistBox")
 	.artistBoxContainer
@@ -44,5 +56,7 @@ template(name="artistBox")
 		h3.center= name
 
 template(name="score")
-	.absoluteUpRight.normal-padding
-		p.huge= clicks
+	p.center.mt-large
+		span.huge.score= clicks
+		//- br
+		//- span.medium clicks

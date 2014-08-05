@@ -127,9 +127,9 @@ if (Meteor.isClient) {
 
 	var selectedIndex = 1;
 	function setSelected (index) {
-		$("ul.related-artists li:nth-child("+selectedIndex+") .image").removeClass("selected");
+		$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass("selected");
 
-		var sbox = $("ul.related-artists li:nth-child("+index+") .image");
+		var sbox = $("ul.related-artists li:nth-child("+index+") .artistBoxContainer");
 		sbox.addClass("selected");
 		selectedIndex = index;
 
@@ -179,7 +179,6 @@ if (Meteor.isClient) {
 	Template.score.clicks = function () {
 		return Session.get("score");
 	}
-
 
 	document.onkeydown = function KeyPressed( e )
 	  {
