@@ -11,11 +11,11 @@ Router.map(function() {
 
 
 if (Meteor.isClient) {
-  Template.index.rendered = function () {
+  Template.index.dump = function () {
   	$.ajax({
   	    url: 'https://api.spotify.com/v1/albums/1fgtiyeUDIoUayYbwroqVH',
   	    success: function (response) {
-  	        console.log(response);
+  	        // return JSON.prresponse;
   	    }
   	});
   };
