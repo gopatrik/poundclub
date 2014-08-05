@@ -10,9 +10,7 @@ template(name="main")
 template(name="index")
 	if artist
 		h1.page-title.center Artists related to #{artist.name}
-		//- img(src=artist.images[0].url)
-		//- each artist.images
-		//- 	img(src=url)
+		
 		section.center-contents
 		if related
 			ul.related-artists.inline-list
