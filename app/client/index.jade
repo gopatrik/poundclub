@@ -36,11 +36,13 @@ template(name="index")
 			p.bold.small Now playing
 			p.medium= artist.name
 			p.big.mt= songname
+	+score
 
 template(name="artistBox")
 	.artistBoxContainer
 		.image(style="background-image: url(#{coverImage.url})")
 		h3.center= name
 
-//- template(name="score")
-//- 	.abs
+template(name="score")
+	.absoluteUpRight.normal-padding
+		p.huge= clicks

@@ -146,6 +146,8 @@ if (Meteor.isClient) {
 
 		};
 
+
+
 		Session.set("fetchingRelated", true);
 
 		fetchRelatedArtists(artist.id);
@@ -170,16 +172,13 @@ if (Meteor.isClient) {
 		'click .image': function (e) {
 			loadArtist(this);
 			setSelected($(e.target).parent().index()+1);
+			Session.set("score", Session.get("score")+1);
 		}
 	});
 
-	
-
-	// Template.main.events({
-	// 	'keypress body': function () {
-	// 		console.log("key");
-	// 	}
-	// });
+	Template.score.clicks = function () {
+		return Session.get("score");
+	}
 
 
 	document.onkeydown = function KeyPressed( e )
@@ -190,16 +189,21 @@ if (Meteor.isClient) {
 		    case 37: // left
 		    	if(selectedIndex > 1){
 		    		setSelected(selectedIndex - 1);
+		    	}else{
+		    		setSelected(5);
 		    	}
 		    	break;
 		    case 39: // right
 		    	if(selectedIndex < 5){
 		    		setSelected(selectedIndex + 1);
+		    	}else{
+		    		setSelected(1);
 		    	}
 		    	break;
 		    case 32: // space
 		    case 38: // up
 		    case 40: // down
+		    	Session.set("score", Session.get("score")+1);
 
 				// $("section.background").addClass('fade-out');
 

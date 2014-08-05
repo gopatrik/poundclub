@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		Session.set("score", 1000);
+		Session.set("score", 0);
 	});
 	
 	Template.toplist.finalScore = function () {
