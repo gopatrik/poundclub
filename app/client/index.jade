@@ -4,15 +4,17 @@ head
 body
 
 template(name="main")
+	section.background(style="background-image: url(#{artistImage})")
 	+yield
 
 template(name="index")
 	if artist
-		h1 Artists related to #{artist.name}
+		h1.page-title.center Artists related to #{artist.name}
 		//- img(src=artist.images[0].url)
-		each artist.images
-			img(src=url)
+		//- each artist.images
+		//- 	img(src=url)
+		section.center-contents
 		if related
-			ul.related-artists
-				each related.artists
+			ul.related-artists.inline-list
+				each related
 					li= name
