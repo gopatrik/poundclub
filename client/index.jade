@@ -40,6 +40,12 @@ template(name="index")
 							li
 								+artistBox
 
+		.absoluteBottomLeft
+			if splash
+				section
+					img(src="/images/arrows.png" width="150px")
+					p.medium.white Use arrowkeys or mouse
+
 		.absoluteBottomRight
 			p.bold.small Now playing
 			p.medium= artist.name
