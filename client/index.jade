@@ -23,7 +23,7 @@ template(name="splasha")
 		p.small.white Use arrowkeys or mouse
 		+missions
 
-		p.medium.bold Press up to start hunting!
+		p.medium.bold.mt Press up to start hunting!
 
 		button.oversized.extra(name="start") Start Hunting
 
@@ -63,10 +63,13 @@ template(name="index")
 					img(src="/images/arrows.png" width="150px")
 					p.small.white Use arrowkeys or mouse
 
+	unless splash
 		.absoluteBottomLeft
 			p.bold.small Now playing
 			p.medium= artist.name
-			p.big.mt= songname
+			p.big.mt
+				span= songname
+				span.underlined.small Add to spotify playlist
 
 		.absoluteUpRight
 			p.medium.bold Hunting

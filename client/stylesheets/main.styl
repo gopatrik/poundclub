@@ -192,10 +192,13 @@ button.oversized
 	position relative
 	height 200px
 	overflow hidden
-	background-size cover
-	border 1px solid rgba(white,0.4)
+	background-size 100% auto
+	border 2px solid rgba(white,0.4)
+	-webkit-animation bgscale 10s linear
+	animation bgscale 10s linear
 	p
-		font-weight normal
+		// font-weight normal
+		font-size 20px
 
 	.rot-cont
 		border 1px solid rgba(white,0.4)
@@ -218,9 +221,23 @@ button.oversized
 		-webkit-transform:rotate(45deg)
 		transform:rotate(45deg)
 		margin-top -100px
+		-webkit-animation moveslide 10s linear
+		animation moveslide 10s linear
 		p
 			z-index 1000
 		
+		
+@keyframes moveslide
+	from
+		margin-top 0
+	to
+		margin-top -100px
+
+@keyframes bgscale
+	from
+		background-size 200% auto
+	to
+		background-size 100% auto
 		
 		
 .white
