@@ -12,10 +12,13 @@ template(name="toplist")
 			
 
 		p.center.large.bold.white 
-		p.center.light.yoText (Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!) 
+		p.center.yoText.white.bold
+			|Want to get notified when someone beats your highscore on this combination of artists?
+			br
+			| Enter a Yo username!
 		form.center.yo.submitForm
 			input.round(type="text", name="time", id="yoText", placeholder="Name")
-		
+
 			.buttonContainer.nm
 				button.oversized(name="submitYo") Submit
 
