@@ -241,10 +241,6 @@ if (Meteor.isClient) {
 		document.onkeydown = undefined;
 	};
 
-	Template.missions.name = function () {
-		return "Searching for sugar man";
-	}
-
 	Template.missions.current = function () {
 		var goalArtist = Session.get("goalArtist");
 		var startArtist = Session.get("startArtist");
