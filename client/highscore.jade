@@ -7,8 +7,8 @@ template(name="toplist")
 
 		
 		.scoreblurb.mb
-			p.center.dark.mbs Your final score
-			p.center.large.bold.dark.mbs #{finalScore}
+			p.center.dark.mbs Your final score is
+			p.center.larger.bold.dark.mbs.mt #{finalScore}
 
 		p.center.large.bold.white 
 		p.center.light.yoText (Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!) 
@@ -27,6 +27,8 @@ template(name="highscoreList")
 			each highscore
 				li
 					.submitform
-						span.white.large.left= name
-						span.white.large |
-						span.white.large.right= score	
+						span.white.large.left.thin= name
+						span.white.large.thin /
+						span.white.large.right.thin= score	
+	.buttonContainer2.nm
+				button.oversized.newGame(name="newGame") New Game

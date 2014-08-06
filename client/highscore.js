@@ -58,10 +58,17 @@ if (Meteor.isClient) {
 			sendAYo(yoName);
 
 			sendYosToPeople(score);
-
-
-	    	
 		    
+	    }
+	};
+
+	Template.highscoreList.events = {
+	    'click .newGame': function (e) {
+			e.preventDefault();
+			
+			window.location.href = '/';
+
+
 	    }
 	};
 
