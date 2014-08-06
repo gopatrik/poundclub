@@ -140,7 +140,15 @@ if (Meteor.isClient) {
 		return Session.get("startArtist");
 	};
 
+	Template.splasha.startArtist = function () {
+		return Session.get("startArtist");
+	};
+
 	Template.index.goalArtist = function () {
+		return Session.get("goalArtist");
+	};
+
+	Template.splasha.goalArtist = function () {
 		return Session.get("goalArtist");
 	};
 

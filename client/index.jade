@@ -13,14 +13,14 @@ template(name="main")
 
 template(name="splasha")
 	section.center.splash.mt
-		h1.page-title.center Hello, Stranger!
-		p.bold.large You are listening to #{artist.name}
 
-		p You have been tasked with navigating the related artsists to find __
+		h1.page-title.center Hunt down #{goalArtist.name}!
+		p Do it by navigating similar artists, starting from #{startArtist.name}
+		p.small Use left and right arrow keys to navigare, and up to select
 
 		.absoluteBottomRight
 			img(src="/images/arrows.png" width="100px")
-			p.small.white Use arrowkeys to navigate
+			p.small.white Use arrow keys to navigate
 		+missions
 
 		p.medium.bold.mt Press up to start hunting!
