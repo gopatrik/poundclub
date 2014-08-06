@@ -9,6 +9,7 @@ template(name="toplist")
 		.scoreblurb.mb
 			p.center.dark.mbs Your final score is
 			p.center.larger.bold.dark.mbs.mt #{finalScore}
+			
 
 		p.center.large.bold.white 
 		p.center.light.yoText (Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!) 
@@ -17,6 +18,12 @@ template(name="toplist")
 		
 			.buttonContainer.nm
 				button.oversized(name="submitYo") Submit
+		.shareButtons.mt			
+			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
+			a.twitter-share-button.mts.center.tweetStyle(data-url="http://www.theartisthunt.com" data-via="artisthunt" data-dnt="true") Tweet
+			
+
+
 	+highscoreList
 
 template(name="highscoreList")
@@ -32,3 +39,4 @@ template(name="highscoreList")
 						span.white.large.right.thin= score	
 	.buttonContainer2.nm
 				button.oversized.newGame(name="newGame") New Game
+	
