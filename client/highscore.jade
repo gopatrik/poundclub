@@ -9,14 +9,22 @@ template(name="toplist")
 		.scoreblurb.mb
 			p.center.dark.mbs Your final score is
 			p.center.larger.bold.dark.mbs.mt #{finalScore}
+			
 
 		p.center.large.bold.white 
 		p.center.light.yoText (Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!) 
 		form.center.yo.submitForm
 			input.round(type="text", name="time", id="yoText", placeholder="Name")
 		
-			//- .buttonContainer.nm
-			button.oversized(name="submitYo") Submit
+			.buttonContainer.nm
+				button.oversized(name="submitYo") Submit
+		.shareButtons.mt			
+			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
+			a.twitter-share-button.mts.center.tweetStyle(data-url="http://www.theartisthunt.com" data-via="artisthunt" data-dnt="true") Tweet
+			
+
+
+
 	+highscoreList
 
 template(name="highscoreList")
@@ -30,6 +38,6 @@ template(name="highscoreList")
 						span.white.large.left.thin= name
 						span.white.large.thin /
 						span.white.large.right.thin= score	
-		//- .buttonContainer2.nm
+
 		.center
 			button.center.oversized.newGame(name="newGame") New Game
