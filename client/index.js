@@ -93,8 +93,11 @@ if (Meteor.isClient) {
 	}
 
 	function checkWin(){
-		console.log(Session.get("artist").id);
-		if(Session.get("artist").id == window.goalArtistId){
+		if(!Session.get('goalArtist')){
+			return;
+		}
+
+		if(Session.get("artist").id == Session.get("goalArtist").id){
 			deactivateKeys();
 			Router.go('highscore');
 		}
@@ -209,7 +212,7 @@ if (Meteor.isClient) {
 		$('.splash').addClass('move-up');
 		setTimeout(function () {
 			Session.set("splash", false);
-			titles.addClass('.fade-in-full');
+			$('.titles').addClass('.fade-in-full');
 		},200);
 	}
 
@@ -344,7 +347,6 @@ if (Meteor.isClient) {
 
 	Template.splasha.events({
 		'click button[name=start]': function () {
-			console.log("asdas")
 			startGame();
 		}
 	});
