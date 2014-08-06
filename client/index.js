@@ -4,9 +4,9 @@ Router.configure({
 });
 
 var artists = {
-	'jonsi': {id:"3khg8RDB6nMuw34w1IHS6Y"},
-	'The Black Keys': {id:"7mnBLXK823vNxN3UWB7Gfz"},
-	'The White Stripes': {id:"4F84IBURUo98rz4r61KF70"}
+	'jonsi': {name: "Jonsi", id:"3khg8RDB6nMuw34w1IHS6Y"},
+	'The Black Keys': {name: "The Black Keys", id:"7mnBLXK823vNxN3UWB7Gfz"},
+	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
 
 }
 
@@ -40,7 +40,25 @@ if (Meteor.isClient) {
 		});
 
 		Session.set("splash", true);
+
+		fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
 	});
+
+	function fetchStartGoalArtists(startId, goalId){
+		$.ajax({
+		    url: 'https://api.spotify.com/v1/artists/'+startId,
+		    success: function (response) {
+		    	Session.set("startArtist", response);
+		    }
+		});
+
+		$.ajax({
+		    url: 'https://api.spotify.com/v1/artists/'+goalId,
+		    success: function (response) {
+		    	Session.set("goalArtist", response);
+		    }
+		});
+	};
 
 	function fetchActiveArtist(artistId) {
 		$.ajax({
@@ -100,9 +118,6 @@ if (Meteor.isClient) {
 	  	    		newAudio.volume = 0;
 	  	    		$(newAudio).animate({volume:1}, 5000);
 	  	    	}
-	  	    	// newAudio.volume = 0;
-
-	  	    	// $(newAudio).animate({volume: 100}, 1000)
 
 	  	    	audio = newAudio;
 
@@ -119,6 +134,15 @@ if (Meteor.isClient) {
 	// Template.index.rendered = function () {
 	// 	setSelected(selectedIndex);
 	// };
+
+
+	Template.index.startArtist = function () {
+		return Session.get("startArtist");
+	};
+
+	Template.index.goalArtist = function () {
+		return Session.get("goalArtist");
+	};
 
 	Template.splasha.artist = function () {
 		return Session.get("artist");
@@ -218,7 +242,11 @@ if (Meteor.isClient) {
 	};
 
 	Template.missions.current = function () {
-		return {start: window.startArtistId, goal:window.goalArtistId};
+		var goalArtist = Session.get("goalArtist");
+		var startArtist = Session.get("startArtist");
+		if(startArtist && goalArtist){
+			return {start: startArtist, goal: goalArtist, startImage:startArtist.images[0].url, goalImage:goalArtist.images[0].url};
+		}
 	}
 
 	function loadArtist (artist) {
