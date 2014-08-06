@@ -98,7 +98,8 @@ if (Meteor.isClient) {
 	  	    	newAudio.play();
 
 	  	    	if(fadeIn){
-	  	    		// $(newAudio).volume = 0
+	  	    		newAudio.volume = 0;
+	  	    		$(newAudio).animate({volume:1}, 5000);
 	  	    	}
 	  	    	// newAudio.volume = 0;
 
@@ -155,18 +156,20 @@ if (Meteor.isClient) {
 
 	}
 
-	function loadArtist (artist) {
-		if(Session.get("splash")){
+	function hideSplash () {
 			$('.splash').hide(200, function () {
 				Session.set("splash", false);
-				var titles = $('.titles');
-				titles.removeClass('hide');
+				// var titles = $('.titles');
+				// titles.removeClass('hide');
 				titles.addClass('.fade-in-full')
 			});
+	}
 
-		};
+	Template.missions.current = function () {
+		return {start: window.startArtistId, goal:window.goalArtistId};
+	}
 
-
+	function loadArtist (artist) {
 
 		Session.set("fetchingRelated", true);
 
@@ -199,6 +202,13 @@ if (Meteor.isClient) {
 	Template.score.clicks = function () {
 		return Session.get("score");
 	}
+
+	Template.splasha.events({
+		'click button[name=start]': function () {
+			console.log("asdas")
+			hideSplash();
+		}
+	});
 
 	document.onkeydown = function KeyPressed( e )
 	  {

@@ -157,22 +157,27 @@ input.round
 	width 100px
 	height 50px
 
-	button.oversized
-		border-radius 5px
-		width 100px
-		height 50px
-		border none
-		background #D21414
-		color white
-		font-size 19px
-		text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-		border-bottom: 2px solid #810B0B;
+button.oversized
+	border-radius 5px
+	// width 100px
+	// height 50px
+	border none
+	background #CE4141
+	color white
+	font-size 19px
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	border-bottom: 2px solid #810B0B;
+	padding 10px 20px
+	font-weight bold
 
-button.oversized:active
-	margin-bottom -2px
-	margin-top 2px
-	border none	
-	outline none
+	&:active, &:hover
+		margin-bottom -2px
+		margin-top 2px
+		border none	
+		outline none
+	&.extra
+		// font-weight bold
+
 .scoreblurb
 
 	width 200px

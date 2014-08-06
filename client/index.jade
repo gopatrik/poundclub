@@ -18,6 +18,19 @@ template(name="splasha")
 		p You have been tasked with using them to get to the artist ______
 
 
+		img(src="/images/arrows.png" width="200px")
+		p.small.white Use arrowkeys or mouse
+
+		button.oversized.extra(name="start") Start Hunting
+
+template(name="missions")
+	with current
+		.mission-box
+			.left-artist
+				p= start
+			.right-artist
+				p= goal
+
 template(name="index")
 	if artist
 		//- img(src=artist.images[0].url)
@@ -25,22 +38,23 @@ template(name="index")
 		//- 	img(src=url)
 		if splash
 			+splasha
-		.full-center-contents
-			section.artist-area
-				.titles.hide
-					unless splash
+		else
+			.full-center-contents
+				section.artist-area
+					.titles
+						//- unless splash
 						+score
-					p.center.medium.np Listening to
-					h1.page-title.center.np= artist.name
+						p.center.medium.np Listening to
+						h1.page-title.center.np= artist.name
 
-					//- p.page-title.large.center #{artist.name}, REALLY?
-				if related
-					ul.related-artists.inline-list.mt-large.swosh-in
-						each related
-							li
-								+artistBox
+						//- p.page-title.large.center #{artist.name}, REALLY?
+					if related
+						ul.related-artists.inline-list.mt-large.swosh-in
+							each related
+								li
+									+artistBox
 
-		.absoluteBottomLeft
+		//- .absoluteBottomLeft
 			if splash
 				section.center
 					img(src="/images/arrows.png" width="150px")

@@ -2,8 +2,6 @@ if (Meteor.isClient) {
 	Meteor.startup(function () {
 		Session.set("score", 0);
 	});
-	
-
 
 	Template.toplist.finalScore = function () {
 		return Session.get("score");
@@ -23,12 +21,7 @@ if (Meteor.isClient) {
 			sendAYo(userGame.name);
  			count += 1;
 		});
-
-		
-		
-		
-
-	}
+	};
 
 	function sendAYo(yoName){
 		$.ajax({
