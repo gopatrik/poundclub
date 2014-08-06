@@ -66,8 +66,7 @@ if (Meteor.isClient) {
 	    'click .newGame': function (e) {
 			e.preventDefault();
 			
-			window.location.href = '/';
-
+			Router.go('home');
 
 	    }
 	};
