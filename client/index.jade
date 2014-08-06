@@ -14,13 +14,13 @@ template(name="main")
 template(name="splasha")
 	section.center.splash.mt
 
-
 		h1.page-title.center Hunt down #{goalArtist.name}!
 		p Do it by navigating similar artists, starting from #{startArtist.name}
-		p Use left and right arrow keys to navigare, and up to select
+		p.small Use left and right arrow keys to navigare, and up to select
 
-		img(src="/images/arrows.png" width="200px")
-		p.small.white Use arrowkeys or mouse
+		.absoluteBottomRight
+			img(src="/images/arrows.png" width="100px")
+			p.small.white Use arrow keys to navigate
 		+missions
 
 		p.medium.bold.mt Press up to start hunting!
@@ -29,6 +29,8 @@ template(name="splasha")
 
 template(name="missions")
 	with current
+		p.nm.small.bold Mission
+		h2.medium.bold.white= name
 		.mission-box(style="background-image:url(#{startImage})")
 			//- .left-artist.mission-artist(style="background-image:url(#{startImage})")
 			p.absoluteUpLeft.medium.bold.nm= start.name
