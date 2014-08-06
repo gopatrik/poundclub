@@ -14,12 +14,14 @@ template(name="splasha")
 	section.center.splash.mt
 		h1.page-title.center Hello, Stranger!
 		p.bold.large You are listening to #{artist.name}
-		p.large These artists below are the most similar to #{artist.name} that we could find
-		p You have been tasked with using them to get to the artist ______
+
+		p You have been tasked with navigating the related artsists to find __
 
 
 		img(src="/images/arrows.png" width="200px")
 		p.small.white Use arrowkeys or mouse
+
+		p.medium.bold Press up to start hunting!
 
 		button.oversized.extra(name="start") Start Hunting
 
@@ -36,10 +38,10 @@ template(name="index")
 		//- img(src=artist.images[0].url)
 		//- each artist.images
 		//- 	img(src=url)
-		if splash
-			+splasha
-		else
-			.full-center-contents
+		.full-center-contents
+			if splash
+				+splasha
+			else
 				section.artist-area
 					.titles
 						//- unless splash
@@ -60,7 +62,7 @@ template(name="index")
 					img(src="/images/arrows.png" width="150px")
 					p.small.white Use arrowkeys or mouse
 
-		.absoluteBottomRight
+		.absoluteBottomLeft
 			p.bold.small Now playing
 			p.medium= artist.name
 			p.big.mt= songname

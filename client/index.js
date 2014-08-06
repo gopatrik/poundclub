@@ -77,11 +77,10 @@ if (Meteor.isClient) {
 	function checkWin(){
 		console.log(Session.get("artist").id);
 		if(Session.get("artist").id == window.goalArtistId){
+			deactivateKeys();
 			Router.go('highscore');
 		}
 	}
-
-
 
 	var audio;
 	function getTopTrackFromArtist (artistId, fadeIn) {
@@ -117,9 +116,9 @@ if (Meteor.isClient) {
 		return Session.get("splash");
 	};
 
-	Template.index.rendered = function () {
-		setSelected(selectedIndex);
-	};
+	// Template.index.rendered = function () {
+	// 	setSelected(selectedIndex);
+	// };
 
 	Template.splasha.artist = function () {
 		return Session.get("artist");
@@ -157,13 +156,66 @@ if (Meteor.isClient) {
 	}
 
 	function hideSplash () {
-			$('.splash').hide(200, function () {
-				Session.set("splash", false);
-				// var titles = $('.titles');
-				// titles.removeClass('hide');
-				titles.addClass('.fade-in-full')
-			});
+		// $('.splash').hide(200, function () {
+		// 	Session.set("splash", false);
+		// 	// var titles = $('.titles');
+		// 	// titles.removeClass('hide');
+		// 	titles.addClass('.fade-in-full')
+		// });
+
+		$('.splash').addClass('move-up');
+		setTimeout(function () {
+			Session.set("splash", false);
+			titles.addClass('.fade-in-full');
+		},200);
 	}
+
+	function activateKeys () {
+		document.onkeydown = function KeyPressed( e ) {
+		    var key = ( window.event ) ? event.keyCode : e.keyCode;
+
+		    switch(key){
+			    case 37: // left
+			    	if(selectedIndex > 1){
+			    		setSelected(selectedIndex - 1);
+			    	}else{
+			    		setSelected(5);
+			    	}
+			    	break;
+			    case 39: // right
+			    	if(selectedIndex < 5){
+			    		setSelected(selectedIndex + 1);
+			    	}else{
+			    		setSelected(1);
+			    	}
+			    	break;
+			    case 32: // space
+			    case 38: // up
+			    case 40: // down
+			    	Session.set("score", Session.get("score")+1);
+
+					// $("section.background").addClass('fade-out');
+
+					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").addClass('move-up');
+
+					setTimeout(function () {
+						$("ul.related-artists").addClass('move-down');
+						$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass('move-up');
+						loadArtist(Session.get("related")[selectedIndex-1]);
+						setTimeout(function () {
+							$("ul.related-artists").removeClass('move-down');
+							$("ul.related-artists").addClass('swosh-in');
+						},200);
+					},200);
+
+			    	break;
+		    }
+		}
+	};
+
+	function deactivateKeys () {
+		document.onkeydown = undefined;
+	};
 
 	Template.missions.current = function () {
 		return {start: window.startArtistId, goal:window.goalArtistId};
@@ -174,21 +226,28 @@ if (Meteor.isClient) {
 		Session.set("fetchingRelated", true);
 
 		fetchRelatedArtists(artist.id);
+
 		getTopTrackFromArtist(artist.id);
-		// function  (argument) {
 
 		setActiveArtist(artist)
 
-		// $('ul.related-artists li:nth-child('+selectedIndex+') .image').addClass('swosh-out');
-		// $("ul.related-artists").animate({
+	};
 
-		// }, 200, "linear", function () {
-		// 	if(!Session.get("fetchingRelated")){
-		// 		Session.set("related", Session.get("related-fetched"));
-		// 	}
+	// start by listening for up key
+	document.onkeydown = function KeyPressed( e ) {
+		var key = ( window.event ) ? event.keyCode : e.keyCode;
+		if(key == 38 || key == 13 || key == 32){
+			startGame();
+		}
+	}
 
-		// })
 
+	function startGame () {
+		hideSplash();
+		activateKeys();
+		setTimeout(function () {
+			setSelected(selectedIndex);
+		},200);
 	};
 
 	Template.artistBox.events({
@@ -206,57 +265,10 @@ if (Meteor.isClient) {
 	Template.splasha.events({
 		'click button[name=start]': function () {
 			console.log("asdas")
-			hideSplash();
+			startGame();
 		}
 	});
 
-	document.onkeydown = function KeyPressed( e )
-	  {
-	    var key = ( window.event ) ? event.keyCode : e.keyCode;
 
-	    switch(key){
-		    case 37: // left
-		    	if(selectedIndex > 1){
-		    		setSelected(selectedIndex - 1);
-		    	}else{
-		    		setSelected(5);
-		    	}
-		    	break;
-		    case 39: // right
-		    	if(selectedIndex < 5){
-		    		setSelected(selectedIndex + 1);
-		    	}else{
-		    		setSelected(1);
-		    	}
-		    	break;
-		    case 32: // space
-		    case 38: // up
-		    case 40: // down
-		    	Session.set("score", Session.get("score")+1);
-
-				// $("section.background").addClass('fade-out');
-
-				$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").addClass('move-up');
-
-				setTimeout(function () {
-					$("ul.related-artists").addClass('move-down');
-					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass('move-up');
-					loadArtist(Session.get("related")[selectedIndex-1]);
-					setTimeout(function () {
-						$("ul.related-artists").removeClass('move-down');
-						$("ul.related-artists").addClass('swosh-in');
-					},200);
-				},200);
-
-		   //  	$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").slideUp(100, function () {
-		   //  		loadArtist(Session.get("related")[selectedIndex-1]);
-					// $("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").fadeIn(400);
-					// $("section.background").removeClass('fade-out');
-					// $("section.background").removeClass('fade-in');
-					// $("section.background").addClass('fade-in');
-		   //  	});
-		    	break;
-	    }
-	  }
 
 }
