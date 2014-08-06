@@ -29,16 +29,17 @@ Router.map(function() {
 	});
 });
 
+var selectedIndex = 3;
+
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		fetchActiveArtist(artists["The Black Keys"].id);
-		fetchRelatedArtists(artists["The Black Keys"].id, function () {
+		fetchActiveArtist(window.startArtistId);
+		getTopTrackFromArtist (window.startArtistId, true)
+		fetchRelatedArtists(window.startArtistId, function () {
 			Session.set("related", Session.get("related-fetched"));
 		});
 
-
 		Session.set("splash", true);
-		setSelected(1);
 	});
 
 	function fetchActiveArtist(artistId) {
@@ -74,7 +75,6 @@ if (Meteor.isClient) {
 	}
 
 	function checkWin(){
-
 		console.log(Session.get("artist").id);
 		if(Session.get("artist").id == window.goalArtistId){
 			Router.go('highscore');
@@ -84,7 +84,7 @@ if (Meteor.isClient) {
 
 
 	var audio;
-	function getTopTrackFromArtist (artistId) {
+	function getTopTrackFromArtist (artistId, fadeIn) {
 		$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
 	  	    success: function (response) {
@@ -96,6 +96,10 @@ if (Meteor.isClient) {
 	  	    	}
 	  	    	newAudio = new Audio(response.tracks[0].preview_url);
 	  	    	newAudio.play();
+
+	  	    	if(fadeIn){
+	  	    		// $(newAudio).volume = 0
+	  	    	}
 	  	    	// newAudio.volume = 0;
 
 	  	    	// $(newAudio).animate({volume: 100}, 1000)
@@ -110,6 +114,10 @@ if (Meteor.isClient) {
 
 	Template.index.splash = function () {
 		return Session.get("splash");
+	};
+
+	Template.index.rendered = function () {
+		setSelected(selectedIndex);
 	};
 
 	Template.splasha.artist = function () {
@@ -138,8 +146,6 @@ if (Meteor.isClient) {
 		checkWin();
 	};
 
-
-	var selectedIndex = 1;
 	function setSelected (index) {
 		$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass("selected");
 

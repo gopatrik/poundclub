@@ -1,5 +1,5 @@
 head
-	title Related Artists Game
+	title The Artist Hunt
 
 	//- TODO
 	//- SEARCHING FOR SUGAR MAN
@@ -11,7 +11,7 @@ template(name="main")
 	+yield
 
 template(name="splasha")
-	section.center.splash.mt-large
+	section.center.splash.mt
 		h1.page-title.center Hello, Stranger!
 		p.bold.large You are listening to #{artist.name}
 		p.large These artists below are the most similar to #{artist.name} that we could find
@@ -19,12 +19,12 @@ template(name="splasha")
 
 
 template(name="index")
-	if splash
-		+splasha
 	if artist
 		//- img(src=artist.images[0].url)
 		//- each artist.images
 		//- 	img(src=url)
+		if splash
+			+splasha
 		.full-center-contents
 			section.artist-area
 				.titles.hide
@@ -42,9 +42,9 @@ template(name="index")
 
 		.absoluteBottomLeft
 			if splash
-				section
+				section.center
 					img(src="/images/arrows.png" width="150px")
-					p.medium.white Use arrowkeys or mouse
+					p.small.white Use arrowkeys or mouse
 
 		.absoluteBottomRight
 			p.bold.small Now playing
