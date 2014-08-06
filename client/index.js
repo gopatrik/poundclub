@@ -168,13 +168,24 @@ if (Meteor.isClient) {
 		return Session.get("related");
 	};
 
+	Template.artistSearch.startArtist = function () {
+		return Session.get("startArtist");
+	}
+
+	Template.artistSearch.goalArtist = function () {
+		return Session.get("goalArtist");
+	}
+
 	Template.index.songname = function () {
 		return Session.get("playingsong");
 	}
 
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
-		Session.set("artistImage", artist.images[0].url);
+		if(artist.images[0]){
+
+			Session.set("artistImage", artist.images[0].url);
+		}
 		checkWin();
 	};
 
@@ -269,10 +280,43 @@ if (Meteor.isClient) {
 
 	};
 
+	Template.artistSearch.events({
+		'submit form.artistGoalSearch': function (e) {
+			e.preventDefault();
+			fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
+				if(response.artists.items.length > 0){
+	            	var artist = response.artists.items[0];
+					Session.set("goalArtist", artist);
+				};
+			});
+		},
+		'submit form.artistStartSearch': function (e) {
+			e.preventDefault();
+			fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
+				var artist = response.artists.items[0];
+				loadArtist(artist);
+				Session.set("startArtist", artist);
+			});
+		}
+	});
+
+	function fetchFirstArtist (name, callback) {
+			$.ajax({
+		        url: 'https://api.spotify.com/v1/search',
+		        data: {
+		            q: name,
+		            type: 'artist'
+		        },
+		        success: function (response) {
+		            callback(response);
+		        }
+		    });			
+	}
+
 	// start by listening for up key
 	document.onkeydown = function KeyPressed( e ) {
 		var key = ( window.event ) ? event.keyCode : e.keyCode;
-		if(key == 38 || key == 13 || key == 32){
+		if(key == 38){
 			startGame();
 		}
 	}

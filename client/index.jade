@@ -16,16 +16,28 @@ template(name="splasha")
 
 		h1.page-title.center Hunt down #{goalArtist.name}!
 		p Do it by navigating similar artists, starting from #{startArtist.name}
-		p.small Use left and right arrow keys to navigare, and up to select
+		p.small.bold Use left and right arrow keys to navigare, and up to select
 
 		.absoluteBottomRight
 			img(src="/images/arrows.png" width="100px")
 			p.small.white Use arrow keys to navigate
+
+		+artistSearch
+
 		+missions
 
 		p.medium.bold.mt Press up to start hunting!
 
 		button.oversized.extra(name="start") Start Hunting
+
+
+template(name="artistSearch")
+	section.artistForms
+		form.artistStartSearch.half.leftForm
+			input(name="artistStartSearchField", value="#{startArtist.name}")
+
+		form.artistGoalSearch.half.rightForm
+			input(name="artistGoalSearchField", value="#{goalArtist.name}")
 
 template(name="missions")
 	with current
