@@ -5,11 +5,13 @@ Router.configure({
 
 var artists = {
 	'jonsi': {id:"3khg8RDB6nMuw34w1IHS6Y"},
-	'The Black Keys': {id:"7mnBLXK823vNxN3UWB7Gfz"}
+	'The Black Keys': {id:"7mnBLXK823vNxN3UWB7Gfz"},
+	'The White Stripes': {id:"4F84IBURUo98rz4r61KF70"}
+
 }
 
-window.startArtistId = artists["jonsi"].id;
-window.goalArtistId = artists["The Black Keys"].id;
+window.startArtistId = artists["The Black Keys"].id;
+window.goalArtistId = artists["The White Stripes"].id;
 
 
 Router.map(function() {
@@ -70,6 +72,17 @@ if (Meteor.isClient) {
 	  	    }
 	  	});
 	}
+
+	function checkWin(){
+
+		console.log(Session.get("artist").id);
+		if(Session.get("artist").id == window.goalArtistId){
+			Router.go('highscore');
+		}
+	}
+
+
+
 	var audio;
 	function getTopTrackFromArtist (artistId) {
 		$.ajax({
@@ -122,6 +135,7 @@ if (Meteor.isClient) {
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
 		Session.set("artistImage", artist.images[0].url);
+		checkWin();
 	};
 
 
