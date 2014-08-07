@@ -33,11 +33,17 @@ template(name="splasha")
 
 template(name="artistSearch")
 	section.artistForms
-		form.artistStartSearch.half.leftForm
+		.artistStartSearch.half.leftForm.relative
 			input(name="artistStartSearchField", value="#{startArtist.name}")
+			ul.absolute.high-z.search-results
+				each startSearchResult
+					li= name
 
-		form.artistGoalSearch.half.rightForm
-			input(name="artistGoalSearchField", value="#{goalArtist.name}")
+		.artistGoalSearch.half.rightForm.relative
+			input(name="artistGoalSearchField", value="#{goalArtist.name}", autocomplete="off")
+			ul.absolute.high-z.search-results
+				each goalSearchResult
+					li= name
 
 template(name="missions")
 	with current

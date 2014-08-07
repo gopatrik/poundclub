@@ -283,25 +283,58 @@ if (Meteor.isClient) {
 
 	};
 
+	// 'submit form.artistGoalSearch': function (e) {
+	// 	e.preventDefault();
+	// 	fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
+	// 		if(response.artists.items.length > 0){
+ //            	var artist = response.artists.items[0];
+	// 			Session.set("goalArtist", artist);
+	// 		};
+	// 	});
+	// },
+	// 'submit form.artistStartSearch': function (e) {
+	// 	e.preventDefault();
+	// 	fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
+	// 		var artist = response.artists.items[0];
+	// 		loadArtist(artist);
+	// 		Session.set("startArtist", artist);
+	// 	});
+	// },
 	Template.artistSearch.events({
-		'submit form.artistGoalSearch': function (e) {
-			e.preventDefault();
-			fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
-				if(response.artists.items.length > 0){
-	            	var artist = response.artists.items[0];
-					Session.set("goalArtist", artist);
-				};
-			});
+		'keyup input[name=artistGoalSearchField]': function (e) {
+			// console.log();
+			var name = $(e.target).val();
+			if(name.length > 0){
+				fetchFirstArtist(name, function (response) {
+					Session.set("goalArtistSearchResults", response.artists.items.slice(0,4));
+				});
+			}
 		},
-		'submit form.artistStartSearch': function (e) {
-			e.preventDefault();
-			fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
-				var artist = response.artists.items[0];
-				loadArtist(artist);
-				Session.set("startArtist", artist);
-			});
+		'keyup input[name=artistStartSearchField]': function (e) {
+			// console.log();
+			var name = $(e.target).val();
+			if(name.length > 0){
+				fetchFirstArtist(name, function (response) {
+					Session.set("startArtistSearchResults", response.artists.items.slice(0,4));
+				});
+			}
+		},
+		'click .artistGoalSearch .search-results li':function () {
+			Session.set("goalArtist", this);
+		},
+		'click .artistStartSearch .search-results li':function () {
+			loadArtist(this);
+			Session.set("startArtist", this);
 		}
 	});
+
+	Template.artistSearch.goalSearchResult = function () {
+		return Session.get("goalArtistSearchResults");
+	};
+
+	Template.artistSearch.startSearchResult = function () {
+		return Session.get("startArtistSearchResults");
+	};
 
 	function fetchFirstArtist (name, callback) {
 			$.ajax({

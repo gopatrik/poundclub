@@ -59,6 +59,7 @@ ul.related-artists
 			// position relative
 			height 260px
 			.image
+				box-shadow 0 0 12px 1px black
 				margin auto
 				height 95%
 				width 95%
@@ -243,6 +244,7 @@ button.oversized
 
 section.artistForms
 	height 80px
+	center(600px)
 
 	h3
 		margin 0
@@ -262,6 +264,26 @@ section.artistForms
 		color white
 		text-align center
 		outline none
+		width 100%
+
+	ul.search-results
+		text-align left
+		width 100%
+		background rgba(black, 0.9)
+		list-style-type none
+		padding 0
+		margin 0
+		li
+			margin 0
+			padding 10px 20px
+			font-family avenir, arial, sans
+			font-size 14px
+			font-weight bold
+			color white
+
+			&:not(:nth-child(1))
+				border-top 1px solid rgba(white,0.2)
+
 
 		
 .white
