@@ -76,16 +76,15 @@ template(name="index")
 					p.small.white Use arrowkeys or mouse
 
 	unless splash
-		.absoluteBottomLeft
-			p.bold.small Now playing
-			p.medium= artist.name
-			p.big.mt
-				span= songname
-				span.underlined.small Add to spotify playlist
+		.absoluteUpLeft
+			//- p.bold.small Now playing
+			//- p.underlined.small Add to spotify playlist
+			p.big.mt= songname
+			p.medium.bold= artist.name
 
 		.absoluteUpRight
-			p.medium.bold Hunting
 			p.big= goalArtist.name
+			p.medium.bold Hunting
 	
 
 template(name="artistBox")

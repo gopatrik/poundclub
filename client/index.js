@@ -10,7 +10,7 @@ var artists = {
 
 }
 
-window.startArtistId = artists["The Black Keys"].id;
+window.startArtistId = artists["jonsi"].id;
 window.goalArtistId = artists["The White Stripes"].id;
 
 
