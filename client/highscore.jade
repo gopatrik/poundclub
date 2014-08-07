@@ -1,47 +1,47 @@
+template(name="highscore")
+
+	+toplist
+	
+
 template(name="toplist")
 	
 	
 	.textblurbs
 			h1.center.page-title Top scores on this ArtistHunt
 	.inputs.center.mt
-
-		
 		.scoreblurb.mb
 			p.center.dark.mbs Your final score is
 			p.center.larger.bold.dark.mbs.mt #{finalScore}
-			
-
-		p.center.large.bold.white 
-		p.center.yoText.white.bold
-			|Want to get notified when someone beats your highscore on this combination of artists?
-			br
-			| Enter a Yo username!
-		form.center.yo.submitForm
-			input.round(type="text", name="time", id="yoText", placeholder="Name")
-
-			.buttonContainer.nm
-				button.oversized(name="submitYo") Submit
-
-		.shareButtons.mt			
+		
+		.shareButtons.mt.mb			
 			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
 			a.twitter-share-button.mts.center.tweetStyle(data-url="http://www.theartisthunt.com" data-via="artisthunt" data-dnt="true") Tweet
+
+		if submitted
+			+highscoreList
+		else
+			//- p.center.large.bold.white 
 			
+			form.center.yo.submitForm
+				input.round(type="text", name="time", id="yoText", placeholder="Name")
 
-
-
-	+highscoreList
+				.buttonContainer.nm
+					button.oversized(name="submitYo") Submit
+			p.center.yoText.white
+				|Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!
+		
+			
+	
+	
 
 template(name="highscoreList")
+	ul.toplist.center.mb
+		p.white.large.bold Name/Score
+		each highscore
+			li
+				.submitform
+					span.white.large.left.thin= name
+					span.white.large.thin /
+					span.white.large.right.thin= score	
 
-	.inputs.mt
-		ul.toplist.center.mb
-			p.white.large.bold Name/Score
-			each highscore
-				li
-					.submitform
-						span.white.large.left.thin= name
-						span.white.large.thin /
-						span.white.large.right.thin= score	
-
-	.center.mt
-		button.center.oversized.newGame.mb(name="newGame") New Game
+	
