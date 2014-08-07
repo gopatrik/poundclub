@@ -11,7 +11,7 @@ if (Meteor.isClient) {
 		//get all db entries for artists
 	
 
-		var high = Highscores.find({start: window.startArtistId, goal: window.goalArtistId, score:{$gt: score}});
+		var high = Highscores.find({start: Session.get("startArtist").id, goal: Session.get("goalArtist").id, score:{$gt: score}});
 		
 		//loop through those for and act on those with lower score
 		var count = 0;
@@ -44,8 +44,8 @@ if (Meteor.isClient) {
 			Highscores.insert({
 				score: score,
 				name: yoName,
-				start: window.startArtistId,
-				goal: window.goalArtistId
+				start: Session.get("startArtist").id,
+				goal: Session.get("goalArtist").id
 			});
 
 			sendYosToPeople(score);
@@ -56,14 +56,16 @@ if (Meteor.isClient) {
 	Template.highscoreList.events = {
 	    'click .newGame': function (e) {
 			e.preventDefault();
-			
+			Session.set("splash", true);
+			Session.set("score", 0);
+			// Session.set("newgame", true);
 			Router.go('home');
 
 	    }
 	};
 
 	Template.highscoreList.highscore = function () {
-		return Highscores.find({start: window.startArtistId, goal: window.goalArtistId}, {sort: {score: 1}})
+		return Highscores.find({start: Session.get("startArtist").id, goal: Session.get("goalArtist").id}, {sort: {score: 1}})
 	}
 
 	Template.highscoreList.rendered = function(){

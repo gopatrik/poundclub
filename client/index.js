@@ -10,7 +10,7 @@ var artists = {
 
 }
 
-window.startArtistId = artists["The Black Keys"].id;
+window.startArtistId = artists["jonsi"].id;
 window.goalArtistId = artists["The White Stripes"].id;
 
 
@@ -93,8 +93,11 @@ if (Meteor.isClient) {
 	}
 
 	function checkWin(){
-		console.log(Session.get("artist").id);
-		if(Session.get("artist").id == window.goalArtistId){
+		if(!Session.get('goalArtist')){
+			return;
+		}
+
+		if(Session.get("artist").id == Session.get("goalArtist").id){
 			deactivateKeys();
 			Router.go('highscore');
 		}
@@ -168,13 +171,24 @@ if (Meteor.isClient) {
 		return Session.get("related");
 	};
 
+	Template.artistSearch.startArtist = function () {
+		return Session.get("startArtist");
+	}
+
+	Template.artistSearch.goalArtist = function () {
+		return Session.get("goalArtist");
+	}
+
 	Template.index.songname = function () {
 		return Session.get("playingsong");
 	}
 
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
-		Session.set("artistImage", artist.images[0].url);
+		if(artist.images[0]){
+
+			Session.set("artistImage", artist.images[0].url);
+		}
 		checkWin();
 	};
 
@@ -198,7 +212,7 @@ if (Meteor.isClient) {
 		$('.splash').addClass('move-up');
 		setTimeout(function () {
 			Session.set("splash", false);
-			titles.addClass('.fade-in-full');
+			$('.titles').addClass('.fade-in-full');
 		},200);
 	}
 
@@ -249,10 +263,6 @@ if (Meteor.isClient) {
 		document.onkeydown = undefined;
 	};
 
-	Template.missions.name = function () {
-		return "Searching for sugar man";
-	}
-
 	Template.missions.current = function () {
 		var goalArtist = Session.get("goalArtist");
 		var startArtist = Session.get("startArtist");
@@ -273,10 +283,43 @@ if (Meteor.isClient) {
 
 	};
 
+	Template.artistSearch.events({
+		'submit form.artistGoalSearch': function (e) {
+			e.preventDefault();
+			fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
+				if(response.artists.items.length > 0){
+	            	var artist = response.artists.items[0];
+					Session.set("goalArtist", artist);
+				};
+			});
+		},
+		'submit form.artistStartSearch': function (e) {
+			e.preventDefault();
+			fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
+				var artist = response.artists.items[0];
+				loadArtist(artist);
+				Session.set("startArtist", artist);
+			});
+		}
+	});
+
+	function fetchFirstArtist (name, callback) {
+			$.ajax({
+		        url: 'https://api.spotify.com/v1/search',
+		        data: {
+		            q: name,
+		            type: 'artist'
+		        },
+		        success: function (response) {
+		            callback(response);
+		        }
+		    });			
+	}
+
 	// start by listening for up key
 	document.onkeydown = function KeyPressed( e ) {
 		var key = ( window.event ) ? event.keyCode : e.keyCode;
-		if(key == 38 || key == 13 || key == 32){
+		if(key == 38){
 			startGame();
 		}
 	}
@@ -304,7 +347,6 @@ if (Meteor.isClient) {
 
 	Template.splasha.events({
 		'click button[name=start]': function () {
-			console.log("asdas")
 			startGame();
 		}
 	});
