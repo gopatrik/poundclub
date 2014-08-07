@@ -1,6 +1,8 @@
 if (Meteor.isClient) {
 	Meteor.startup(function () {
 		Session.set("score", 0);
+		Session.set("submitted", false);
+
 	});
 
 	Template.toplist.finalScore = function () {
@@ -49,7 +51,10 @@ if (Meteor.isClient) {
 			});
 
 			sendYosToPeople(score);
-		    
+
+			Session.set("submitted", true);
+
+
 	    }
 	};
 
@@ -64,11 +69,15 @@ if (Meteor.isClient) {
 	    }
 	};
 
+	Template.toplist.submitted = function () {
+		return Session.get("submitted");
+	};
+
 	Template.highscoreList.highscore = function () {
 		return Highscores.find({start: Session.get("startArtist").id, goal: Session.get("goalArtist").id}, {sort: {score: 1}})
 	}
 
-	Template.highscoreList.rendered = function(){
+	Template.toplist.rendered = function(){
   		(function(d, s, id) {
   			var js, fjs = d.getElementsByTagName(s)[0];
   			if (d.getElementById(id)) return;
