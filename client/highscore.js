@@ -38,7 +38,6 @@ if (Meteor.isClient) {
 	    'submit form.yo': function (e) {
 			e.preventDefault();
 
-
 		    var score = Session.get("score");
 			var yoName = $("#yoText").val();
 
@@ -48,7 +47,6 @@ if (Meteor.isClient) {
 				start: window.startArtistId,
 				goal: window.goalArtistId
 			});
-			sendAYo(yoName);
 
 			sendYosToPeople(score);
 		    
