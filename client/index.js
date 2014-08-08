@@ -10,6 +10,10 @@ var artists = {
 
 }
 
+
+
+
+
 window.startArtistId = artists["The Black Keys"].id;
 window.goalArtistId = artists["The White Stripes"].id;
 
@@ -56,6 +60,21 @@ var selectedIndex = 3;
 if (Meteor.isClient) {
 	Meteor.startup(function () {
 		
+
+		// var randomArtists = SetupArtists.find().limit(-1).skip(minmaxRandom(1, 5)).next()
+
+		//console.log(randomArtists);
+
+		console.log(SetupArtists);
+
+		var array = SetupArtists.find().fetch();
+
+		console.log(array);
+
+		var randomIndex = Math.floor( Math.random() * array.length );
+		var element = array[randomIndex];
+
+		console.log(element);
 
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
