@@ -88,7 +88,25 @@
 .relative
 	position relative
 
-.absoluteBottomRight, .absoluteUpRight, .absoluteBottomLeft, .absoluteUpLeft
+.absoluteTopCenter
+	position absolute
+	top 20px
+	left 50%
+	// bottom 10px
+	// right 20px
+	// text-align right
+	// position absolute
+    // left 0px
+    // right 0px
+    // margin-left auto
+    // margin-right auto
+    // text-align center
+
+.centerMeFromAbsolute
+	position relative
+	left -50%
+
+.absoluteBottomRight, .absoluteUpRight, .absoluteBottomLeft, .absoluteUpLeft, absoluteTopCenter
 	position absolute
 	font-family avenir
 	font-size 30px
@@ -96,7 +114,7 @@
 		margin 0
 
 .absoluteBottomRight
-	bottom 20px
+	bottom 10px
 	right 20px
 	text-align right
 
@@ -113,9 +131,17 @@
 
 .absoluteBottomLeft
 	position absolute
-	bottom 20px
+	bottom 10px
 	left 20px
 	text-align left
+
+.discreteText
+	font-size 12px
+	color #d5d5d5
+
+.moreDiscreteText
+	font-size 12px
+	color #999999
 
 .high-z
 	z-index 400

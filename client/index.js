@@ -40,6 +40,8 @@ if (Meteor.isClient) {
 		});
 
 		Session.set("splash", true);
+		Session.set("showArtistPicker", false);
+
 
 		fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
 	});
@@ -149,6 +151,10 @@ if (Meteor.isClient) {
 
 	Template.index.goalArtist = function () {
 		return Session.get("goalArtist");
+	};
+
+	Template.splasha.chooseArtist = function () {
+		return Session.get("showArtistPicker");
 	};
 
 	Template.splasha.goalArtist = function () {
@@ -326,7 +332,10 @@ if (Meteor.isClient) {
 			loadArtist(this);
 			Session.set("startArtist", this);
 		}
+
 	});
+
+	
 
 	Template.artistSearch.goalSearchResult = function () {
 		return Session.get("goalArtistSearchResults");
@@ -381,6 +390,10 @@ if (Meteor.isClient) {
 	Template.splasha.events({
 		'click button[name=start]': function () {
 			startGame();
+		},
+
+		'click .chooseCustom':function () {
+			Session.set("showArtistPicker", true);
 		}
 	});
 
