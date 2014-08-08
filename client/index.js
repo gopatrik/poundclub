@@ -14,6 +14,7 @@ window.startArtistId = artists["The Black Keys"].id;
 window.goalArtistId = artists["The White Stripes"].id;
 
 
+
 Router.map(function() {
 	this.route('home', {
 		path: '/',
@@ -28,7 +29,7 @@ Router.map(function() {
 		}
 	});
 
-	this.route('home', {
+	this.route('challenge', {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
@@ -47,7 +48,12 @@ Router.map(function() {
 
 	this.route('highscore', {
 		path: '/highscore',
-		template:'toplist'
+		template:'toplist',
+		onAfterAction: function () {
+			if(!Session.get("startArtist") || !Session.get("goalArtist")){
+				Router.go('home');
+			}
+		}
 	});
 });
 
@@ -60,6 +66,14 @@ if (Meteor.isClient) {
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 
+	});
+
+	UI.registerHelper('startArtist', function() {
+	    return Session.get("startArtist");
+	});
+
+	UI.registerHelper('goalArtist', function() {
+	    return Session.get("goalArtist");
 	});
 
 	function fetchStartGoalArtists(startId, goalId){
@@ -152,29 +166,8 @@ if (Meteor.isClient) {
 		return Session.get("splash");
 	};
 
-	// Template.index.rendered = function () {
-	// 	setSelected(selectedIndex);
-	// };
-
-
-	Template.index.startArtist = function () {
-		return Session.get("startArtist");
-	};
-
-	Template.splasha.startArtist = function () {
-		return Session.get("startArtist");
-	};
-
-	Template.index.goalArtist = function () {
-		return Session.get("goalArtist");
-	};
-
 	Template.splasha.chooseArtist = function () {
 		return Session.get("showArtistPicker");
-	};
-
-	Template.splasha.goalArtist = function () {
-		return Session.get("goalArtist");
 	};
 
 	Template.splasha.artist = function () {
@@ -193,13 +186,6 @@ if (Meteor.isClient) {
 		return Session.get("related");
 	};
 
-	Template.artistSearch.startArtist = function () {
-		return Session.get("startArtist");
-	}
-
-	Template.artistSearch.goalArtist = function () {
-		return Session.get("goalArtist");
-	}
 
 	Template.index.songname = function () {
 		return Session.get("playingsong");
@@ -328,7 +314,7 @@ if (Meteor.isClient) {
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
-					Session.set("goalArtistSearchResults", response.artists.items.slice(0,4));
+					Session.set("goalArtistSearchResults", {results: response.artists.items.slice(0,4)});
 				});
 			}
 		},
@@ -337,7 +323,7 @@ if (Meteor.isClient) {
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
-					Session.set("startArtistSearchResults", response.artists.items.slice(0,4));
+					Session.set("startArtistSearchResults", {results: response.artists.items.slice(0,4)});
 				});
 			}
 		},
@@ -347,6 +333,9 @@ if (Meteor.isClient) {
 		'click .artistStartSearch .search-results li':function () {
 			loadArtist(this);
 			Session.set("startArtist", this);
+		},
+		'blur input[name=artistGoalSearchField': function () {
+			
 		}
 
 	});
