@@ -20,20 +20,16 @@ template(name="toplist")
 		if submitted
 			+highscoreList
 		else
-			//- p.center.large.bold.white 
-			
 			form.center.yo.submitForm
 				input.round(type="text", name="time", id="yoText", placeholder="Name")
 
 				.buttonContainer.nm
 					button.oversized(name="submitYo") Submit
 			p.center.yoText.white
-				|Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!
+				| Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!
 		
 			
 	
-	
-
 template(name="highscoreList")
 	ul.toplist.center.mb
 		p.white.large.bold Name/Score
