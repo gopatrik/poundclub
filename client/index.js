@@ -78,7 +78,16 @@ if (Meteor.isClient) {
 	  	$.ajax({
 	  	    url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 	  	    success: function (response) {
-	  	    	var relatedArtists = response.artists.slice(0,5);
+	  	    	
+	  	    	var relatedArtists = response.artists.slice(0,3);
+	  	    	var randomNum1 = minmaxRandom(4, response.artists.length-1);
+				var randomNum2 = minmaxRandom(4, response.artists.length-1);
+				while(randomNum1 == randomNum2){
+					randomNum1 = minmaxRandom(4, response.artists.length-1);
+				}
+				relatedArtists.push(response.artists[randomNum1]);
+				relatedArtists.push(response.artists[randomNum2]);
+
 	  	    	for (var i = relatedArtists.length - 1; i >= 0; i--) {
 	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[1];
 	  	    	};
@@ -92,6 +101,10 @@ if (Meteor.isClient) {
 	  	        // };
 	  	    }
 	  	});
+	}
+
+	function minmaxRandom(min, max){
+		return Math.floor(Math.random()*(max-min+1)+min);
 	}
 
 	function checkWin(){
