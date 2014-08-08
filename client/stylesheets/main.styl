@@ -182,20 +182,39 @@ button.oversized
 	font-weight bold
 	outline none
 	margin 0
-	padding 0 
-
-	
-		
-
+	padding 0
 
 	&:active, &:hover
-
 		margin-bottom -2px
 		margin-top 2px
 		padding-top 2px
+	
 	&.extra
 		padding 15px 30px
 		font-size 32px
+		//margin-top 30px
+
+	&.larger
+		width 200px
+
+.centerButton
+	margin-top 20px
+	margin-left auto
+	margin-right auto
+	margin-bottom 30px
+
+.chooseCustom
+	color #d5d5d5
+	font-size 14px
+
+	&:active, &:hover
+		color #999999
+		cursor pointer 
+
+.startOver
+	&:active, &:hover
+		color #777777
+		cursor pointer 
 
 .scoreblurb
 
@@ -216,6 +235,7 @@ button.oversized
 .mission-box
 	position relative
 	margin auto
+	margin-bottom 30px
 	height 200px
 	max-width 600px
 	overflow hidden
@@ -279,6 +299,7 @@ section.artistForms
 		text-align left
 
 	input
+		border-radius 5px
 		background none
 		border 2px solid white
 		font-size 18px

@@ -19,6 +19,8 @@ template(name="toplist")
 
 		if submitted
 			+highscoreList
+			
+			
 		else
 			form.center.yo.submitForm
 				input.round(type="text", name="time", id="yoText", placeholder="Name")
@@ -28,7 +30,10 @@ template(name="toplist")
 			p.center.yoText.white
 				| Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!
 		
-			
+	if submitted
+		.hello.center
+			.centerButton.buttonContainer.largeContainer.mt
+				button.oversized.larger.mt New Game 
 	
 template(name="highscoreList")
 	ul.toplist.center.mb
