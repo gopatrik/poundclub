@@ -1,39 +1,43 @@
 template(name="highscore")
-
 	+toplist
 	
 
 template(name="toplist")
-	
-	
 	.textblurbs
 			h1.center.page-title Top scores on this ArtistHunt
 	.inputs.center.mt
 		.scoreblurb.mb
 			p.center.dark.mbs Your final score is
-			p.center.larger.bold.dark.mbs.mt #{finalScore}
+			p.center.larger.bold.dark.mbs.mt= finalScore
 		
 		.shareButtons.mt.mb			
 			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
+
 			a.twitter-share-button.mts.center.tweetStyle(data-url="http://www.theartisthunt.com" data-via="artisthunt" data-dnt="true") Tweet
 
 		if submitted
 			+highscoreList
-			
-			
+
 		else
+			h1.center.page-title.medium.nm Enter a
+				<span class="huge" style="color: #9A5CB4;">Yo</span>
+				| username!
+
+			p.center.white To get notified when someone beats your highscore on this combination of artists!
+
 			form.center.yo.submitForm
 				input.round(type="text", name="time", id="yoText", placeholder="Name")
 
 				.buttonContainer.nm
 					button.oversized(name="submitYo") Submit
-			p.center.yoText.white
-				| Want to get notified when someone beats your highscore on this combination of artists? Enter a Yo username!
+
+
+		+challenge
 		
-	if submitted
-		.hello.center
-			.centerButton.buttonContainer.largeContainer.mt
-				button.oversized.larger.mt New Game 
+
+	.hello.center
+		.centerButton.buttonContainer.largeContainer.mt
+			button.oversized.larger.mt New Game
 	
 template(name="highscoreList")
 	ul.toplist.center.mb
@@ -46,3 +50,7 @@ template(name="highscoreList")
 					span.white.large.right.thin= score	
 
 	
+template(name="challenge")
+	section
+		h1.center.page-title.medium.nm Challenge a friend
+		input(value="http://artisthunt.com/#{startArtist.id}")

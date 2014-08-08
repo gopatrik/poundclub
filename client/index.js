@@ -10,7 +10,7 @@ var artists = {
 
 }
 
-window.startArtistId = artists["jonsi"].id;
+window.startArtistId = artists["The Black Keys"].id;
 window.goalArtistId = artists["The White Stripes"].id;
 
 
@@ -29,7 +29,7 @@ Router.map(function() {
 	});
 
 	this.route('home', {
-		path: '/challange/:artistId1/:artistId2',
+		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
 			window.startArtistId = this.params.artistId1;
