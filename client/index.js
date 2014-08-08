@@ -18,8 +18,30 @@ Router.map(function() {
 	this.route('home', {
 		path: '/',
 		template:'index',
-		waitOn: function () {
-			return Meteor.subscribe('hello');
+		onAfterAction: function () {
+			fetchActiveArtist(window.startArtistId);
+			getTopTrackFromArtist (window.startArtistId, true)
+			fetchRelatedArtists(window.startArtistId, function () {
+				Session.set("related", Session.get("related-fetched"));
+			});
+			fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
+		}
+	});
+
+	this.route('home', {
+		path: '/challange/:artistId1/:artistId2',
+		template:'index',
+		onAfterAction: function () {
+			window.startArtistId = this.params.artistId1;
+			window.goalArtistId = this.params.artistId2;
+			fetchActiveArtist(this.params.artistId1);
+			getTopTrackFromArtist (this.params.artistId1, true)
+			fetchRelatedArtists(this.params.artistId1, function () {
+				Session.set("related", Session.get("related-fetched"));
+			});
+
+			fetchStartGoalArtists(this.params.artistId1, this.params.artistId2);
+
 		}
 	});
 
@@ -33,17 +55,11 @@ var selectedIndex = 3;
 
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		fetchActiveArtist(window.startArtistId);
-		getTopTrackFromArtist (window.startArtistId, true)
-		fetchRelatedArtists(window.startArtistId, function () {
-			Session.set("related", Session.get("related-fetched"));
-		});
+		
 
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 
-
-		fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
 	});
 
 	function fetchStartGoalArtists(startId, goalId){

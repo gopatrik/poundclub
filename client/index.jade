@@ -1,11 +1,8 @@
 head
 	title The Artist Hunt
 
-	//- TODO
-	//- SEARCHING FOR SUGAR MAN
-
 body
-		
+	//- 
 
 template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
@@ -22,8 +19,6 @@ template(name="splasha")
 			img(src="/images/arrows.png" width="100px")
 			p.discreteText.white Use arrow keys to browse
 
-		
-
 		if chooseArtist
 			+artistSearch
 
@@ -32,17 +27,13 @@ template(name="splasha")
 		.absoluteBottomLeft
 			p.discreteText.mt Tip: Press up to start hunting!
 
-
 		button.oversized.extra(name="start") Start Hunting
 
 		unless chooseArtist
 			p.mts
 				a.chooseCustom(name="chooseArtist") Or choose two other artists...
 
-
 template(name="artistSearch")
-	
-
 	section.artistForms
 		.artistStartSearch.half.leftForm.relative
 			input(name="artistStartSearchField", value="#{startArtist.name}")
