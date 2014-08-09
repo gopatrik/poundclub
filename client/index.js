@@ -88,9 +88,9 @@ Router.map(function() {
 					Session.set("related", Session.get("related-fetched"));
 				});
 
-				fetchStartGoalArtists(element.start, element.goal)
+				fetchStartGoalArtists(element.start, element.goal);
 			};
-		}, 
+		},
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
     	}
