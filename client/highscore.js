@@ -58,7 +58,7 @@ if (Meteor.isClient) {
 	    }
 	};
 
-	Template.highscoreList.events = {
+	Template.toplist.events = {
 	    'click .newGame': function (e) {
 			e.preventDefault();
 			Session.set("splash", true);

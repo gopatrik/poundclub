@@ -16,7 +16,7 @@ template(name="toplist")
 
 		else
 			h1.center.page-title.medium.nm Enter a
-				<span class="huge" style="color: #9A5CB4;">Yo</span>
+				<span class="mediumHuge" style="color: #9A5CB4;">Yo</span>
 				| username!
 
 			form.center.yo.submitForm
@@ -34,15 +34,15 @@ template(name="toplist")
 		+challenge
 
 
-		.shareButtons.mt.mb
-
-			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
-
-			a.twitter-share-button.mts.center.tweetStyle(data-text="Check out The Artist Hunt!", data-via="artisthunt", data-count="true", data-size="large", data-url="http://www.theartisthunt.com/") Tweet
+		.shareButtons.mt
+			.facebook
+				.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="500", data-type="button")
+			.twitter
+				a.twitter-share-button.mts.center.tweetStyle(data-text="Check out The Artist Hunt!", data-via="artisthunt", data-count="true", data-size="large", data-url="http://www.theartisthunt.com/") Tweet
 
 	.hello.center
 		.centerButton.buttonContainer.largeContainer.mt
-			button.oversized.larger.mt New Game
+			button.oversized.larger.mt.newGame New Game
 	
 template(name="highscoreList")
 	ul.toplist.center.mb
