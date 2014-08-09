@@ -22,13 +22,6 @@ template(name="splashScreen")
 
 		button.oversized.extra(name="start") Start Hunting
 
-		+arrowKeys
-
-template(name="arrowKeys")
-	section.center.mt
-		img(src="/images/arrows.png" width="140px")
-		p.discreteText.white.np.nm Use arrow keys to browse
-		p.discreteText.bold Press up to start hunting!
 
 template(name="artistSearch")
 	p.mts(name="chooseArtist") Or choose two other artists
@@ -63,14 +56,27 @@ template(name="index")
 		if splash
 			+splashScreen
 		else
-			if userNotOnboarded
+			if onboarding
 				+tutorial
 			else
 				+gameBoard
 
 
 template(name="tutorial")
-	+arrowKeys
+	section
+		section
+			h3.page-title.center.medium Choose the most relevant artist that gets you closer to #{goalArtist.name}
+
+		section.center
+			h3.page-title.center.medium Navigate artists with left and right
+			img(src="/images/arrowsLeftRight.png" width="180px")
+
+		section.center
+			h3.page-title.center.medium Select with up
+			img(src="/images/arrowsUp.png" width="180px")
+
+		section.mt-large
+			h3.page-title.center.large Press up to continue
 
 template(name="gameBoard")
 	if artist

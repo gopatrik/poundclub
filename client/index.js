@@ -89,16 +89,7 @@ Router.map(function() {
 				});
 
 				fetchStartGoalArtists(element.start, element.goal)
-			}
-
-			if(localStorage.getItem("onboardingDone") == "false" || localStorage.getItem("onboardingDone") === null){
-
-				//PATRIK! ACTIVATE ONBOARDING!
-
-				
-
-				localStorage.setItem("onboardingDone", "true");
-			}
+			};
 		}, 
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
@@ -145,8 +136,6 @@ if (Meteor.isClient) {
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 		setController(splashController);
-
-
 	});
 
 	UI.registerHelper('startArtist', function() {
@@ -288,6 +277,10 @@ if (Meteor.isClient) {
 		return Session.get("playingsong");
 	}
 
+	Template.index.onboarding = function(){
+		return Session.get("onboarding");
+	}
+
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
 		if(artist.images[0]){
@@ -307,18 +300,13 @@ if (Meteor.isClient) {
 	}
 
 	function hideSplash () {
-		// $('.splash').hide(200, function () {
-		// 	Session.set("splash", false);
-		// 	// var titles = $('.titles');
-		// 	// titles.removeClass('hide');
-		// 	titles.addClass('.fade-in-full')
-		// });
-
-		$('.splash').addClass('move-up');
-		setTimeout(function () {
-			Session.set("splash", false);
-			$('.titles').addClass('.fade-in-full');
-		},200);
+		if(Session.get("splash")){
+			$('.splash').addClass('move-up');
+			setTimeout(function () {
+				Session.set("splash", false);
+				$('.titles').addClass('.fade-in-full');
+			},200);
+		}
 	}
 
 	function setController (controller) {
@@ -357,25 +345,7 @@ if (Meteor.isClient) {
 
 	};
 
-	// 'submit form.artistGoalSearch': function (e) {
-	// 	e.preventDefault();
-	// 	fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
-	// 		if(response.artists.items.length > 0){
- //            	var artist = response.artists.items[0];
-	// 			Session.set("goalArtist", artist);
-	// 		};
-	// 	});
-	// },
-	// 'submit form.artistStartSearch': function (e) {
-	// 	e.preventDefault();
-	// 	fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
-	// 		var artist = response.artists.items[0];
-	// 		loadArtist(artist);
-	// 		Session.set("startArtist", artist);
-	// 	});
-	// },
-
-	selectedArtistResultIndex = 0;
+	var selectedArtistResultIndex = 0;
 	Template.artistSearch.events({
 		'keyup input[name=artistGoalSearchField]': function (e) {
 			// console.log();
@@ -457,8 +427,6 @@ if (Meteor.isClient) {
 
 	});
 
-	
-
 	Template.artistSearch.goalSearchResult = function () {
 		return Session.get("goalArtistSearchResults");
 	};
@@ -468,17 +436,17 @@ if (Meteor.isClient) {
 	};
 
 	function fetchFirstArtist (name, callback) {
-			$.ajax({
-		        url: 'https://api.spotify.com/v1/search',
-		        data: {
-		            q: name,
-		            type: 'artist'
-		        },
-		        success: function (response) {
-		            callback(response);
-		        }
-		    });			
-	}
+		$.ajax({
+	        url: 'https://api.spotify.com/v1/search',
+	        data: {
+	            q: name,
+	            type: 'artist'
+	        },
+	        success: function (response) {
+	            callback(response);
+	        }
+	    });
+	};
 
 	// start by listening for up key
 	document.onkeydown = function KeyPressed( e ) {
@@ -491,10 +459,28 @@ if (Meteor.isClient) {
 
 	function startGame () {
 		hideSplash();
-		setController(gameController);
-		setTimeout(function () {
-			setSelected(selectedRelatedArtistIndex);
-		},800);
+
+		if(Session.get("onboarding")){
+			Session.set("onboarding", false);
+			// write to local storage
+			localStorage.setItem("onboardingDone", "true");
+		}
+
+		if(userNotOnboarded()){
+			Session.set("onboarding", true);
+		}else{
+			setController(gameController);
+			setTimeout(function () {
+				setSelected(selectedRelatedArtistIndex);
+			},800);
+		}
+
+	};
+
+	function userNotOnboarded () {
+		// uses local storage to see if user onboarded
+		return (localStorage.getItem("onboardingDone") == "false" ||
+			localStorage.getItem("onboardingDone") === null)
 	};
 
 	Template.artistBox.events({
