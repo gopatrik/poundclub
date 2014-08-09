@@ -12,25 +12,25 @@ template(name="splasha")
 	section.center.splash.mt
 
 		h1.page-title.center Hunt down #{goalArtist.name}!
-		p.bold Do it by browsing similar artists, starting from #{startArtist.name}
+		p.bold.mb-medium Do it by browsing similar artists, starting from #{startArtist.name}
 
 		.absoluteBottomRight
 			img(src="/images/arrows.png" width="100px")
 			p.discreteText.white Use arrow keys to browse
 
 		//- if chooseArtist
-		+artistSearch
 
 		+missions
 
 		.absoluteBottomLeft
 			p.discreteText.mt Tip: Press up to start hunting!
 
-		button.oversized.extra(name="start") Start Hunting
 
-		unless chooseArtist
-			p.mts
-				a.chooseCustom(name="chooseArtist") Or choose two other artists...
+		p.mts(name="chooseArtist") Or choose two other artists
+
+		+artistSearch
+		
+		button.oversized.extra(name="start") Start Hunting
 
 template(name="artistSearch")
 	section.artistForms

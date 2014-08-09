@@ -9,28 +9,77 @@ var artists = {
 	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
 }
 
-window.startArtistId = artists["The Black Keys"].id;
-window.goalArtistId = artists["The White Stripes"].id;
+var gameController = function () {
+	document.onkeydown = function KeyPressed( e ) {
+	    var key = ( window.event ) ? event.keyCode : e.keyCode;
+
+	    switch(key){
+		    case 37: // left
+		    	if(selectedRelatedArtistIndex > 1){
+		    		setSelected(selectedRelatedArtistIndex - 1);
+		    	}else{
+		    		setSelected(5);
+		    	}
+		    	break;
+		    case 39: // right
+		    	if(selectedRelatedArtistIndex < 5){
+		    		setSelected(selectedRelatedArtistIndex + 1);
+		    	}else{
+		    		setSelected(1);
+		    	}
+		    	break;
+		    case 32: // space
+		    case 38: // up
+		    case 40: // down
+		    	Session.set("score", Session.get("score")+1);
+
+				// $("section.background").addClass('fade-out');
+
+				$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").addClass('move-up');
+
+				setTimeout(function () {
+					$("ul.related-artists").addClass('move-down');
+					$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass('move-up');
+					loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
+					setTimeout(function () {
+						$("ul.related-artists").removeClass('move-down');
+						$("ul.related-artists").addClass('swosh-in');
+					},200);
+				},200);
+
+		    	break;
+	    }
+	}
+};
+
+var splashController = function () {
+	// start by listening for up key
+	document.onkeydown = function KeyPressed( e ) {
+		var key = ( window.event ) ? event.keyCode : e.keyCode;
+		if(key == 38){
+			startGame();
+		}
+	};
+}
+
+var noController = function () {
+	document.onkeydown = function KeyPressed( e ) {
+		// 
+	};
+}
+
+
 
 Router.map(function() {
 	this.route('home', {
 		path: '/',
 		template:'index',
 		onAfterAction: function () {
-			// fetchActiveArtist(window.startArtistId);
-			// getTopTrackFromArtist (window.startArtistId, true)
-			// fetchRelatedArtists(window.startArtistId, function () {
-			// 	Session.set("related", Session.get("related-fetched"));
-			// });
-			// fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
-
 			var array = SetupArtists.find().fetch();
 			if(array.length > 0){	
 				var randomIndex = Math.floor( Math.random() * array.length );
 				var element = array[randomIndex];
 
-				window.startArtistId = element.start;
-				window.goalArtistId = element.goal;
 				
 				fetchActiveArtist(element.start);
 				getTopTrackFromArtist(element.start, true)
@@ -54,8 +103,6 @@ Router.map(function() {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
-			window.startArtistId = this.params.artistId1;
-			window.goalArtistId = this.params.artistId2;
 
 			fetchActiveArtist(this.params.artistId1);
 			getTopTrackFromArtist (this.params.artistId1, true)
@@ -82,12 +129,13 @@ Router.map(function() {
 	});
 });
 
-var selectedIndex = 3;
+var selectedRelatedArtistIndex = 3;
 
 if (Meteor.isClient) {
 	Meteor.startup(function () {
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
+		setController(splashController);
 	});
 
 	UI.registerHelper('startArtist', function() {
@@ -141,7 +189,7 @@ if (Meteor.isClient) {
 				relatedArtists.push(response.artists[randomNum2]);
 
 	  	    	for (var i = relatedArtists.length - 1; i >= 0; i--) {
-	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[1];
+	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[relatedArtists[i].images.length-2];
 	  	    	};
 
 
@@ -165,7 +213,7 @@ if (Meteor.isClient) {
 		}
 
 		if(Session.get("artist").id == Session.get("goalArtist").id){
-			deactivateKeys();
+			setController(noController);
 			Router.go('highscore');
 		}
 	}
@@ -235,11 +283,11 @@ if (Meteor.isClient) {
 	};
 
 	function setSelected (index) {
-		$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass("selected");
+		$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass("selected");
 
 		var sbox = $("ul.related-artists li:nth-child("+index+") .artistBoxContainer");
 		sbox.addClass("selected");
-		selectedIndex = index;
+		selectedRelatedArtistIndex = index;
 
 	}
 
@@ -258,52 +306,13 @@ if (Meteor.isClient) {
 		},200);
 	}
 
-	function activateKeys () {
-		document.onkeydown = function KeyPressed( e ) {
-		    var key = ( window.event ) ? event.keyCode : e.keyCode;
-
-		    switch(key){
-			    case 37: // left
-			    	if(selectedIndex > 1){
-			    		setSelected(selectedIndex - 1);
-			    	}else{
-			    		setSelected(5);
-			    	}
-			    	break;
-			    case 39: // right
-			    	if(selectedIndex < 5){
-			    		setSelected(selectedIndex + 1);
-			    	}else{
-			    		setSelected(1);
-			    	}
-			    	break;
-			    case 32: // space
-			    case 38: // up
-			    case 40: // down
-			    	Session.set("score", Session.get("score")+1);
-
-					// $("section.background").addClass('fade-out');
-
-					$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").addClass('move-up');
-
-					setTimeout(function () {
-						$("ul.related-artists").addClass('move-down');
-						$("ul.related-artists li:nth-child("+selectedIndex+") .artistBoxContainer").removeClass('move-up');
-						loadArtist(Session.get("related")[selectedIndex-1]);
-						setTimeout(function () {
-							$("ul.related-artists").removeClass('move-down');
-							$("ul.related-artists").addClass('swosh-in');
-						},200);
-					},200);
-
-			    	break;
-		    }
-		}
+	function setController (controller) {
+		controller();
 	};
 
-	function deactivateKeys () {
-		document.onkeydown = undefined;
-	};
+	// function desetController () {
+	// 	document.onkeydown = undefined;
+	// };
 
 	Template.missions.current = function () {
 		var goalArtist = Session.get("goalArtist");
@@ -351,7 +360,8 @@ if (Meteor.isClient) {
 				});
 			}
 		},
-		'keyup .artistGoalSearch input':function (e) {
+		'keydown .artistForms input':function (e) {
+
 			if(e.keyCode == 40 || e.keyCode == 38){ // go down
 				var resultList = $(e.target).parent().children('ul.search-results');
 
@@ -367,18 +377,44 @@ if (Meteor.isClient) {
 
 				resultList.children('li:nth-child('+(selectedArtistResultIndex)+')').addClass('selected');
 			}
+
+			switch(e.keyCode){
+				case 13: // enter
+
+					break;
+			}
 		},
 		'click .artistGoalSearch .search-results li':function () {
 			Session.set("goalArtist", this);
+		},
+		'keydown .artistGoalSearch input': function (e) {
+			if(e.keyCode == 13){
+				var list = Session.get("goalArtistSearchResults");
+				if(list.results.length > 0){
+					Session.set("goalArtist", list.results[selectedArtistResultIndex-1]);
+					$('input[name=artistGoalSearchField]').blur();
+				}
+			};
+		},
+		'keydown .artistStartSearch input': function (e) {
+			if(e.keyCode == 13){
+				var list = Session.get("startArtistSearchResults");
+				if(list.results.length > 0){
+					Session.set("startArtist", list.results[selectedArtistResultIndex-1]);
+					$('input[name=artistStartSearchField]').blur();
+				};
+			};
 		},
 		'click .artistStartSearch .search-results li':function () {
 			loadArtist(this);
 			Session.set("startArtist", this);
 		},
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
+			setController(splashController);
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
+			setController(noController);
 			$(e.target).parent().children('ul.search-results').show();
 		}
 
@@ -418,10 +454,10 @@ if (Meteor.isClient) {
 
 	function startGame () {
 		hideSplash();
-		activateKeys();
+		setController(gameController);
 		setTimeout(function () {
-			setSelected(selectedIndex);
-		},200);
+			setSelected(selectedRelatedArtistIndex);
+		},800);
 	};
 
 	Template.artistBox.events({
