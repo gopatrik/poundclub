@@ -91,6 +91,16 @@ Router.map(function() {
 				fetchStartGoalArtists(element.start, element.goal)
 			}
 
+			if(localStorage.getItem("onboardingDone") == "false" || localStorage.getItem("onboardingDone") === null){
+
+				//PATRIK! ACTIVATE ONBOARDING!
+
+				
+
+				localStorage.setItem("onboardingDone", "true");
+			} 
+		}
+
 
 		}, 
 		waitOn: function () {
@@ -138,6 +148,8 @@ if (Meteor.isClient) {
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 		setController(splashController);
+
+
 	});
 
 	UI.registerHelper('startArtist', function() {

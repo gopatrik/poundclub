@@ -19,7 +19,7 @@ template(name="toplist")
 				<span class="huge" style="color: #9A5CB4;">Yo</span>
 				| username!
 
-			p.center.white To a Yo when someone beats you on the challenge
+			p.center.white To get a Yo when someone beats you on the challenge
 				br
 				span.bold #{startArtist.name}
 				| -
@@ -38,7 +38,7 @@ template(name="toplist")
 
 			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
 
-			a.twitter-share-button.mts.center.tweetStyle(data-url="http://www.theartisthunt.com" data-via="artisthunt" data-dnt="true") Tweet
+			a.twitter-share-button.mts.center.tweetStyle(data-text="Can you beat me on this artist hunt?", data-via="artisthunt", data-count="none", data-size="large", data-url="http://www.theartisthunt.com/challenge/#{startArtist.id}/#{goalArtist.id}") Tweet
 
 	.hello.center
 		.centerButton.buttonContainer.largeContainer.mt
