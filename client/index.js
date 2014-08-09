@@ -365,6 +365,8 @@ if (Meteor.isClient) {
 	// 		Session.set("startArtist", artist);
 	// 	});
 	// },
+
+	selectedArtistResultIndex = 0;
 	Template.artistSearch.events({
 		'keyup input[name=artistGoalSearchField]': function (e) {
 			// console.log();
