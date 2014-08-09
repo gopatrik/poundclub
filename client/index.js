@@ -7,6 +7,7 @@ var artists = {
 	'jonsi': {name: "Jonsi", id:"3khg8RDB6nMuw34w1IHS6Y"},
 	'The Black Keys': {name: "The Black Keys", id:"7mnBLXK823vNxN3UWB7Gfz"},
 	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
+
 }
 
 window.startArtistId = artists["The Black Keys"].id;
@@ -86,6 +87,7 @@ var selectedIndex = 3;
 
 if (Meteor.isClient) {
 	Meteor.startup(function () {
+		
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 	});
@@ -141,10 +143,14 @@ if (Meteor.isClient) {
 				relatedArtists.push(response.artists[randomNum2]);
 
 	  	    	for (var i = relatedArtists.length - 1; i >= 0; i--) {
-	  	    		relatedArtists[i]["coverImage"] = relatedArtists[i].images[1];
+	  	    		var image = relatedArtists[i].images[relatedArtists[i].images.length-2]
+	  	    		if(image != null || image != undefined){
+	  	    			relatedArtists[i]["coverImage"] = image;
+	  	    		} else {
+	  	    			relatedArtists[i]["coverImage"] = {url:"/images/unknown.jpg"};
+	  	    			relatedArtists[i].images[0] = {url:"/images/unknownLarge.jpg"};
+	  	    		}
 	  	    	};
-
-
 	  	    	Session.set("fetchingRelated", false);
 	  	        // Session.set("related-fetched", relatedArtists);
 	  	        Session.set("related", relatedArtists);
@@ -333,9 +339,26 @@ if (Meteor.isClient) {
 
 	};
 
-	var selectedArtistResultIndex = 0;
+	// 'submit form.artistGoalSearch': function (e) {
+	// 	e.preventDefault();
+	// 	fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
+	// 		if(response.artists.items.length > 0){
+ //            	var artist = response.artists.items[0];
+	// 			Session.set("goalArtist", artist);
+	// 		};
+	// 	});
+	// },
+	// 'submit form.artistStartSearch': function (e) {
+	// 	e.preventDefault();
+	// 	fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
+	// 		var artist = response.artists.items[0];
+	// 		loadArtist(artist);
+	// 		Session.set("startArtist", artist);
+	// 	});
+	// },
 	Template.artistSearch.events({
-		'input input[name=artistGoalSearchField]': function (e) {
+		'keyup input[name=artistGoalSearchField]': function (e) {
+			// console.log();
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
@@ -343,29 +366,13 @@ if (Meteor.isClient) {
 				});
 			}
 		},
-		'input input[name=artistStartSearchField]': function (e) {
+		'keyup input[name=artistStartSearchField]': function (e) {
+			// console.log();
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
 					Session.set("startArtistSearchResults", {results: response.artists.items.slice(0,4)});
 				});
-			}
-		},
-		'keyup .artistGoalSearch input':function (e) {
-			if(e.keyCode == 40 || e.keyCode == 38){ // go down
-				var resultList = $(e.target).parent().children('ul.search-results');
-
-				var listlength = resultList.children('li').length;
-
-				resultList.children('li:nth-child('+(selectedArtistResultIndex)+')').removeClass('selected');
-
-				if(e.keyCode == 40 && selectedArtistResultIndex < listlength){ // down
-					selectedArtistResultIndex += 1;
-				}else if(e.keyCode == 38 && selectedArtistResultIndex > 1){ //up
-					selectedArtistResultIndex -= 1;
-				}
-
-				resultList.children('li:nth-child('+(selectedArtistResultIndex)+')').addClass('selected');
 			}
 		},
 		'click .artistGoalSearch .search-results li':function () {
@@ -375,11 +382,8 @@ if (Meteor.isClient) {
 			loadArtist(this);
 			Session.set("startArtist", this);
 		},
-		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
-			$(e.target).parent().children('ul.search-results').fadeOut();
-		},
-		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			$(e.target).parent().children('ul.search-results').show();
+		'blur input[name=artistGoalSearchField': function () {
+			
 		}
 
 	});
@@ -408,12 +412,12 @@ if (Meteor.isClient) {
 	}
 
 	// start by listening for up key
-	// document.onkeydown = function KeyPressed( e ) {
-	// 	var key = ( window.event ) ? event.keyCode : e.keyCode;
-	// 	if(key == 38){
-	// 		startGame();
-	// 	}
-	// }
+	document.onkeydown = function KeyPressed( e ) {
+		var key = ( window.event ) ? event.keyCode : e.keyCode;
+		if(key == 38){
+			startGame();
+		}
+	}
 
 
 	function startGame () {
