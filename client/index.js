@@ -96,8 +96,6 @@ Router.map(function() {
 			} 
 		},
 
-
-		 
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
     	}
@@ -261,11 +259,11 @@ if (Meteor.isClient) {
 		return Session.get("splash");
 	};
 
-	Template.splasha.chooseArtist = function () {
+	Template.splashScreen.chooseArtist = function () {
 		return Session.get("showArtistPicker");
 	};
 
-	Template.splasha.artist = function () {
+	Template.splashScreen.artist = function () {
 		return Session.get("artist");
 	};
 
@@ -273,16 +271,16 @@ if (Meteor.isClient) {
 		return Session.get("artistImage");
 	}
 
-	Template.index.artist = function () {
+	Template.gameBoard.artist = function () {
 		return Session.get("artist");
 	};
 
-	Template.index.related = function () {
+	Template.relatedArtists.related = function () {
 		return Session.get("related");
 	};
 
 
-	Template.index.songname = function () {
+	Template.gameBoard.songname = function () {
 		return Session.get("playingsong");
 	}
 
@@ -507,7 +505,7 @@ if (Meteor.isClient) {
 		return Session.get("score");
 	}
 
-	Template.splasha.events({
+	Template.splashScreen.events({
 		'click button[name=start]': function () {
 			startGame();
 		},

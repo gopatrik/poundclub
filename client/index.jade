@@ -8,31 +8,30 @@ template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
 	+yield
 
-template(name="splasha")
+template(name="splashScreen")
 	section.center.splash.mt
 
 		h1.page-title.center Hunt down #{goalArtist.name}!
 		p.bold.mb-medium Do it by browsing similar artists, starting from #{startArtist.name}
 
-		.absoluteBottomRight
-			img(src="/images/arrows.png" width="100px")
-			p.discreteText.white Use arrow keys to browse
-
 		//- if chooseArtist
 
 		+missions
 
-		.absoluteBottomLeft
-			p.discreteText.mt Tip: Press up to start hunting!
-
-
-		p.mts(name="chooseArtist") Or choose two other artists
-
 		+artistSearch
-		
+
 		button.oversized.extra(name="start") Start Hunting
 
+		+arrowKeys
+
+template(name="arrowKeys")
+	section.center.mt
+		img(src="/images/arrows.png" width="140px")
+		p.discreteText.white.np.nm Use arrow keys to browse
+		p.discreteText.bold Press up to start hunting!
+
 template(name="artistSearch")
+	p.mts(name="chooseArtist") Or choose two other artists
 	section.artistForms
 		.artistStartSearch.half.leftForm.relative
 			input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
@@ -59,34 +58,30 @@ template(name="missions")
 
 			p.small.bold.absoluteBottomRight.nm= goal.name
 
-
 template(name="index")
-	if artist
-		.full-center-contents
-			if splash
-				+splasha
+	.full-center-contents
+		if splash
+			+splashScreen
+		else
+			if userNotOnboarded
+				+tutorial
 			else
-				section.artist-area
-					.titles
-						//- unless splash
-						+score
-						p.center.medium.np Listening to
-						h1.page-title.center.np= artist.name
+				+gameBoard
 
-						//- p.page-title.large.center #{artist.name}, REALLY?
-					if related
-						ul.related-artists.inline-list.mt-large.swosh-in
-							each related
-								li
-									+artistBox
 
-		//- .absoluteBottomLeft
-			if splash
-				section.center
-					img(src="/images/arrows.png" width="150px")
-					p.small.white Use arrowkeys or mouse
+template(name="tutorial")
+	+arrowKeys
 
-	unless splash
+template(name="gameBoard")
+	if artist
+		section.artist-area
+			.titles
+				+score
+				p.center.medium.np Listening to
+				h1.page-title.center.np= artist.name
+
+			+relatedArtists
+
 		.absoluteUpLeft
 			//- p.bold.small Now playing
 			//- p.underlined.small Add to spotify playlist
@@ -100,6 +95,13 @@ template(name="index")
 
 		.absoluteTopCenter
 			p.moreDiscreteText.white.centerMeFromAbsolute.startOver(name="startNewHunt") Start new hunt
+
+template(name="relatedArtists")
+	if related
+		ul.related-artists.inline-list.mt-large.swosh-in
+			each related
+				li
+					+artistBox
 
 template(name="artistBox")
 	.artistBoxContainer
