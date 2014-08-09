@@ -98,10 +98,7 @@ Router.map(function() {
 				
 
 				localStorage.setItem("onboardingDone", "true");
-			} 
-		}
-
-
+			}
 		}, 
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
