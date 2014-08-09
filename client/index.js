@@ -10,28 +10,46 @@ var artists = {
 
 }
 
-
-
-
-
 window.startArtistId = artists["The Black Keys"].id;
 window.goalArtistId = artists["The White Stripes"].id;
-
-
 
 Router.map(function() {
 	this.route('home', {
 		path: '/',
 		template:'index',
 		onAfterAction: function () {
-			fetchActiveArtist(window.startArtistId);
-			getTopTrackFromArtist (window.startArtistId, true)
-			fetchRelatedArtists(window.startArtistId, function () {
-				Session.set("related", Session.get("related-fetched"));
-			});
-			fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
-		}
+			// fetchActiveArtist(window.startArtistId);
+			// getTopTrackFromArtist (window.startArtistId, true)
+			// fetchRelatedArtists(window.startArtistId, function () {
+			// 	Session.set("related", Session.get("related-fetched"));
+			// });
+			// fetchStartGoalArtists(window.startArtistId, window.goalArtistId);
+
+			var array = SetupArtists.find().fetch();
+			if(array.length > 0){	
+				var randomIndex = Math.floor( Math.random() * array.length );
+				var element = array[randomIndex];
+
+				window.startArtistId = element.start;
+				window.goalArtistId = element.goal;
+				
+				fetchActiveArtist(element.start);
+				getTopTrackFromArtist(element.start, true)
+				fetchRelatedArtists(element.start, function () {
+					Session.set("related", Session.get("related-fetched"));
+				});
+
+				fetchStartGoalArtists(element.start, element.goal)
+			}
+
+
+		}, 
+		waitOn: function () {
+     		return Meteor.subscribe('setupartists');
+    	}
 	});
+
+
 
 	this.route('challenge', {
 		path: '/challenge/:artistId1/:artistId2',
@@ -39,6 +57,7 @@ Router.map(function() {
 		onAfterAction: function () {
 			window.startArtistId = this.params.artistId1;
 			window.goalArtistId = this.params.artistId2;
+
 			fetchActiveArtist(this.params.artistId1);
 			getTopTrackFromArtist (this.params.artistId1, true)
 			fetchRelatedArtists(this.params.artistId1, function () {
@@ -57,6 +76,9 @@ Router.map(function() {
 			if(!Session.get("startArtist") || !Session.get("goalArtist")){
 				Router.go('home');
 			}
+		},
+		waitOn: function () {
+			return Meteor.subscribe('highscore');
 		}
 	});
 });
@@ -66,25 +88,8 @@ var selectedIndex = 3;
 if (Meteor.isClient) {
 	Meteor.startup(function () {
 		
-
-		// var randomArtists = SetupArtists.find().limit(-1).skip(minmaxRandom(1, 5)).next()
-
-		//console.log(randomArtists);
-
-		console.log(SetupArtists);
-
-		var array = SetupArtists.find().fetch();
-
-		console.log(array);
-
-		var randomIndex = Math.floor( Math.random() * array.length );
-		var element = array[randomIndex];
-
-		console.log(element);
-
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
-
 	});
 
 	UI.registerHelper('startArtist', function() {
@@ -173,7 +178,6 @@ if (Meteor.isClient) {
 	  	    url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
 	  	    success: function (response) {
 	  	    	// console.log(response.tracks[0].preview_url);
-
 	  	    	if(audio){
 	  	    		// audio.pause();
 	  	    		$(audio).animate({volume:0}, 2000);
@@ -309,6 +313,14 @@ if (Meteor.isClient) {
 		if(startArtist && goalArtist){
 			return {start: startArtist, goal: goalArtist, startImage:startArtist.images[0].url, goalImage:goalArtist.images[0].url};
 		}
+	}
+
+	Template.missions.randomSet = function () {
+		
+		var array = SetupArtists.find().fetch();
+		var randomIndex = Math.floor( Math.random() * array.length );
+		var element = array[randomIndex];
+		return element
 	}
 
 	function loadArtist (artist) {
