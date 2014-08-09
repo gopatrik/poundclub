@@ -19,17 +19,17 @@ template(name="toplist")
 				<span class="huge" style="color: #9A5CB4;">Yo</span>
 				| username!
 
-			p.center.white To get a Yo when someone beats you on the challenge
-				br
-				span.bold #{startArtist.name}
-				| -
-				span.bold #{goalArtist.name}!
-
 			form.center.yo.submitForm
 				input.round(type="text", name="time", id="yoText", placeholder="Name")
 
 				.buttonContainer.nm
 					button.oversized(name="submitYo") Submit
+
+			p.center.white.small (You will get a Yo when someone beats you on the challenge
+				br
+				span.bold #{startArtist.name}
+				| -
+				span.bold #{goalArtist.name})		
 
 		+challenge
 
@@ -38,7 +38,7 @@ template(name="toplist")
 
 			.fb-share-button(data-href="http://www.theartisthunt.com/", data-width="300", data-type="button")
 
-			a.twitter-share-button.mts.center.tweetStyle(data-text="Can you beat me on this artist hunt?", data-via="artisthunt", data-count="none", data-size="large", data-url="http://www.theartisthunt.com/challenge/#{startArtist.id}/#{goalArtist.id}") Tweet
+			a.twitter-share-button.mts.center.tweetStyle(data-text="Check out The Artist Hunt!", data-via="artisthunt", data-count="true", data-size="large", data-url="http://www.theartisthunt.com/") Tweet
 
 	.hello.center
 		.centerButton.buttonContainer.largeContainer.mt
@@ -57,7 +57,7 @@ template(name="highscoreList")
 	
 template(name="challenge")
 	section
-		h1.center.page-title.medium.nm Challenge your peers
+		p.center.page-title.mediumRare.mbs.mt-large Challenge your friends on this combination of artists! 
 		input.squared(value="http://www.theartisthunt.com/challenge/#{startArtist.id}/#{goalArtist.id}")
 
 
