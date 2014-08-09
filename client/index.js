@@ -426,7 +426,9 @@ if (Meteor.isClient) {
 			if(e.keyCode == 13){
 				var list = Session.get("startArtistSearchResults");
 				if(list.results.length > 0){
-					Session.set("startArtist", list.results[selectedArtistResultIndex-1]);
+					var artist = list.results[selectedArtistResultIndex-1];
+					loadArtist(artist);
+					Session.set("startArtist", artist);
 					$('input[name=artistStartSearchField]').blur();
 				};
 			};
