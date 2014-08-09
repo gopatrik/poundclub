@@ -91,7 +91,7 @@ Router.map(function() {
 				fetchStartGoalArtists(element.start, element.goal)
 			}
 
-			if(localStorage.getItem("onboardingDone") == "false" || localStorage.getItem("onboardingDone") === false){
+			if(localStorage.getItem("onboardingDone") == "false" || localStorage.getItem("onboardingDone") === null){
 
 				//PATRIK! ACTIVATE ONBOARDING!
 
