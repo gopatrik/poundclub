@@ -7,16 +7,10 @@ var artists = {
 	'jonsi': {name: "Jonsi", id:"3khg8RDB6nMuw34w1IHS6Y"},
 	'The Black Keys': {name: "The Black Keys", id:"7mnBLXK823vNxN3UWB7Gfz"},
 	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
-
 }
-
-
-
-
 
 window.startArtistId = artists["The Black Keys"].id;
 window.goalArtistId = artists["The White Stripes"].id;
-
 
 
 Router.map(function() {
@@ -65,23 +59,6 @@ var selectedIndex = 3;
 
 if (Meteor.isClient) {
 	Meteor.startup(function () {
-		
-
-		// var randomArtists = SetupArtists.find().limit(-1).skip(minmaxRandom(1, 5)).next()
-
-		//console.log(randomArtists);
-
-		console.log(SetupArtists);
-
-		var array = SetupArtists.find().fetch();
-
-		console.log(array);
-
-		var randomIndex = Math.floor( Math.random() * array.length );
-		var element = array[randomIndex];
-
-		console.log(element);
-
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 
@@ -323,26 +300,9 @@ if (Meteor.isClient) {
 
 	};
 
-	// 'submit form.artistGoalSearch': function (e) {
-	// 	e.preventDefault();
-	// 	fetchFirstArtist($('input[name=artistGoalSearchField]').val(), function (response) {
-	// 		if(response.artists.items.length > 0){
- //            	var artist = response.artists.items[0];
-	// 			Session.set("goalArtist", artist);
-	// 		};
-	// 	});
-	// },
-	// 'submit form.artistStartSearch': function (e) {
-	// 	e.preventDefault();
-	// 	fetchFirstArtist($('input[name=artistStartSearchField]').val(), function (response) {
-	// 		var artist = response.artists.items[0];
-	// 		loadArtist(artist);
-	// 		Session.set("startArtist", artist);
-	// 	});
-	// },
+	var selectedArtistResultIndex = 0;
 	Template.artistSearch.events({
-		'keyup input[name=artistGoalSearchField]': function (e) {
-			// console.log();
+		'input input[name=artistGoalSearchField]': function (e) {
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
@@ -350,13 +310,29 @@ if (Meteor.isClient) {
 				});
 			}
 		},
-		'keyup input[name=artistStartSearchField]': function (e) {
-			// console.log();
+		'input input[name=artistStartSearchField]': function (e) {
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
 					Session.set("startArtistSearchResults", {results: response.artists.items.slice(0,4)});
 				});
+			}
+		},
+		'keyup .artistGoalSearch input':function (e) {
+			if(e.keyCode == 40 || e.keyCode == 38){ // go down
+				var resultList = $(e.target).parent().children('ul.search-results');
+
+				var listlength = resultList.children('li').length;
+
+				resultList.children('li:nth-child('+(selectedArtistResultIndex)+')').removeClass('selected');
+
+				if(e.keyCode == 40 && selectedArtistResultIndex < listlength){ // down
+					selectedArtistResultIndex += 1;
+				}else if(e.keyCode == 38 && selectedArtistResultIndex > 1){ //up
+					selectedArtistResultIndex -= 1;
+				}
+
+				resultList.children('li:nth-child('+(selectedArtistResultIndex)+')').addClass('selected');
 			}
 		},
 		'click .artistGoalSearch .search-results li':function () {
@@ -366,8 +342,11 @@ if (Meteor.isClient) {
 			loadArtist(this);
 			Session.set("startArtist", this);
 		},
-		'blur input[name=artistGoalSearchField': function () {
-			
+		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
+			$(e.target).parent().children('ul.search-results').fadeOut();
+		},
+		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
+			$(e.target).parent().children('ul.search-results').show();
 		}
 
 	});
@@ -396,12 +375,12 @@ if (Meteor.isClient) {
 	}
 
 	// start by listening for up key
-	document.onkeydown = function KeyPressed( e ) {
-		var key = ( window.event ) ? event.keyCode : e.keyCode;
-		if(key == 38){
-			startGame();
-		}
-	}
+	// document.onkeydown = function KeyPressed( e ) {
+	// 	var key = ( window.event ) ? event.keyCode : e.keyCode;
+	// 	if(key == 38){
+	// 		startGame();
+	// 	}
+	// }
 
 
 	function startGame () {
