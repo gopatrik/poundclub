@@ -27,19 +27,18 @@ if (Meteor.isClient) {
 
 	function sendAYo(yoName){
 		$.ajax({
-		    	type: "POST",
-			    url: 'http://api.justyo.co/yo/',
-			    data: 'api_token=797471a2-1e3f-0e8e-ee3d-342bf3b86f43&username=' + yoName,
-			    success: function (response) {
-			    	//do nothing
-	   			}
-			});
-	}
+	    	type: "POST",
+		    url: 'http://api.justyo.co/yo/',
+		    data: 'api_token=797471a2-1e3f-0e8e-ee3d-342bf3b86f43&username=' + yoName,
+		    success: function (response) {
+		    	//do nothing
+   			}
+		});
+	};
 
-	Template.toplist.events = {
-	    'submit form.yo': function (e) {
+	Template.toplist.events({
+		'submit form.yo': function (e) {
 			e.preventDefault();
-
 		    var score = Session.get("score");
 			var yoName = $("#yoText").val();
 
@@ -53,10 +52,8 @@ if (Meteor.isClient) {
 			sendYosToPeople(score);
 
 			Session.set("submitted", true);
-
-
-	    }
-	};
+		}
+	});
 
 	Template.toplist.events = {
 	    'click .newGame': function (e) {

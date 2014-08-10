@@ -5,7 +5,8 @@
       "jade": {},
       "stylus-multi": {},
       "iron-router": {},
-      "GAnalytics": {}
+      "GAnalytics": {},
+      "fast-render": {}
     },
     "packages": {
       "jade": {
@@ -27,6 +28,11 @@
         "git": "https://github.com/datariot/meteor-ganalytics.git",
         "tag": "v0.2.0",
         "commit": "2d5e48d5cc4c2f88edd40c0b2341d378bd4a702b"
+      },
+      "fast-render": {
+        "git": "https://github.com/arunoda/meteor-fast-render.git",
+        "tag": "v1.0.0",
+        "commit": "acbc04982025fe78cebb8865b5a04689741d4b0b"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

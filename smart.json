@@ -3,6 +3,7 @@
     "jade": {},
     "stylus-multi": {},
     "iron-router": {},
-    "GAnalytics": {}
+    "GAnalytics": {},
+    "fast-render": {}
   }
 }

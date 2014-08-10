@@ -93,7 +93,8 @@ Router.map(function() {
 		},
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
-    	}
+    	},
+    	fastRender:true
 	});
 
 
