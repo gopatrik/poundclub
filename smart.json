@@ -2,6 +2,7 @@
   "packages": {
     "jade": {},
     "stylus-multi": {},
-    "iron-router": {}
+    "iron-router": {},
+    "GAnalytics": {}
   }
 }

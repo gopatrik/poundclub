@@ -4,7 +4,8 @@
     "basePackages": {
       "jade": {},
       "stylus-multi": {},
-      "iron-router": {}
+      "iron-router": {},
+      "GAnalytics": {}
     },
     "packages": {
       "jade": {
@@ -21,6 +22,11 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.8.2",
         "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
+      },
+      "GAnalytics": {
+        "git": "https://github.com/datariot/meteor-ganalytics.git",
+        "tag": "v0.2.0",
+        "commit": "2d5e48d5cc4c2f88edd40c0b2341d378bd4a702b"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

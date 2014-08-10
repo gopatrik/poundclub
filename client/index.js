@@ -76,6 +76,7 @@ Router.map(function() {
 		path: '/',
 		template:'index',
 		onAfterAction: function () {
+			GAnalytics.pageview('home');
 			var array = SetupArtists.find().fetch();
 			if(array.length > 0){	
 				var randomIndex = Math.floor( Math.random() * array.length );
@@ -102,6 +103,7 @@ Router.map(function() {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
+			GAnalytics.pageview('challenge');
 
 			fetchActiveArtist(this.params.artistId1);
 			getTopTrackFromArtist (this.params.artistId1, true)
@@ -118,6 +120,7 @@ Router.map(function() {
 		path: '/highscore',
 		template:'toplist',
 		onAfterAction: function () {
+			GAnalytics.pageview('settings');
 			if(!Session.get("startArtist") || !Session.get("goalArtist")){
 				Router.go('home');
 			}
