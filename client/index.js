@@ -7,7 +7,6 @@ var artists = {
 	'jonsi': {name: "Jonsi", id:"3khg8RDB6nMuw34w1IHS6Y"},
 	'The Black Keys': {name: "The Black Keys", id:"7mnBLXK823vNxN3UWB7Gfz"},
 	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
-
 }
 
 var gameController = function () {
