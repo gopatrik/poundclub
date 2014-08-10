@@ -90,6 +90,8 @@ Router.map(function() {
 
 				fetchStartGoalArtists(element.start, element.goal);
 			};
+
+			setController(splashController);
 		},
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
@@ -112,6 +114,7 @@ Router.map(function() {
 			});
 
 			fetchStartGoalArtists(this.params.artistId1, this.params.artistId2);
+			setController(splashController);
 
 		}
 	});

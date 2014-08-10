@@ -55,7 +55,7 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.toplist.events = {
+	Template.toplist.events( {
 	    'click .newGame': function (e) {
 			e.preventDefault();
 			Session.set("splash", true);
@@ -64,7 +64,7 @@ if (Meteor.isClient) {
 			Router.go('home');
 
 	    }
-	};
+	});
 
 	Template.toplist.submitted = function () {
 		return Session.get("submitted");
