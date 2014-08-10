@@ -58,7 +58,7 @@ var splashController = function () {
 	document.onkeydown = function KeyPressed( e ) {
 		var key = ( window.event ) ? event.keyCode : e.keyCode;
 		if(key == 38){
-			startGame();
+			proceedFromStart();
 		}
 	};
 }
@@ -452,29 +452,53 @@ if (Meteor.isClient) {
 	document.onkeydown = function KeyPressed( e ) {
 		var key = ( window.event ) ? event.keyCode : e.keyCode;
 		if(key == 38){
-			startGame();
+			proceedFromStart();
 		}
 	}
 
 
-	function startGame () {
+	// sorry
+	function proceedFromStart () {
 		hideSplash();
 
+
+		// 2, was at onboarding, set up for game
 		if(Session.get("onboarding")){
 			Session.set("onboarding", false);
-			// write to local storage
-			localStorage.setItem("onboardingDone", "true");
+			if(userIsIncognito()){
+				startGame();
+				return;
+			}else{
+				localStorage.setItem("onboardingDone", "true");
+			}
 		}
 
+
+		// 1 - go to onboarding
 		if(userNotOnboarded()){
 			Session.set("onboarding", true);
-		}else{
-			setController(gameController);
-			setTimeout(function () {
-				setSelected(selectedRelatedArtistIndex);
-			},800);
+		}else{ //3 start game
+			startGame();
 		}
 
+	};
+
+	function startGame () {
+		setController(gameController);
+		setTimeout(function () {
+			setSelected(selectedRelatedArtistIndex);
+		},800);
+	};
+
+	function userIsIncognito() {
+		try {
+		  localStorage.setItem('incognito', "true");// try to use localStorage      
+		} catch (e) { // user is incognito
+		    return true;
+		};
+
+		localStorage.removeItem('incognito');
+		return false;
 	};
 
 	function userNotOnboarded () {
@@ -543,7 +567,7 @@ if (Meteor.isClient) {
 
 	Template.splashScreen.events({
 		'click button[name=start]': function () {
-			startGame();
+			proceedFromStart();
 		},
 
 		'click .chooseCustom':function () {
