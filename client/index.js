@@ -11,27 +11,27 @@ var artists = {
 
 var gameController = function () {
 	document.onkeydown = function KeyPressed( e ) {
-	    var key = ( window.event ) ? event.keyCode : e.keyCode;
+		var key = ( window.event ) ? event.keyCode : e.keyCode;
 
-	    switch(key){
-		    case 37: // left
-		    	if(selectedRelatedArtistIndex > 1){
-		    		setSelected(selectedRelatedArtistIndex - 1);
-		    	}else{
-		    		setSelected(5);
-		    	}
-		    	break;
-		    case 39: // right
-		    	if(selectedRelatedArtistIndex < 5){
-		    		setSelected(selectedRelatedArtistIndex + 1);
-		    	}else{
-		    		setSelected(1);
-		    	}
-		    	break;
-		    case 32: // space
-		    case 38: // up
-		    case 40: // down
-		    	Session.set("score", Session.get("score")+1);
+		switch(key){
+			case 37: // left
+				if(selectedRelatedArtistIndex > 1){
+					setSelected(selectedRelatedArtistIndex - 1);
+				}else{
+					setSelected(5);
+				}
+				break;
+			case 39: // right
+				if(selectedRelatedArtistIndex < 5){
+					setSelected(selectedRelatedArtistIndex + 1);
+				}else{
+					setSelected(1);
+				}
+				break;
+			case 32: // space
+			case 38: // up
+			case 40: // down
+				Session.set("score", Session.get("score")+1);
 
 				// $("section.background").addClass('fade-out');
 
@@ -47,8 +47,8 @@ var gameController = function () {
 					},200);
 				},200);
 
-		    	break;
-	    }
+				break;
+		}
 	}
 };
 
@@ -145,48 +145,48 @@ if (Meteor.isClient) {
 	});
 
 	UI.registerHelper('startArtist', function() {
-	    return Session.get("startArtist");
+		return Session.get("startArtist");
 	});
 
 	UI.registerHelper('goalArtist', function() {
-	    return Session.get("goalArtist");
+		return Session.get("goalArtist");
 	});
 
 	function fetchStartGoalArtists(startId, goalId){
 		$.ajax({
-		    url: 'https://api.spotify.com/v1/artists/'+startId,
-		    success: function (response) {
-		    	Session.set("startArtist", response);
-		    }
+			url: 'https://api.spotify.com/v1/artists/'+startId,
+			success: function (response) {
+				Session.set("startArtist", response);
+			}
 		});
 
 		$.ajax({
-		    url: 'https://api.spotify.com/v1/artists/'+goalId,
-		    success: function (response) {
-		    	Session.set("goalArtist", response);
-		    }
+			url: 'https://api.spotify.com/v1/artists/'+goalId,
+			success: function (response) {
+				Session.set("goalArtist", response);
+			}
 		});
 	};
 
 	function fetchActiveArtist(artistId) {
 		$.ajax({
-		    url: 'https://api.spotify.com/v1/artists/'+artistId,
-		    success: function (response) {
+			url: 'https://api.spotify.com/v1/artists/'+artistId,
+			success: function (response) {
 
-		        // Session.set("artist", response);
-		        // Session.set("artistImage", response.images[0].url);
-		        setActiveArtist(response);
-		    }
+				// Session.set("artist", response);
+				// Session.set("artistImage", response.images[0].url);
+				setActiveArtist(response);
+			}
 		});
 	}
 
 	function fetchRelatedArtists(artistId, callback) {
-	  	$.ajax({
-	  	    url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
-	  	    success: function (response) {
-	  	    	
-	  	    	var relatedArtists = response.artists.slice(0,3);
-	  	    	var randomNum1 = minmaxRandom(4, response.artists.length-1);
+		$.ajax({
+			url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
+			success: function (response) {
+				
+				var relatedArtists = response.artists.slice(0,3);
+				var randomNum1 = minmaxRandom(4, response.artists.length-1);
 				var randomNum2 = minmaxRandom(4, response.artists.length-1);
 				while(randomNum1 == randomNum2){
 					randomNum1 = minmaxRandom(4, response.artists.length-1);
@@ -194,23 +194,23 @@ if (Meteor.isClient) {
 				relatedArtists.push(response.artists[randomNum1]);
 				relatedArtists.push(response.artists[randomNum2]);
 
-	  	    	for (var i = relatedArtists.length - 1; i >= 0; i--) {
-	  	    		var image = relatedArtists[i].images[relatedArtists[i].images.length-2]
-	  	    		if(image != null || image != undefined){
-	  	    			relatedArtists[i]["coverImage"] = image;
-	  	    		} else {
-	  	    			relatedArtists[i]["coverImage"] = {url:"/images/unknown.jpg"};
-	  	    			relatedArtists[i].images[0] = {url:"/images/unknownLarge.jpg"};
-	  	    		}
-	  	    	};
-	  	    	Session.set("fetchingRelated", false);
-	  	        // Session.set("related-fetched", relatedArtists);
-	  	        Session.set("related", relatedArtists);
-	  	        // if(callback){
-	  	        // 	callback();
-	  	        // };
-	  	    }
-	  	});
+				for (var i = relatedArtists.length - 1; i >= 0; i--) {
+					var image = relatedArtists[i].images[relatedArtists[i].images.length-2]
+					if(image != null || image != undefined){
+						relatedArtists[i]["coverImage"] = image;
+					} else {
+						relatedArtists[i]["coverImage"] = {url:"/images/unknown.jpg"};
+						relatedArtists[i].images[0] = {url:"/images/unknownLarge.jpg"};
+					}
+				};
+				Session.set("fetchingRelated", false);
+				// Session.set("related-fetched", relatedArtists);
+				Session.set("related", relatedArtists);
+				// if(callback){
+				// 	callback();
+				// };
+			}
+		});
 	}
 
 	function minmaxRandom(min, max){
@@ -231,27 +231,27 @@ if (Meteor.isClient) {
 	var audio;
 	function getTopTrackFromArtist (artistId, fadeIn) {
 		$.ajax({
-	  	    url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
-	  	    success: function (response) {
-	  	    	// console.log(response.tracks[0].preview_url);
-	  	    	if(audio){
-	  	    		// audio.pause();
-	  	    		$(audio).animate({volume:0}, 2000);
-	  	    	}
-	  	    	newAudio = new Audio(response.tracks[0].preview_url);
-	  	    	newAudio.play();
+			url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
+			success: function (response) {
+				// console.log(response.tracks[0].preview_url);
+				if(audio){
+					// audio.pause();
+					$(audio).animate({volume:0}, 2000);
+				}
+				newAudio = new Audio(response.tracks[0].preview_url);
+				newAudio.play();
 
-	  	    	if(fadeIn){
-	  	    		newAudio.volume = 0;
-	  	    		$(newAudio).animate({volume:1}, 5000);
-	  	    	}
+				if(fadeIn){
+					newAudio.volume = 0;
+					$(newAudio).animate({volume:1}, 5000);
+				}
 
-	  	    	audio = newAudio;
+				audio = newAudio;
 
-	  	    	Session.set("playingsong", response.tracks[0].name);
-	  	        // Session.set("toptrack", response.tracks[0].preview_url);
-	  	    }
-	  	});
+				Session.set("playingsong", response.tracks[0].name);
+				// Session.set("toptrack", response.tracks[0].preview_url);
+			}
+		});
 	}
 
 	Template.index.splash = function () {
@@ -443,15 +443,15 @@ if (Meteor.isClient) {
 
 	function fetchFirstArtist (name, callback) {
 		$.ajax({
-	        url: 'https://api.spotify.com/v1/search',
-	        data: {
-	            q: name,
-	            type: 'artist'
-	        },
-	        success: function (response) {
-	            callback(response);
-	        }
-	    });
+			url: 'https://api.spotify.com/v1/search',
+			data: {
+				q: name,
+				type: 'artist'
+			},
+			success: function (response) {
+				callback(response);
+			}
+		});
 	};
 
 	// start by listening for up key
@@ -513,6 +513,52 @@ if (Meteor.isClient) {
 			localStorage.getItem("onboardingDone") === null)
 	};
 
+	var authWindow = null;
+
+	function receiveMessage(event){
+	    console.log("RECIEVE ENVENT");
+	    // if (event.origin !== "http://jsfiddle.net") {
+	    //     return;
+	    // }
+	    if (authWindow) {
+			authWindow.close();
+	    }
+	}
+
+	window.addEventListener("message", receiveMessage, false);
+
+	function login() {		
+		var params = {
+			client_id: '1cfa9a116cce4bafaa1249fb22c64e63',
+			redirect_uri: 'http://www.theartisthunt.com',
+			scope: 'user-read-private user-read-email',
+			response_type: 'token'
+		};
+
+		//var goTo = "https://accounts.spotify.com/authorize?" + toQueryString(params);
+
+		//window.location.href = goTo;
+
+		authWindow = window.open(
+			"https://accounts.spotify.com/authorize?" + toQueryString(params),
+			"Spotify",
+			'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + 300 + ', height=' + 500 + ', top=' + 100 + ', left=' + 100
+		);
+		
+	}
+
+	function toQueryString(obj) {
+		var parts = [];
+		for (var i in obj) {
+			if (obj.hasOwnProperty(i)) {
+				parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+			}
+	}
+		return parts.join("&");
+	}
+	
+	var authWindow = null;
+
 	Template.artistBox.events({
 		'click .image': function (e) {
 			loadArtist(this);
@@ -532,7 +578,12 @@ if (Meteor.isClient) {
 
 		'click .chooseCustom':function () {
 			Session.set("showArtistPicker", true);
-		}
+		}, 
+
+		'click .logIn':function () {
+			login();
+		}, 
+
 	});
 
 
