@@ -68,13 +68,13 @@ if(Meteor.isClient){
 		return {
 			openLogin: function() {
 				var url = getLoginURL([
-					'user-read-private',
-					'playlist-read-private',
-					'playlist-modify-public',
-					'playlist-modify-private',
-					'user-library-read',
 					'user-library-modify'
 				]);
+				// 'user-read-private',
+				// 'playlist-read-private',
+				// 'playlist-modify-public',
+				// 'playlist-modify-private',
+				// 'user-library-read',
 
 				var w = window.open(url, 'Spotify', 'WIDTH=400, HEIGHT=600');
 
