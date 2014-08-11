@@ -3,12 +3,6 @@ Router.configure({
 	layoutTemplate: 'main'
 });
 
-var artists = {
-	'jonsi': {name: "Jonsi", id:"3khg8RDB6nMuw34w1IHS6Y"},
-	'The Black Keys': {name: "The Black Keys", id:"7mnBLXK823vNxN3UWB7Gfz"},
-	'The White Stripes': {name: "The White Stripes", id:"4F84IBURUo98rz4r61KF70"}
-}
-
 var gameController = function () {
 	document.onkeydown = function KeyPressed( e ) {
 		var key = ( window.event ) ? event.keyCode : e.keyCode;
@@ -66,7 +60,7 @@ var noController = function () {
 	document.onkeydown = function KeyPressed( e ) {
 		// 
 	};
-}
+};
 
 
 
@@ -75,7 +69,9 @@ Router.map(function() {
 		path: '/',
 		template:'index',
 		onAfterAction: function () {
-			GAnalytics.pageview('home');
+			if (location.host != 'localhost:3000') {
+				GAnalytics.pageview('home');
+			}
 			var array = SetupArtists.find().fetch();
 			if(array.length > 0){	
 				var randomIndex = Math.floor( Math.random() * array.length );
@@ -105,7 +101,9 @@ Router.map(function() {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
-			GAnalytics.pageview('challenge');
+			if (location.host != 'localhost:3000') {
+				GAnalytics.pageview('challenge');
+			}
 
 			fetchActiveArtist(this.params.artistId1);
 			getTopTrackFromArtist (this.params.artistId1, true)
@@ -130,6 +128,29 @@ Router.map(function() {
 		},
 		waitOn: function () {
 			return Meteor.subscribe('highscore');
+		}
+	});
+
+	this.route('auth', {
+		path: '/auth',
+		action: function () {
+			var hash = {};
+			location.hash.replace(/^#\/?/, '').split('&').forEach(function(kv) {
+				var spl = kv.indexOf('=');
+				if (spl != -1) {
+					hash[kv.substring(0, spl)] = decodeURIComponent(kv.substring(spl+1));
+				}
+			});
+
+			if (hash.access_token) {
+				window.opener.postMessage(JSON.stringify({
+					type:'access_token',
+					access_token: hash.access_token,
+					expires_in: hash.expires_in || 0
+				}), '*');
+
+				window.close();
+			}
 		}
 	});
 });
@@ -248,7 +269,7 @@ if (Meteor.isClient) {
 
 				audio = newAudio;
 
-				Session.set("playingsong", response.tracks[0].name);
+				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id});
 				// Session.set("toptrack", response.tracks[0].preview_url);
 			}
 		});
@@ -280,7 +301,9 @@ if (Meteor.isClient) {
 
 
 	Template.gameBoard.songname = function () {
-		return Session.get("playingsong");
+		var song = Session.get("playingsong");
+		if(song)
+		return song.name;
 	}
 
 	Template.index.onboarding = function(){
@@ -518,52 +541,6 @@ if (Meteor.isClient) {
 			localStorage.getItem("onboardingDone") === null)
 	};
 
-	var authWindow = null;
-
-	function receiveMessage(event){
-	    console.log("RECIEVE ENVENT");
-	    // if (event.origin !== "http://jsfiddle.net") {
-	    //     return;
-	    // }
-	    if (authWindow) {
-			authWindow.close();
-	    }
-	}
-
-	window.addEventListener("message", receiveMessage, false);
-
-	function login() {		
-		var params = {
-			client_id: '1cfa9a116cce4bafaa1249fb22c64e63',
-			redirect_uri: 'http://www.theartisthunt.com',
-			scope: 'user-read-private user-read-email',
-			response_type: 'token'
-		};
-
-		//var goTo = "https://accounts.spotify.com/authorize?" + toQueryString(params);
-
-		//window.location.href = goTo;
-
-		authWindow = window.open(
-			"https://accounts.spotify.com/authorize?" + toQueryString(params),
-			"Spotify",
-			'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + 300 + ', height=' + 500 + ', top=' + 100 + ', left=' + 100
-		);
-		
-	}
-
-	function toQueryString(obj) {
-		var parts = [];
-		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-			}
-	}
-		return parts.join("&");
-	}
-	
-	var authWindow = null;
-
 	Template.artistBox.events({
 		'click .image': function (e) {
 			loadArtist(this);
@@ -583,11 +560,7 @@ if (Meteor.isClient) {
 
 		'click .chooseCustom':function () {
 			Session.set("showArtistPicker", true);
-		}, 
-
-		'click .logIn':function () {
-			login();
-		}, 
+		}
 
 	});
 

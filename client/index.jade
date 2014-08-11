@@ -12,6 +12,7 @@ template(name="splashScreen")
 	section.center.splash.mt
 
 		h1.page-title.center Hunt down #{goalArtist.name}!
+
 		p.bold.mb-medium Do it by browsing similar artists, starting from #{startArtist.name}
 
 		//- if chooseArtist
@@ -25,9 +26,18 @@ template(name="splashScreen")
 		.absoluteBottomRight
 			+twitterHandles
 
-		.absoluteUpRight
-			a.small.subtle.logIn log in with spotify to save tracks to library 
 
+template(name="spotifyControls")
+	section
+		if loggedIn
+			p.addSong.small.bold.pointer <span style="color:#9CD92A;" class="plus">+</span> Add song
+		else
+			p.small.subtle.logIn.pointer.mt
+				span.medium
+					b Log in
+					| with
+					span.bold(style="color:#9CD92A;") Spotify
+			p.small to save tracks to library 
 
 
 template(name="twitterHandles")
@@ -108,14 +118,16 @@ template(name="gameBoard")
 			//- p.underlined.small Add to spotify playlist
 			p.big.mt= songname
 			p.medium.bold= artist.name
+			+spotifyControls
 
 		.absoluteUpRight
 			p.big= goalArtist.name
 			p.medium.bold Hunting
 		
 
-		.absoluteTopCenter
-			p.moreDiscreteText.white.centerMeFromAbsolute.startOver(name="startNewHunt") Start new hunt
+		.absoluteBottomRight
+			p.moreDiscreteText.white.startOver(name="startNewHunt") Start new hunt
+
 
 template(name="relatedArtists")
 	if related

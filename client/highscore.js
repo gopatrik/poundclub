@@ -60,7 +60,6 @@ if (Meteor.isClient) {
 			e.preventDefault();
 			Session.set("splash", true);
 			Session.set("score", 0);
-			// Session.set("newgame", true);
 			Router.go('home');
 
 	    }
