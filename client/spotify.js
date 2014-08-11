@@ -55,7 +55,7 @@ if(Meteor.isClient){
 			REDIRECT_URI = 'http://localhost:3000/auth';
 		} else {
 			CLIENT_ID = '1cfa9a116cce4bafaa1249fb22c64e63';
-			REDIRECT_URI = 'http://www.theartisthunt.com/';
+			REDIRECT_URI = 'http://www.theartisthunt.com/auth';
 		}
 
 		function getLoginURL(scopes) {
