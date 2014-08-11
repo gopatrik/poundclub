@@ -23,14 +23,19 @@ template(name="splashScreen")
 		button.oversized.extra(name="start") Start Hunting
 
 		.absoluteBottomRight
-			p.mediumRare Made by
-				a.subtle(href="https://twitter.com/oscrse") @oscrse
-				| &amp;
-				a.subtle(href="https://twitter.com/gopatrik") @gopatrik
+			+twitterHandles
 
 		.absoluteUpRight
 			a.small.subtle.logIn log in with spotify to save tracks to library 
 
+
+
+template(name="twitterHandles")
+	with random
+		p.mediumRare Made by
+			a.subtle(href="https://twitter.com/#{one}") @#{one}
+			| &amp;
+			a.subtle(href="https://twitter.com/#{two}") @#{two}
 
 
 template(name="artistSearch")

@@ -287,6 +287,11 @@ if (Meteor.isClient) {
 		return Session.get("onboarding");
 	}
 
+	Template.twitterHandles.random = function () {
+		var handles = ["oscrse", "gopatrik"];
+		return Math.floor(Math.random()*2) == 0 ? {one: handles[0], two: handles[1]} : {one: handles[1], two: handles[0]};
+	}
+
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
 		if(artist.images[0]){
