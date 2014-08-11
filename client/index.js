@@ -153,6 +153,16 @@ Router.map(function() {
 			}
 		}
 	});
+
+	this.route('discover', {
+		path: '/discover',
+		template:'discover',
+		onAfterAction: function () {
+			if (location.host != 'localhost:3000') {
+				GAnalytics.pageview('/discover')
+			};
+		}
+	});
 });
 
 var selectedRelatedArtistIndex = 3;
