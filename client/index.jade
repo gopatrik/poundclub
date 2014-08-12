@@ -27,7 +27,18 @@ template(name="splashScreen")
 			+twitterHandles
 
 template(name="discover")
-	//- discover
+	.full-center-contents
+		section.artist-area
+			section.discoverSearch
+				//- input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				+artistSearch
+
+			.titles
+				p.center.medium.np Listening to
+				h1.page-title.center.np= artist.name
+
+
+			+relatedArtists
 
 template(name="spotifyControls")
 	section
@@ -51,17 +62,22 @@ template(name="twitterHandles")
 
 
 template(name="artistSearch")
-	p.mts(name="chooseArtist") Or choose two other artists
 	section.artistForms
-		.artistStartSearch.half.leftForm.relative
-			input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
-			with startSearchResult
-				+artistSearchBox
+		if discoverSearch
+			.artistStartSearch.relative
+				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				with startSearchResult
+					+artistSearchBox
+		else
+			.artistStartSearch.half.leftForm.relative
+				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				with startSearchResult
+					+artistSearchBox
 
-		.artistGoalSearch.half.rightForm.relative
-			input.squared(name="artistGoalSearchField", value="#{goalArtist.name}", autocomplete="off")
-			with goalSearchResult
-				+artistSearchBox
+			.artistGoalSearch.half.rightForm.relative
+				input.squared(name="artistGoalSearchField", value="#{goalArtist.name}", autocomplete="off")
+				with goalSearchResult
+					+artistSearchBox
 
 template(name="artistSearchBox")
 	ul.absolute.high-z.search-results
@@ -113,6 +129,7 @@ template(name="gameBoard")
 				p.center.medium.np Listening to
 				h1.page-title.center.np= artist.name
 
+			p.mts(name="chooseArtist") Or choose two other artists
 			+relatedArtists
 
 		.absoluteUpLeft

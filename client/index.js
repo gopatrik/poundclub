@@ -3,64 +3,67 @@ Router.configure({
 	layoutTemplate: 'main'
 });
 
-var gameController = function () {
-	document.onkeydown = function KeyPressed( e ) {
-		var key = ( window.event ) ? event.keyCode : e.keyCode;
+Meteor.controllers = {
+	gameController: function () {
+		document.onkeydown = function KeyPressed( e ) {
+			var key = ( window.event ) ? event.keyCode : e.keyCode;
 
-		switch(key){
-			case 37: // left
-				if(selectedRelatedArtistIndex > 1){
-					setSelected(selectedRelatedArtistIndex - 1);
-				}else{
-					setSelected(5);
-				}
-				break;
-			case 39: // right
-				if(selectedRelatedArtistIndex < 5){
-					setSelected(selectedRelatedArtistIndex + 1);
-				}else{
-					setSelected(1);
-				}
-				break;
-			case 32: // space
-			case 38: // up
-			case 40: // down
-				Session.set("score", Session.get("score")+1);
+			switch(key){
+				case 37: // left
+					if(selectedRelatedArtistIndex > 1){
+						setSelected(selectedRelatedArtistIndex - 1);
+					}else{
+						setSelected(5);
+					}
+					break;
+				case 39: // right
+					if(selectedRelatedArtistIndex < 5){
+						setSelected(selectedRelatedArtistIndex + 1);
+					}else{
+						setSelected(1);
+					}
+					break;
+				case 32: // space
+					Meteor.functions.addToSpotify();
+					break;
+				case 38: // up
+				case 40: // down
+					Session.set("score", Session.get("score")+1);
 
-				// $("section.background").addClass('fade-out');
+					// $("section.background").addClass('fade-out');
 
-				$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").addClass('move-up');
+					$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").addClass('move-up');
 
-				setTimeout(function () {
-					$("ul.related-artists").addClass('move-down');
-					$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass('move-up');
-					loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
 					setTimeout(function () {
-						$("ul.related-artists").removeClass('move-down');
-						$("ul.related-artists").addClass('swosh-in');
+						$("ul.related-artists").addClass('move-down');
+						$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass('move-up');
+						loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
+						setTimeout(function () {
+							$("ul.related-artists").removeClass('move-down');
+							$("ul.related-artists").addClass('swosh-in');
+						},200);
 					},200);
-				},200);
 
-				break;
+					break;
+			}
 		}
+	},
+	splashController: function () {
+		// start by listening for up key
+		document.onkeydown = function KeyPressed( e ) {
+			var key = ( window.event ) ? event.keyCode : e.keyCode;
+			if(key == 38){
+				proceedFromStart();
+			}
+		};
+	},
+	noController: function () {
+		document.onkeydown = function KeyPressed( e ) {
+			// 
+		};
 	}
-};
-
-var splashController = function () {
-	// start by listening for up key
-	document.onkeydown = function KeyPressed( e ) {
-		var key = ( window.event ) ? event.keyCode : e.keyCode;
-		if(key == 38){
-			proceedFromStart();
-		}
-	};
 }
 
-var noController = function () {
-	document.onkeydown = function KeyPressed( e ) {
-		// 
-	};
-};
 
 
 
@@ -87,7 +90,7 @@ Router.map(function() {
 				fetchStartGoalArtists(element.start, element.goal);
 			};
 
-			setController(splashController);
+			Meteor.functions.setController(Meteor.controllers.splashController);
 		},
 		waitOn: function () {
      		return Meteor.subscribe('setupartists');
@@ -112,7 +115,7 @@ Router.map(function() {
 			});
 
 			fetchStartGoalArtists(this.params.artistId1, this.params.artistId2);
-			setController(splashController);
+			Meteor.functions.setController(Meteor.controllers.splashController);
 
 		}
 	});
@@ -161,6 +164,11 @@ Router.map(function() {
 			if (location.host != 'localhost:3000') {
 				GAnalytics.pageview('/discover')
 			};
+
+			Meteor.functions.setController(Meteor.controllers.splashController);
+			setTimeout(function () {
+				setSelected(selectedRelatedArtistIndex)
+			}, 200);
 		}
 	});
 });
@@ -172,7 +180,7 @@ if (Meteor.isClient) {
 		
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
-		setController(splashController);
+		Meteor.functions.setController(Meteor.controllers.splashController);
 	});
 
 	UI.registerHelper('startArtist', function() {
@@ -254,7 +262,7 @@ if (Meteor.isClient) {
 		}
 
 		if(Session.get("artist").id == Session.get("goalArtist").id){
-			setController(noController);
+			Meteor.functions.setController(Meteor.controllers.noController);
 			Router.go('highscore');
 		}
 	}
@@ -353,11 +361,9 @@ if (Meteor.isClient) {
 		}
 	}
 
-	function setController (controller) {
-		controller();
-	};
+	
 
-	// function desetController () {
+	// function deMeteor.functions.setController () {
 	// 	document.onkeydown = undefined;
 	// };
 
@@ -376,6 +382,11 @@ if (Meteor.isClient) {
 		var element = array[randomIndex];
 		return element
 	}
+
+
+	Template.artistSearch.discoverSearch = function () {
+		return Router.current().route.name == 'discover';
+	};
 
 	function loadArtist (artist) {
 
@@ -461,11 +472,11 @@ if (Meteor.isClient) {
 			Session.set("startArtist", this);
 		},
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
-			setController(splashController);
+			Meteor.functions.setController(Meteor.controllers.splashController);
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			setController(noController);
+			Meteor.functions.setController(Meteor.controllers.noController);
 			$(e.target).parent().children('ul.search-results').show();
 		}
 
@@ -515,8 +526,7 @@ if (Meteor.isClient) {
 			}else{
 				localStorage.setItem("onboardingDone", "true");
 			}
-		}
-
+		};
 
 		// 1 - go to onboarding
 		if(userNotOnboarded()){
@@ -528,7 +538,7 @@ if (Meteor.isClient) {
 	};
 
 	function startGame () {
-		setController(gameController);
+		Meteor.functions.setController(Meteor.controllers.gameController);
 		setTimeout(function () {
 			setSelected(selectedRelatedArtistIndex);
 		},800);
