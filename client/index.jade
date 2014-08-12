@@ -19,6 +19,7 @@ template(name="splashScreen")
 
 		+missions
 
+		p.center.mts(name="chooseArtist") Or choose two other artists
 		+artistSearch
 
 		button.oversized.extra(name="start") Start Hunting
@@ -31,12 +32,11 @@ template(name="discover")
 		section.artist-area
 			section.discoverSearch
 				//- input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				p.center.medium.np Listening to
 				+artistSearch
 
-			.titles
-				p.center.medium.np Listening to
-				h1.page-title.center.np= artist.name
-
+			//- .titles
+			//- 	h1.page-title.center.np= artist.name
 
 			+relatedArtists
 
@@ -104,7 +104,6 @@ template(name="index")
 			else
 				+gameBoard
 
-
 template(name="tutorial")
 	section
 		section
@@ -129,7 +128,6 @@ template(name="gameBoard")
 				p.center.medium.np Listening to
 				h1.page-title.center.np= artist.name
 
-			p.mts(name="chooseArtist") Or choose two other artists
 			+relatedArtists
 
 		.absoluteUpLeft

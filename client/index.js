@@ -62,7 +62,7 @@ Meteor.controllers = {
 			// 
 		};
 	}
-}
+};
 
 
 
@@ -164,8 +164,12 @@ Router.map(function() {
 			if (location.host != 'localhost:3000') {
 				GAnalytics.pageview('/discover')
 			};
-
+			// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.splashController);
+			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
+				loadArtist(artist);
+				Session.set("startArtist", artist);
+			});
 			setTimeout(function () {
 				setSelected(selectedRelatedArtistIndex)
 			}, 200);
@@ -217,7 +221,16 @@ if (Meteor.isClient) {
 				setActiveArtist(response);
 			}
 		});
-	}
+	};
+
+	function getArtist(artistId, callback){
+		$.ajax({
+			url: 'https://api.spotify.com/v1/artists/'+artistId,
+			success: function (artist) {
+				callback(artist);
+			}
+		});
+	};
 
 	function fetchRelatedArtists(artistId, callback) {
 		$.ajax({
@@ -335,8 +348,10 @@ if (Meteor.isClient) {
 
 	function setActiveArtist(artist){
 		Session.set("artist", artist);
+		if(Router.current().route.name == 'discover'){ // todo: not optimal
+			Session.set("startArtist", artist);
+		};
 		if(artist.images[0]){
-
 			Session.set("artistImage", artist.images[0].url);
 		}
 		checkWin();
@@ -472,11 +487,20 @@ if (Meteor.isClient) {
 			Session.set("startArtist", this);
 		},
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
-			Meteor.functions.setController(Meteor.controllers.splashController);
+
+			if(Router.current().route.name == 'discover'){ // todo: not optimal
+				Meteor.functions.setController(Meteor.controllers.gameController);
+			}else{
+				Meteor.functions.setController(Meteor.controllers.splashController);
+			};
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			Meteor.functions.setController(Meteor.controllers.noController);
+			if(Router.current().route.name == 'discover'){ // todo: not optimal
+				Meteor.functions.setController(Meteor.controllers.gameController);
+			}else{
+				Meteor.functions.setController(Meteor.controllers.splashController);
+			};
 			$(e.target).parent().children('ul.search-results').show();
 		}
 
