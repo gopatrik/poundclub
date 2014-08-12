@@ -1,6 +1,7 @@
 if(Meteor.isClient){
 	Meteor.functions = {
 		setController: function (controller) {
+			console.log("setting")
 			controller();
 		},
 		addToSpotify: function(){

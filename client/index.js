@@ -162,16 +162,35 @@ Router.map(function() {
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/discover')
+				GAnalytics.pageview('/discover');
 			};
 			// loadArtist();
-			Meteor.functions.setController(Meteor.controllers.splashController);
+			Meteor.functions.setController(Meteor.controllers.gameController);
 			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
 				loadArtist(artist);
 				Session.set("startArtist", artist);
 			});
 			setTimeout(function () {
-				setSelected(selectedRelatedArtistIndex)
+				setSelected(selectedRelatedArtistIndex);
+			}, 200);
+		}
+	});
+
+	this.route('discover', {
+		path: '/discover/:artistId',
+		template:'discover',
+		onAfterAction: function () {
+			if (location.host != 'localhost:3000') {
+				GAnalytics.pageview('/discover/specific');
+			};
+			// loadArtist();
+			Meteor.functions.setController(Meteor.controllers.gameController);
+			getArtist(this.params.artistId,function(artist){
+				loadArtist(artist);
+				Session.set("startArtist", artist);
+			});
+			setTimeout(function () {
+				setSelected(selectedRelatedArtistIndex);
 			}, 200);
 		}
 	});
@@ -496,11 +515,7 @@ if (Meteor.isClient) {
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			if(Router.current().route.name == 'discover'){ // todo: not optimal
-				Meteor.functions.setController(Meteor.controllers.gameController);
-			}else{
-				Meteor.functions.setController(Meteor.controllers.splashController);
-			};
+			Meteor.functions.setController(Meteor.controllers.noController);
 			$(e.target).parent().children('ul.search-results').show();
 		}
 
