@@ -46,8 +46,9 @@ template(name="discover")
 
 
 template(name="musicControls")
-	section.center
-		i.white.medium.pointer.fa.fa-fast-forward.next-song
+	section.center.white
+		i.medium.pointer.fa.fa-fast-forward.next-song
+		+spotifyControls
 
 template(name="shareArtist")
 	if sharing
@@ -59,16 +60,23 @@ template(name="shareArtist")
 
 
 template(name="spotifyControls")
-	section
-		if loggedIn
-			p.addSong.small.bold.pointer <span style="color:#9CD92A;" class="plus">+</span> Add song
-		else
-			p.small.subtle.logIn.pointer.mt
-				span.medium
-					b Log in
-					| with
-					span.bold(style="color:#9CD92A;") Spotify
-			p.small to save tracks to library 
+	if loggedIn
+		i.fa.fa-plus.pointer.addSong
+	else
+		i.fa.fa-plus.pointer.addSong.logInHint
+	//- section
+	//- if loggedIn
+	//- 	p.addSong.small.bold.pointer
+	//- 		span.plus: i.fa.fa-plus
+
+	//- 		span(style="color:#9CD92A;") Add song
+	//- else
+	//- 	p.small.subtle.logIn.pointer.mt
+	//- 		span.medium
+	//- 			b Log in
+	//- 			| with
+	//- 			span.bold(style="color:#9CD92A;") Spotify
+	//- 	p.small to save tracks to library 
 
 
 template(name="twitterHandles")
