@@ -623,6 +623,17 @@ if (Meteor.isClient) {
 
 	});
 
+	Template.shareArtist.sharing = function () {
+		return Session.get("shareArtist");
+	};
 
+	Template.shareArtist.events({
+		'click .share-button': function () {
+			Session.set("shareArtist", true);
+		},
+		'blur input.artist-link':function () {
+			Session.set("shareArtist", false);
+		}
+	});
 
 }

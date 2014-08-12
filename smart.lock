@@ -6,7 +6,8 @@
       "stylus-multi": {},
       "iron-router": {},
       "GAnalytics": {},
-      "fast-render": {}
+      "fast-render": {},
+      "font-awesome": {}
     },
     "packages": {
       "jade": {
@@ -33,6 +34,11 @@
         "git": "https://github.com/arunoda/meteor-fast-render.git",
         "tag": "v1.0.0",
         "commit": "acbc04982025fe78cebb8865b5a04689741d4b0b"
+      },
+      "font-awesome": {
+        "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
+        "tag": "v4.1.0",
+        "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

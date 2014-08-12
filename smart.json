@@ -4,6 +4,7 @@
     "stylus-multi": {},
     "iron-router": {},
     "GAnalytics": {},
-    "fast-render": {}
+    "fast-render": {},
+    "font-awesome": {}
   }
 }
