@@ -21,7 +21,8 @@ if(Meteor.isClient){
 					}
 				});
 			}else{
-				auth();
+				var auth = Meteor.functions.auth();
+				auth.openLogin();
 			}
 		},
 		auth: function () {
