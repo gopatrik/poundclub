@@ -214,6 +214,10 @@ if (Meteor.isClient) {
 		return Session.get("goalArtist");
 	});
 
+	UI.registerHelper('playingsong', function() {
+		return Session.get("playingsong");
+	});
+
 	function fetchStartGoalArtists(startId, goalId){
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/'+startId,
@@ -304,9 +308,16 @@ if (Meteor.isClient) {
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/' + artistId + '/top-tracks?country=SE',
 			success: function (response) {
+				playSong(response, fadeIn);
+			}
+		});
+	};
+
+	function playSong(response,fadeIn){
 				// console.log(response.tracks[0].preview_url);
 				if(audio){
 					// audio.pause();
+					audio.removeEventListener('ended',playNext);
 					$(audio).animate({volume:0}, 2000);
 				}
 				newAudio = new Audio(response.tracks[0].preview_url);
@@ -319,11 +330,19 @@ if (Meteor.isClient) {
 
 				audio = newAudio;
 
-				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id});
+				audio.addEventListener('ended',playNext);
+
+				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
 				// Session.set("toptrack", response.tracks[0].preview_url);
-			}
-		});
-	}
+	};
+
+	function playNext(){
+		var song = Session.get("playingsong");
+
+		if(song.tracks.length > 0){
+			playSong(song,true);
+		};
+	};
 
 	Template.index.splash = function () {
 		return Session.get("splash");

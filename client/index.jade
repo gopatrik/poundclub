@@ -32,11 +32,10 @@ template(name="discover")
 		section.artist-area
 			section.discoverSearch
 				//- input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
-				p.center.medium.np Listening to
+				.titles.mb
+					//- p.center.medium.np Listening to
+					h1.page-title.center.np.current-song= playingsong.name
 				+artistSearch
-
-			//- .titles
-			//- 	h1.page-title.center.np= artist.name
 
 			+relatedArtists
 
