@@ -35,6 +35,8 @@ template(name="discover")
 				.titles.mb
 					//- p.center.medium.np Listening to
 					h1.page-title.center.np.current-song= playingsong.name
+					+musicControls
+
 				+artistSearch
 
 			+relatedArtists
@@ -42,6 +44,10 @@ template(name="discover")
 	.absoluteUpRight
 		+shareArtist
 
+
+template(name="musicControls")
+	section.center
+		i.white.medium.pointer.fa.fa-fast-forward.next-song
 
 template(name="shareArtist")
 	if sharing

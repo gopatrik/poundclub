@@ -655,4 +655,10 @@ if (Meteor.isClient) {
 		}
 	});
 
+	Template.musicControls.events({
+		'click .next-song': function () {
+			playNext();
+		}
+	});
+
 }
