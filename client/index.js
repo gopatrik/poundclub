@@ -226,7 +226,7 @@ if (Meteor.isClient) {
 			Session.set("startArtist", artist);
 		});
 
-		getArtist(startId, function (artist) {
+		getArtist(goalId, function (artist) {
 			Session.set("goalArtist", artist);
 		});
 	};
