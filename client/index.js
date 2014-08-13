@@ -80,8 +80,10 @@ Router.map(function() {
 				var randomIndex = Math.floor( Math.random() * array.length );
 				var element = array[randomIndex];
 
-				
-				fetchActiveArtist(element.start);
+				getArtist(element.start,function (artist) {
+					setActiveArtist(artist);
+				});
+
 				getTopTrackFromArtist(element.start, true)
 				fetchRelatedArtists(element.start, function () {
 					Session.set("related", Session.get("related-fetched"));
@@ -108,7 +110,11 @@ Router.map(function() {
 				GAnalytics.pageview('challenge');
 			}
 
-			fetchActiveArtist(this.params.artistId1);
+
+			getArtist(this.params.artistId1,function (artist) {
+				setActiveArtist(artist);
+			});
+
 			getTopTrackFromArtist (this.params.artistId1, true)
 			fetchRelatedArtists(this.params.artistId1, function () {
 				Session.set("related", Session.get("related-fetched"));
@@ -219,30 +225,12 @@ if (Meteor.isClient) {
 	});
 
 	function fetchStartGoalArtists(startId, goalId){
-		$.ajax({
-			url: 'https://api.spotify.com/v1/artists/'+startId,
-			success: function (response) {
-				Session.set("startArtist", response);
-			}
+		getArtist(startId, function (artist) {
+			Session.set("startArtist", artist);
 		});
 
-		$.ajax({
-			url: 'https://api.spotify.com/v1/artists/'+goalId,
-			success: function (response) {
-				Session.set("goalArtist", response);
-			}
-		});
-	};
-
-	function fetchActiveArtist(artistId) {
-		$.ajax({
-			url: 'https://api.spotify.com/v1/artists/'+artistId,
-			success: function (response) {
-
-				// Session.set("artist", response);
-				// Session.set("artistImage", response.images[0].url);
-				setActiveArtist(response);
-			}
+		getArtist(startId, function (artist) {
+			Session.set("goalArtist", artist);
 		});
 	};
 
