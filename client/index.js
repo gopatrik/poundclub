@@ -85,9 +85,8 @@ Router.map(function() {
 				});
 
 				getTopTrackFromArtist(element.start, true)
-				fetchRelatedArtists(element.start, function () {
-					Session.set("related", Session.get("related-fetched"));
-				});
+
+				fetchRelatedArtists(element.start);
 
 				fetchStartGoalArtists(element.start, element.goal);
 			};
@@ -116,9 +115,7 @@ Router.map(function() {
 			});
 
 			getTopTrackFromArtist (this.params.artistId1, true)
-			fetchRelatedArtists(this.params.artistId1, function () {
-				Session.set("related", Session.get("related-fetched"));
-			});
+			fetchRelatedArtists(this.params.artistId1);
 
 			fetchStartGoalArtists(this.params.artistId1, this.params.artistId2);
 			Meteor.functions.setController(Meteor.controllers.splashController);
@@ -243,7 +240,7 @@ if (Meteor.isClient) {
 		});
 	};
 
-	function fetchRelatedArtists(artistId, callback) {
+	function fetchRelatedArtists(artistId) {
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 			success: function (response) {
@@ -266,12 +263,9 @@ if (Meteor.isClient) {
 						relatedArtists[i].images[0] = {url:"/images/unknownLarge.jpg"};
 					}
 				};
+
 				Session.set("fetchingRelated", false);
-				// Session.set("related-fetched", relatedArtists);
 				Session.set("related", relatedArtists);
-				// if(callback){
-				// 	callback();
-				// };
 			}
 		});
 	}
