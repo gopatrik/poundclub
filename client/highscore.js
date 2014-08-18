@@ -36,11 +36,24 @@ if (Meteor.isClient) {
 		});
 	};
 
+	function sendASlackbot(){
+		$.ajax({
+	    	type: "POST",
+		    url: 'https://pondle.slack.com/services/hooks/slackbot?token=zr0StqlBbppzPFFhQDlYUaXy&channel=%23general',
+		    data: 'New highscore!',
+		    success: function (response) {
+		    	//do nothing
+   			}
+		});
+	};
+
 	Template.toplist.events({
 		'submit form.yo': function (e) {
 			e.preventDefault();
 		    var score = Session.get("score");
 			var yoName = $("#yoText").val();
+
+			sendASlackbot();
 
 			Highscores.insert({
 				score: score,
