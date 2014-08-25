@@ -244,6 +244,8 @@ Router.map(function() {
 				GAnalytics.pageview('/tutorial');
 			};
 
+			fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
+			Session.set("artistImage", "http://37.media.tumblr.com/0da1e786ac7997b82b072c30b32092ca/tumblr_naj3n71TcT1st5lhmo1_1280.jpg");
 			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
 		}
 	});
@@ -399,6 +401,15 @@ if (Meteor.isClient) {
 			Router.go('highscore');
 		}
 	}
+
+	function fetchAndPlaySong (songId) {
+		$.ajax({
+			url: 'https://api.spotify.com/v1/tracks/'+songId,
+			success: function (response) {
+				playSong({tracks:[response]},true);
+			}
+		});
+	};
 
 	var audio;
 	function getTopTrackFromArtist (artistId, fadeIn) {
