@@ -1,5 +1,5 @@
-if(Meteor.isClient){
-	Template.discover.rendered = function () {
-		Meteor.functions.setController(Meteor.controllers.gameController);
-	};
-}
+// if(Meteor.isClient){
+// 	Template.discover.rendered = function () {
+// 		Meteor.functions.setController(Meteor.controllers.discoverController);
+// 	};
+// }
