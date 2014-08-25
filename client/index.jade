@@ -49,20 +49,22 @@ template(name="discover")
 template(name="discoverOnboarding")
 	.full-center-contents
 		section
-			section.center
-				h3.page-title.center.mediumRare Navigate artists with left and right
-				img(src="/images/arrowsLeftRight.png" width="180px")
+			section
+				section.center.half
+					img(src="/images/arrowsLeftRight.png" width="180px")
+					p.center.mediumRare Navigate artists with left and right
 
-			section.center
-				h3.page-title.center.mediumRare Select with up
-				img(src="/images/arrowsUp.png" width="180px")
+				section.center.half
+					img(src="/images/arrowsUp.png" width="180px")
+					p.center.mediumRare Select with up
+			section.whole
+				section.center.half
+					img(src="/images/arrowsUp.png" width="180px").pt
+					p.center.mediumRare Press down to go to the next song by the artist
 
-			section.center
-				h3.page-title.center.mediumRare Press down to go to the next song by the artist
-				img(src="/images/arrowsUp.png" width="180px")
-
-			section.center
-				h3.page-title.center.mediumRare Press spacebar to add song to Spotify library
+				section.center.half
+					img(src="/images/space.png" width="180px", style="margin-top:65px;")
+					p.center.mediumRare Press spacebar to add song to Spotify library
 
 			section.mt
 				h3.page-title.center.medium You can always jump to an artist by searching in the text field
