@@ -214,6 +214,25 @@ Router.map(function() {
 		}
 	});
 
+	this.route('discoverOnboard', {
+		path: '/discover/tutorial',
+		template:'discover',
+		onAfterAction: function () {
+			if (location.host != 'localhost:3000') {
+				GAnalytics.pageview('/discover/tutorial');
+			};
+			// loadArtist();
+			Meteor.functions.setController(Meteor.controllers.gameController);
+			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
+				loadArtist(artist);
+				Session.set("startArtist", artist);
+			});
+			setTimeout(function () {
+				setSelected(selectedRelatedArtistIndex);
+			}, 200);
+		}
+	});
+
 	this.route('discover', {
 		path: '/discover',
 		template:'discover',
@@ -414,6 +433,10 @@ if (Meteor.isClient) {
 
 	Template.index.onboarding = function(){
 		return Session.get("onboarding");
+	}
+
+	Template.discoverOnboarding.onboarding = function(){
+		return Session.get("discoveronboarding");
 	}
 
 	Template.twitterHandles.random = function () {
@@ -630,6 +653,29 @@ if (Meteor.isClient) {
 
 	};
 
+	function proceedFromDiscover () {
+		hideSplash();
+
+		// 2, was at onboarding, set up for game
+		if(Session.get("discoveronboarding")){
+			Session.set("discoveronboarding", false);
+			if(userIsIncognito()){
+				startGame();
+				return;
+			}else{
+				localStorage.setItem("discoveronboardingDone", "true");
+			}
+		};
+
+		// 1 - go to onboarding
+		if(userNotOnboarded()){
+			Session.set("discoveronboarding", true);
+		}else{ //3 start game
+			startGame();
+		}
+
+	};
+
 	function startGame () {
 		Meteor.functions.setController(Meteor.controllers.gameController);
 		setTimeout(function () {
@@ -652,6 +698,12 @@ if (Meteor.isClient) {
 		// uses local storage to see if user onboarded
 		return (localStorage.getItem("onboardingDone") == "false" ||
 			localStorage.getItem("onboardingDone") === null)
+	};
+
+	function discoverUserNotOnboarded () {
+		// uses local storage to see if user onboarded
+		return (localStorage.getItem("discoveronboardingDone") == "false" ||
+			localStorage.getItem("discoveronboardingDone") === null)
 	};
 
 	Template.artistBox.events({
