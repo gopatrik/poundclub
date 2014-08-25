@@ -7,6 +7,7 @@ Meteor.controllers = {
 	gameController: function () {
 		document.onkeydown = function KeyPressed( e ) {
 			var key = ( window.event ) ? event.keyCode : e.keyCode;
+			console.log(key)
 
 			switch(key){
 				case 37: // left
@@ -26,8 +27,8 @@ Meteor.controllers = {
 				case 32: // space
 					Meteor.functions.addToSpotify();
 					break;
+				case 13: // enter
 				case 38: // up
-				case 40: // down
 					Session.set("score", Session.get("score")+1);
 
 					// $("section.background").addClass('fade-out');
@@ -45,8 +46,59 @@ Meteor.controllers = {
 					},200);
 
 					break;
+				case 40: // down
+					playNext();
+					break;
 			}
 		}
+	},
+	discoverController: function () {
+		document.onkeydown = function KeyPressed( e ) {
+			var key = ( window.event ) ? event.keyCode : e.keyCode;
+			console.log(key)
+
+			switch(key){
+				case 37: // left
+					if(selectedRelatedArtistIndex > 1){
+						setSelected(selectedRelatedArtistIndex - 1);
+					}else{
+						setSelected(5);
+					}
+					break;
+				case 39: // right
+					if(selectedRelatedArtistIndex < 5){
+						setSelected(selectedRelatedArtistIndex + 1);
+					}else{
+						setSelected(1);
+					}
+					break;
+				case 32: // space
+					Meteor.functions.addToSpotify();
+					break;
+				case 13: // enter
+				case 38: // up
+					Session.set("score", Session.get("score")+1);
+
+					// $("section.background").addClass('fade-out');
+
+					$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").addClass('move-up');
+
+					setTimeout(function () {
+						$("ul.related-artists").addClass('move-down');
+						$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass('move-up');
+						loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
+						setTimeout(function () {
+							$("ul.related-artists").removeClass('move-down');
+							$("ul.related-artists").addClass('swosh-in');
+						},200);
+					},200);
+
+					break;
+				case 40: // down
+					playNext();
+					break;
+			}
+		};
 	},
 	splashController: function () {
 		// start by listening for up key
@@ -187,7 +239,7 @@ Router.map(function() {
 				GAnalytics.pageview('/discover');
 			};
 			// loadArtist();
-			Meteor.functions.setController(Meteor.controllers.gameController);
+			Meteor.functions.setController(Meteor.controllers.discoverController);
 			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
 				loadArtist(artist);
 				Session.set("startArtist", artist);
