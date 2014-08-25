@@ -87,7 +87,7 @@ Meteor.controllers = {
 
 						// loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
 
-						Router.go('/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
+						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
 
 						setTimeout(function () {
 							$("ul.related-artists").removeClass('move-down');
@@ -125,7 +125,7 @@ Meteor.controllers = {
 				//Session.set("incognito", true)
 
 
-				Router.go('/');
+				Router.go('/discover');
 			}
 		};
 
@@ -237,7 +237,7 @@ Router.map(function() {
 	});
 
 	this.route('discoverOnboard', {
-		path: '/tutorial',
+		path: '/',
 		template:'discoverOnboarding',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
@@ -245,13 +245,13 @@ Router.map(function() {
 			};
 
 			fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
-			Session.set("artistImage", "http://37.media.tumblr.com/0da1e786ac7997b82b072c30b32092ca/tumblr_naj3n71TcT1st5lhmo1_1280.jpg");
+			Session.set("artistImage", "/images/onboardimage.jpg");
 			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
 		}
 	});
 
 	this.route('discover', {
-		path: '/',
+		path: '/discover',
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
@@ -261,7 +261,7 @@ Router.map(function() {
 			if(!userIsIncognito()){
 
 				if(discoverUserNotOnboarded()){
-					Router.go("/tutorial");
+					Router.go("/");
 					return;
 				};
 			};
@@ -293,12 +293,12 @@ Router.map(function() {
 				"2cCUtGK9sDU2EoElnk0GNB"
 			];
 
-			Router.go('/'+artistsArray[Math.floor(Math.random() * artistsArray.length)]);
+			Router.go('/discover/'+artistsArray[Math.floor(Math.random() * artistsArray.length)]);
 		}
 	});
 
 	this.route('discover', {
-		path: '/:artistId',
+		path: '/discover/:artistId',
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
@@ -658,7 +658,7 @@ if (Meteor.isClient) {
 				localStorage.setItem("discoveronboardingDone", "true");
 			}
 
-			Router.go('/');
+			Router.go('/discover/');
 		},
 	});
 	Template.artistSearch.goalSearchResult = function () {

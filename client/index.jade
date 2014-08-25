@@ -44,7 +44,7 @@ template(name="discover")
 			+relatedArtists
 
 	.absoluteBottomRight
-		p: a.subtle.small.bold.nolink(href="/tutorial") Tutorial
+		p: a.subtle.small.bold.nolink(href="/") Tutorial
 
 	.absoluteUpRight
 		+shareArtist
@@ -56,6 +56,8 @@ template(name="discover")
 template(name="discoverOnboarding")
 	.full-center-contents
 		section
+			h1.page-title.center.white The Artist Hunt
+			h2.white.center.medium.center.white.mb-large An intuitive way to discover music
 			section
 				section.center.half
 					img(src="/images/arrowsLeftRight.png" width="180px")
@@ -78,8 +80,8 @@ template(name="discoverOnboarding")
 
 
 			section.mt-large.center
-				.white-border.pointer.inline.finish-onboarding
-					p.large.bold.center.large.nm Press up to continue
+				.pointer.inline.finish-onboarding
+					button.oversized.extra.large.bold.center.large.nm Press up to continue
 
 
 template(name="musicControls")
