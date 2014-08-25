@@ -10,6 +10,7 @@ if(Meteor.isClient){
 				if(!song){
 					return;
 				};
+
 				$.ajax({
 					type:'PUT',
 					headers: {
@@ -17,9 +18,11 @@ if(Meteor.isClient){
 			    	},
 					url: 'https://api.spotify.com/v1/me/tracks?ids='+song.id,
 					success: function (response) {
-						// console.log(response);
+						alert('never happens');
 					}
 				});
+
+				Session.set("songAdded", {song: song.id});
 			}else{
 				var auth = Meteor.functions.auth();
 				auth.openLogin();

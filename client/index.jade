@@ -36,7 +36,7 @@ template(name="discover")
 
 				.titles.mb
 					//- p.center.medium.np Listening to
-					h1.subtle.medium.center.np.current-song= playingsong.name
+					h1.subtle.large.center.np.current-song= playingsong.name
 					+musicControls
 
 
@@ -83,21 +83,22 @@ template(name="shareArtist")
 
 
 template(name="spotifyControls")
-	.pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
+	//- .pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
 	if songPaused
-		.pophover: i.medium.pointer.fa.fa-play.play-song.large.small-wide-padding
+		.pophover.small-width: i.medium.pointer.fa.fa-play.play-song.large.small-wide-padding
 	else
-		.pophover: i.medium.pointer.fa.fa-pause.pause-song.large.small-wide-padding
+		.pophover.small-width: i.medium.pointer.fa.fa-pause.pause-song.large.small-wide-padding
 
-	if loggedIn
-		.pophover
+
+	unless songAdded
+		.pophover.small-width
 			i.fa.fa-plus.pointer.addSong.large.small-wide-padding
-
 	else
-		.pophover
-			i.fa.fa-plus.pointer.addSong.large.small-wide-padding
+		.pophover.small-width
+			i.fa.fa-check.pointer.large.small-wide-padding
 
-	.pophover: i.medium.pointer.fa.fa-fast-forward.next-song.large.small-wide-padding
+
+	.pophover.small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large.small-wide-padding
 
 
 	//- section

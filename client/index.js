@@ -322,7 +322,6 @@ if (Meteor.isClient) {
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 			success: function (response) {
-				
 				var relatedArtists = response.artists.slice(0,3);
 				var randomNum1 = minmaxRandom(4, response.artists.length-1);
 				var randomNum2 = minmaxRandom(4, response.artists.length-1);
@@ -390,7 +389,6 @@ if (Meteor.isClient) {
 				audio = newAudio;
 
 				audio.addEventListener('ended',playNext);
-				console.log(response)
 
 				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
 				document.title = "The Artist Hunt / ♫ "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
@@ -736,6 +734,14 @@ if (Meteor.isClient) {
 
 	Template.spotifyControls.songPaused = function () {
 		return Session.get("songPaused");
+	}
+
+	Template.spotifyControls.songAdded = function () {
+		var s = Session.get("songAdded");
+
+		if(s){
+			return s.song == Session.get("playingsong").id;
+		}
 	}
 
 	Template.shareArtist.sharing = function () {
