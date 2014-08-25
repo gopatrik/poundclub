@@ -7,7 +7,6 @@ Meteor.controllers = {
 	gameController: function () {
 		document.onkeydown = function KeyPressed( e ) {
 			var key = ( window.event ) ? event.keyCode : e.keyCode;
-			console.log(key)
 
 			switch(key){
 				case 37: // left
@@ -55,7 +54,6 @@ Meteor.controllers = {
 	discoverController: function () {
 		document.onkeydown = function KeyPressed( e ) {
 			var key = ( window.event ) ? event.keyCode : e.keyCode;
-			console.log(key)
 
 			switch(key){
 				case 37: // left
@@ -86,7 +84,11 @@ Meteor.controllers = {
 					setTimeout(function () {
 						$("ul.related-artists").addClass('move-down');
 						$("ul.related-artists li:nth-child("+selectedRelatedArtistIndex+") .artistBoxContainer").removeClass('move-up');
-						loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
+
+						// loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
+
+						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
+
 						setTimeout(function () {
 							$("ul.related-artists").removeClass('move-down');
 							$("ul.related-artists").addClass('swosh-in');
@@ -239,7 +241,7 @@ Router.map(function() {
 				GAnalytics.pageview('/discover/specific');
 			};
 			// loadArtist();
-			Meteor.functions.setController(Meteor.controllers.gameController);
+			Meteor.functions.setController(Meteor.controllers.discoverController);
 			getArtist(this.params.artistId,function(artist){
 				loadArtist(artist);
 				Session.set("startArtist", artist);
@@ -348,7 +350,6 @@ if (Meteor.isClient) {
 	};
 
 	function playSong(response,fadeIn){
-				// console.log(response.tracks[0].preview_url);
 				if(audio){
 					// audio.pause();
 					audio.removeEventListener('ended',playNext);
@@ -365,8 +366,10 @@ if (Meteor.isClient) {
 				audio = newAudio;
 
 				audio.addEventListener('ended',playNext);
+				console.log(response)
 
 				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
+				document.title = "The Artist Hunt / "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
 				// Session.set("toptrack", response.tracks[0].preview_url);
 	};
 
@@ -490,7 +493,6 @@ if (Meteor.isClient) {
 	var selectedArtistResultIndex = 0;
 	Template.artistSearch.events({
 		'keyup input[name=artistGoalSearchField]': function (e) {
-			// console.log();
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
@@ -499,7 +501,6 @@ if (Meteor.isClient) {
 			}
 		},
 		'keyup input[name=artistStartSearchField]': function (e) {
-			// console.log();
 			var name = $(e.target).val();
 			if(name.length > 0){
 				fetchFirstArtist(name, function (response) {
@@ -561,7 +562,7 @@ if (Meteor.isClient) {
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
 
 			if(Router.current().route.name == 'discover'){ // todo: not optimal
-				Meteor.functions.setController(Meteor.controllers.gameController);
+				Meteor.functions.setController(Meteor.controllers.discoverController);
 			}else{
 				Meteor.functions.setController(Meteor.controllers.splashController);
 			};
