@@ -227,7 +227,7 @@ Router.map(function() {
 
 	this.route('discoverOnboard', {
 		path: '/discover/tutorial',
-		template:'discover',
+		template:'discoverOnboarding',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
 				GAnalytics.pageview('/discover/tutorial');
@@ -642,7 +642,7 @@ if (Meteor.isClient) {
 		if(Session.get("onboarding")){
 			Session.set("onboarding", false);
 			if(userIsIncognito()){
-				startGame();
+				//startGame(); //go to URL
 				return;
 			}else{
 				localStorage.setItem("onboardingDone", "true");
@@ -653,7 +653,7 @@ if (Meteor.isClient) {
 		if(userNotOnboarded()){
 			Session.set("onboarding", true);
 		}else{ //3 start game
-			startGame();
+			//startGame(); //go to URL
 		}
 
 	};
