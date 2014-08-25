@@ -241,19 +241,10 @@ Router.map(function() {
 		template:'discoverOnboarding',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/t/utorial');
-			};
-
-			if(!userIsIncognito()){
-
-				if(discoverUserNotOnboarded()){
-					Router.go("/tutorial");
-					return;
-				};
+				GAnalytics.pageview('/tutorial');
 			};
 
 			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
-			
 		}
 	});
 
@@ -309,7 +300,7 @@ Router.map(function() {
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/s/pecific');
+				GAnalytics.pageview('/'+this.params.artistId);
 			};
 			// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
