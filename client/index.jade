@@ -91,12 +91,6 @@ template(name="shareArtist")
 template(name="spotifyControls")
 	//- .pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
 	ul.inline-list.nm.np.white
-		if songPaused
-			li.pophover: .small-width: i.medium.pointer.fa.fa-play.play-song.large
-		else
-			li.pophover: .small-width: i.medium.pointer.fa.fa-pause.pause-song.large
-
-
 		unless songAdded
 			li.pophover: .small-width
 				i.fa.fa-plus.pointer.addSong.large
@@ -104,6 +98,10 @@ template(name="spotifyControls")
 			li.jelly-back-forth: .small-width
 				i.fa.fa-check.pointer.large
 
+		if songPaused
+			li.pophover: .small-width: i.medium.pointer.fa.fa-play.play-song.large
+		else
+			li.pophover: .small-width: i.medium.pointer.fa.fa-pause.pause-song.large
 
 		li.pophover: .small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large
 
@@ -134,7 +132,7 @@ template(name="twitterHandles")
 template(name="artistSearch")
 	section.artistForms
 		if discoverSearch
-			.artistStartSearch.relative
+			.artistStartSearch.relative.discoverSearch
 				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
 				with startSearchResult
 					+artistSearchBox
