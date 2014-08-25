@@ -32,17 +32,16 @@ template(name="discover")
 		section.artist-area
 			section.discoverSearch
 				//- input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				+artistSearch
+
 				.titles.mb
 					//- p.center.medium.np Listening to
-					h1.page-title.center.np.current-song= playingsong.name
+					h1.subtle.large.center.np.current-song= playingsong.name
 					+musicControls
 
-				+artistSearch
 
 			+relatedArtists
 
-	.absoluteUpRight
-		+shareArtist
 
 template(name="discoverOnboarding")
 	.full-center-contents
@@ -73,7 +72,6 @@ template(name="discoverOnboarding")
 
 template(name="musicControls")
 	section.center.white
-		i.medium.pointer.fa.fa-fast-forward.next-song
 		+spotifyControls
 
 template(name="shareArtist")
@@ -86,10 +84,25 @@ template(name="shareArtist")
 
 
 template(name="spotifyControls")
-	if loggedIn
-		i.fa.fa-plus.pointer.addSong
-	else
-		i.fa.fa-plus.pointer.addSong.logInHint
+	//- .pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
+	ul.inline-list.nm.np.white
+		if songPaused
+			li.pophover.small-width: i.medium.pointer.fa.fa-play.play-song.large.small-wide-padding
+		else
+			li.pophover.small-width: i.medium.pointer.fa.fa-pause.pause-song.large.small-wide-padding
+
+
+		unless songAdded
+			li.pophover.small-width
+				i.fa.fa-plus.pointer.addSong.large.small-wide-padding
+		else
+			li.jelly-back-forth.small-width
+				i.fa.fa-check.pointer.large.small-wide-padding
+
+
+		li.pophover.small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large.small-wide-padding
+
+
 	//- section
 	//- if loggedIn
 	//- 	p.addSong.small.bold.pointer

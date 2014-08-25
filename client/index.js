@@ -343,7 +343,6 @@ if (Meteor.isClient) {
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 			success: function (response) {
-				
 				var relatedArtists = response.artists.slice(0,3);
 				var randomNum1 = minmaxRandom(4, response.artists.length-1);
 				var randomNum2 = minmaxRandom(4, response.artists.length-1);
@@ -411,10 +410,9 @@ if (Meteor.isClient) {
 				audio = newAudio;
 
 				audio.addEventListener('ended',playNext);
-				console.log(response)
 
 				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
-				document.title = "The Artist Hunt / "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
+				document.title = "The Artist Hunt / ♫ "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
 				// Session.set("toptrack", response.tracks[0].preview_url);
 	};
 
@@ -453,8 +451,9 @@ if (Meteor.isClient) {
 
 	Template.gameBoard.songname = function () {
 		var song = Session.get("playingsong");
-		if(song)
-		return song.name;
+		if(song){
+			return song.name;
+		}
 	}
 
 	Template.index.onboarding = function(){
@@ -732,6 +731,18 @@ if (Meteor.isClient) {
 
 	});
 
+	Template.spotifyControls.songPaused = function () {
+		return Session.get("songPaused");
+	}
+
+	Template.spotifyControls.songAdded = function () {
+		var s = Session.get("songAdded");
+
+		if(s){
+			return s.song == Session.get("playingsong").id;
+		}
+	}
+
 	Template.shareArtist.sharing = function () {
 		return Session.get("shareArtist");
 	};
@@ -748,7 +759,21 @@ if (Meteor.isClient) {
 	Template.musicControls.events({
 		'click .next-song': function () {
 			playNext();
+		},
+		'click .play-song':function (e) {
+			if (audio.paused == true) {
+				audio.play();
+				Session.set("songPaused", false);
+			};
+		},
+		'click .pause-song':function (e) {
+			if (audio.paused == false) {
+				audio.pause();
+				Session.set("songPaused", true);
+			};
 		}
 	});
+
+
 
 }
