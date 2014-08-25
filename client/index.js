@@ -111,6 +111,17 @@ Meteor.controllers = {
 			}
 		};
 	},
+
+	discoveryOnboardController: function () {
+		// start by listening for up key
+		document.onkeydown = function KeyPressed( e ) {
+			var key = ( window.event ) ? event.keyCode : e.keyCode;
+			if(key == 38){
+				proceedFromDiscover();
+			}
+		};
+	},
+
 	noController: function () {
 		document.onkeydown = function KeyPressed( e ) {
 			// 
@@ -216,20 +227,14 @@ Router.map(function() {
 
 	this.route('discoverOnboard', {
 		path: '/discover/tutorial',
-		template:'discover',
+		template:'discoverOnboarding',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
 				GAnalytics.pageview('/discover/tutorial');
 			};
-			// loadArtist();
-			Meteor.functions.setController(Meteor.controllers.gameController);
-			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
-				loadArtist(artist);
-				Session.set("startArtist", artist);
-			});
-			setTimeout(function () {
-				setSelected(selectedRelatedArtistIndex);
-			}, 200);
+
+			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
+			
 		}
 	});
 
@@ -638,7 +643,7 @@ if (Meteor.isClient) {
 		if(Session.get("onboarding")){
 			Session.set("onboarding", false);
 			if(userIsIncognito()){
-				startGame();
+				//startGame(); //go to URL
 				return;
 			}else{
 				localStorage.setItem("onboardingDone", "true");
@@ -649,13 +654,12 @@ if (Meteor.isClient) {
 		if(userNotOnboarded()){
 			Session.set("onboarding", true);
 		}else{ //3 start game
-			startGame();
+			//startGame(); //go to URL
 		}
 
 	};
 
 	function proceedFromDiscover () {
-		hideSplash();
 
 		// 2, was at onboarding, set up for game
 		if(Session.get("discoveronboarding")){
