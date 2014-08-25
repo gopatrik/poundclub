@@ -128,6 +128,9 @@ Meteor.controllers = {
 				Router.go('/');
 			}
 		};
+
+
+
 	},
 
 	noController: function () {
@@ -268,16 +271,8 @@ Router.map(function() {
 					Router.go("/tutorial");
 					return;
 				};
-			} else {
-				//Session.set("incognito", true)
-				// Router.go("/t/utorial");
-				// return;
-			}
+			};
 
-						// loadArtist();
-			// Meteor.functions.setController(Meteor.controllers.discoverController);
-			
-// if(Meteor.isServer){
 			var artistsArray = [
 				"4gzpq5DPGxSnKTe4SA8HAU",
 				"7jy3rLJdDQY21OgRLCZ9sD",
@@ -306,16 +301,6 @@ Router.map(function() {
 			];
 
 			Router.go('/'+artistsArray[Math.floor(Math.random() * artistsArray.length)]);
-			// getArtist(artistsArray[Math.floor(Math.random() * artistsArray.length)] ,function(artist){
-			// 	loadArtist(artist);
-			// 	Session.set("startArtist", artist);
-			
-			// });
-
-
-			// setTimeout(function () {
-			// 	setSelected(selectedRelatedArtistIndex);
-			// }, 200);
 		}
 	});
 
@@ -665,6 +650,15 @@ if (Meteor.isClient) {
 
 	});
 
+	Template.discoverOnboarding.events({
+		'click .finish-onboarding':function () {
+			if(!userIsIncognito()){
+				localStorage.setItem("discoveronboardingDone", "true");
+			}
+
+			Router.go('/');
+		},
+	});
 	Template.artistSearch.goalSearchResult = function () {
 		return Session.get("goalArtistSearchResults");
 	};
