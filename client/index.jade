@@ -87,12 +87,14 @@ template(name="musicControls")
 		+spotifyControls
 
 template(name="shareArtist")
-	if sharing
-		//- input.artist-link.small.squared(value="http://www.theartisthunt.com/discover/#{startArtist.id}")
-		+shareButtons
-	else
+	//- if sharing
+	//- 	//- input.artist-link.small.squared(value="http://www.theartisthunt.com/discover/#{startArtist.id}")
+	//- 	+shareButtons
+	//- else
 		i.white.medium.fa.fa-twitter.share-button.pointer
-
+	
+	a(href="http://twitter.com/share?text=The Artist Hunt: &url=http://theartisthunt.com" target="_blank")
+		i.white.medium.fa.fa-twitter.share-button.pointer
 
 
 
