@@ -128,6 +128,9 @@ Meteor.controllers = {
 				Router.go('/discover');
 			}
 		};
+
+
+
 	},
 
 	noController: function () {
@@ -269,7 +272,7 @@ Router.map(function() {
 						// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
 			
-// if(Meteor.isServer){
+			// if(Meteor.isServer){
 			var artistsArray = ["4gzpq5DPGxSnKTe4SA8HAU", "7jy3rLJdDQY21OgRLCZ9sD", "12Chz98pHFMPJEknJQMWvI", "6Tyzp9KzpiZ04DABQoedps", "0du5cEVh5yTK9QJze8zA0C", "1HY2Jd0NmPuamShAr6KMms", "1cHFz6lrt7KAsBV8j2Ny1g", "776Uo845nYHJpNaStv1Ds4", "2wOqMjp9TyABvtHdOSOTUS", "3MKCzCnpzw3TjUYs2v7vDA", "1dfeR4HaWDbWqFHLkxsg1d", "3eskO5m0H4yiF64vRySBjr", "1GLtl8uqKmnyCWxHmw9tL4", "2DaxqgrOhkeH0fpeiQq2f4", "0L8ExT028jH3ddEcZwqJJ5", "2ye2Wgw4gimLv2eAKyk1NB", "1G9G7WwrXka3Z1r7aIDjI7", "4tujQJicOnuZRLiBFdp3Ou", "6sFIWsNpZYqfjUpaCgueju", "1l7ZsJRRS8wlW3WfJfPfNS", "1Cs0zKBU1kc0i8ypK3B9ai", "1XpDYCrUJnvCo9Ez6yeMWh", "4pejUc4iciQfgdX6OKulQn", "2cCUtGK9sDU2EoElnk0GNB"];
 
 			getArtist(artistsArray[Math.floor(Math.random() * artistsArray.length)] ,function(artist){
@@ -631,6 +634,15 @@ if (Meteor.isClient) {
 
 	});
 
+	Template.discoverOnboarding.events({
+		'click .buttonBorder':function () {
+			if(!userIsIncognito()){
+					localStorage.setItem("discoveronboardingDone", "true");
+			}
+			//Session.set("incognito", true)
+			Router.go('/discover');
+		},
+	});
 	Template.artistSearch.goalSearchResult = function () {
 		return Session.get("goalArtistSearchResults");
 	};
