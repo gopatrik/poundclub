@@ -86,7 +86,7 @@ if (Meteor.isClient) {
 		return Highscores.find({start: Session.get("startArtist").id, goal: Session.get("goalArtist").id}, {sort: {score: 1}})
 	}
 
-	Template.toplist.rendered = function(){
+	Template.shareButtons.rendered = function(){
   		(function(d, s, id) {
   			var js, fjs = d.getElementsByTagName(s)[0];
   			if (d.getElementById(id)) return;
@@ -96,6 +96,14 @@ if (Meteor.isClient) {
 			}(document, 'script', 'facebook-jssdk'));			
 
 			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+	};
+
+	Template.toplist.shareUrl = function () {
+		return "http://www.theartisthunt.com";
+	};
+
+	Template.toplist.shareText = function () {
+		return "Check out The Artist Hunt!";
 	};
 	
 	Template.index.events = {

@@ -808,6 +808,19 @@ if (Meteor.isClient) {
 		}
 	});
 
+	// Template.discover.shareUrl = function () {
+	// 	var pl =Session.get("startArtist");
+	// 	if (pl){
+	// 		return "http://www.theartisthunt.com/discover/"+pl.id;
+	// 	}else{
+	// 		return "http://www.theartisthunt.com/discover";
+	// 	}
+	// };
+
+	// Template.discover.shareText = function () {
+	// 	return "Checka out The Artist Hunt!";
+	// };
+
 
 
 }
