@@ -49,6 +49,9 @@ template(name="discover")
 	.absoluteUpRight
 		+shareArtist
 
+	.absoluteBottomLeft
+		+twitterHandles
+
 
 template(name="discoverOnboarding")
 	.full-center-contents
@@ -89,7 +92,6 @@ template(name="shareArtist")
 		+shareButtons
 	else
 		i.white.medium.fa.fa-twitter.share-button.pointer
-		i.white.medium.fa.fa-facebook.share-button.pointer
 
 
 
@@ -129,9 +131,11 @@ template(name="spotifyControls")
 
 template(name="twitterHandles")
 	with random
-		p.mediumRare Made by
+		p.mediumRare
+			span.subtle With
+			i.fa.fa-heart-o.subtle
 			a.subtle(href="https://twitter.com/#{one}") @#{one}
-			| &amp;
+			span.subtle &amp;
 			a.subtle(href="https://twitter.com/#{two}") @#{two}
 
 
