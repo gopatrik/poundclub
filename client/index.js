@@ -117,7 +117,15 @@ Meteor.controllers = {
 		document.onkeydown = function KeyPressed( e ) {
 			var key = ( window.event ) ? event.keyCode : e.keyCode;
 			if(key == 38){
-				proceedFromDiscover();
+				
+				if(!userIsIncognito()){
+					localStorage.setItem("discoveronboardingDone", "true");
+				}
+
+				Session.set("incognito", true)
+
+
+				Router.go('/discover');
 			}
 		};
 	},
@@ -245,7 +253,20 @@ Router.map(function() {
 			if (location.host != 'localhost:3000') {
 				GAnalytics.pageview('/discover');
 			};
-			// loadArtist();
+
+			if(!userIsIncognito()){
+
+				if(discoverUserNotOnboarded()){
+					Router.go("/discover/tutorial");
+					return;
+				};
+			} else {
+				//Session.set("incognito", true)
+				// Router.go("/discover/tutorial");
+				// return;
+			}	
+
+						// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
 			getArtist("6KcmUwBzfwLaYxdfIboqcp",function(artist){
 				loadArtist(artist);
@@ -440,8 +461,8 @@ if (Meteor.isClient) {
 		return Session.get("onboarding");
 	}
 
-	Template.discoverOnboarding.onboarding = function(){
-		return Session.get("discoveronboarding");
+	Template.index.incognito = function(){
+		return Session.get("incognito");
 	}
 
 	Template.twitterHandles.random = function () {
@@ -642,7 +663,7 @@ if (Meteor.isClient) {
 		if(Session.get("onboarding")){
 			Session.set("onboarding", false);
 			if(userIsIncognito()){
-				//startGame(); //go to URL
+				startGame();
 				return;
 			}else{
 				localStorage.setItem("onboardingDone", "true");
@@ -652,28 +673,6 @@ if (Meteor.isClient) {
 		// 1 - go to onboarding
 		if(userNotOnboarded()){
 			Session.set("onboarding", true);
-		}else{ //3 start game
-			//startGame(); //go to URL
-		}
-
-	};
-
-	function proceedFromDiscover () {
-
-		// 2, was at onboarding, set up for game
-		if(Session.get("discoveronboarding")){
-			Session.set("discoveronboarding", false);
-			if(userIsIncognito()){
-				startGame();
-				return;
-			}else{
-				localStorage.setItem("discoveronboardingDone", "true");
-			}
-		};
-
-		// 1 - go to onboarding
-		if(userNotOnboarded()){
-			Session.set("discoveronboarding", true);
 		}else{ //3 start game
 			startGame();
 		}
