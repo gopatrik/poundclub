@@ -87,7 +87,7 @@ Meteor.controllers = {
 
 						// loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
 
-						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
+						Router.go('/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
 
 						setTimeout(function () {
 							$("ul.related-artists").removeClass('move-down');
@@ -125,7 +125,7 @@ Meteor.controllers = {
 				//Session.set("incognito", true)
 
 
-				Router.go('/discover');
+				Router.go('/');
 			}
 		};
 	},
@@ -142,7 +142,7 @@ Meteor.controllers = {
 
 Router.map(function() {
 	this.route('home', {
-		path: '/',
+		path: '/game',
 		template:'index',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
@@ -234,11 +234,19 @@ Router.map(function() {
 	});
 
 	this.route('discoverOnboard', {
-		path: '/discover/tutorial',
+		path: '/tutorial',
 		template:'discoverOnboarding',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/discover/tutorial');
+				GAnalytics.pageview('/t/utorial');
+			};
+
+			if(!userIsIncognito()){
+
+				if(discoverUserNotOnboarded()){
+					Router.go("/tutorial");
+					return;
+				};
 			};
 
 			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
@@ -247,24 +255,24 @@ Router.map(function() {
 	});
 
 	this.route('discover', {
-		path: '/discover',
+		path: '/',
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/discover');
+				GAnalytics.pageview('/');
 			};
 
 			if(!userIsIncognito()){
 
 				if(discoverUserNotOnboarded()){
-					Router.go("/discover/tutorial");
+					Router.go("/tutorial");
 					return;
 				};
 			} else {
 				//Session.set("incognito", true)
-				// Router.go("/discover/tutorial");
+				// Router.go("/t/utorial");
 				// return;
-			}	
+			}
 
 						// loadArtist();
 			// Meteor.functions.setController(Meteor.controllers.discoverController);
@@ -297,7 +305,7 @@ Router.map(function() {
 				"2cCUtGK9sDU2EoElnk0GNB"
 			];
 
-			Router.go('/discover/'+artistsArray[Math.floor(Math.random() * artistsArray.length)]);
+			Router.go('/'+artistsArray[Math.floor(Math.random() * artistsArray.length)]);
 			// getArtist(artistsArray[Math.floor(Math.random() * artistsArray.length)] ,function(artist){
 			// 	loadArtist(artist);
 			// 	Session.set("startArtist", artist);
@@ -312,11 +320,11 @@ Router.map(function() {
 	});
 
 	this.route('discover', {
-		path: '/discover/:artistId',
+		path: '/:artistId',
 		template:'discover',
 		onAfterAction: function () {
 			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/discover/specific');
+				GAnalytics.pageview('/s/pecific');
 			};
 			// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
@@ -811,9 +819,9 @@ if (Meteor.isClient) {
 	// Template.discover.shareUrl = function () {
 	// 	var pl =Session.get("startArtist");
 	// 	if (pl){
-	// 		return "http://www.theartisthunt.com/discover/"+pl.id;
+	// 		return "http://www.theartisthunt.c/om/"+pl.id;
 	// 	}else{
-	// 		return "http://www.theartisthunt.com/discover";
+	// 		return "http://www.theartisthunt.c/om";
 	// 	}
 	// };
 
