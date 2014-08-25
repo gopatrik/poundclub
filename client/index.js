@@ -7,6 +7,7 @@ Meteor.controllers = {
 	gameController: function () {
 		document.onkeydown = function KeyPressed( e ) {
 			var key = ( window.event ) ? event.keyCode : e.keyCode;
+			console.log(key)
 
 			switch(key){
 				case 37: // left
@@ -26,8 +27,8 @@ Meteor.controllers = {
 				case 32: // space
 					Meteor.functions.addToSpotify();
 					break;
+				case 13: // enter
 				case 38: // up
-				case 40: // down
 					Session.set("score", Session.get("score")+1);
 
 					// $("section.background").addClass('fade-out');
@@ -44,6 +45,9 @@ Meteor.controllers = {
 						},200);
 					},200);
 
+					break;
+				case 40: // down
+					playNext();
 					break;
 			}
 		}
