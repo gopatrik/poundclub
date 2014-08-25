@@ -42,6 +42,9 @@ template(name="discover")
 
 			+relatedArtists
 
+	.absoluteBottomRight
+		p: a.small.white.bold.nolink(href="/discover/tutorial") Controls
+
 
 template(name="discoverOnboarding")
 	.full-center-contents
@@ -84,20 +87,20 @@ template(name="spotifyControls")
 	//- .pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
 	ul.inline-list.nm.np.white
 		if songPaused
-			li.pophover.small-width: i.medium.pointer.fa.fa-play.play-song.large.small-wide-padding
+			li.pophover: .small-width: i.medium.pointer.fa.fa-play.play-song.large
 		else
-			li.pophover.small-width: i.medium.pointer.fa.fa-pause.pause-song.large.small-wide-padding
+			li.pophover: .small-width: i.medium.pointer.fa.fa-pause.pause-song.large
 
 
 		unless songAdded
-			li.pophover.small-width
-				i.fa.fa-plus.pointer.addSong.large.small-wide-padding
+			li.pophover: .small-width
+				i.fa.fa-plus.pointer.addSong.large
 		else
-			li.jelly-back-forth.small-width
-				i.fa.fa-check.pointer.large.small-wide-padding
+			li.jelly-back-forth: .small-width
+				i.fa.fa-check.pointer.large
 
 
-		li.pophover.small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large.small-wide-padding
+		li.pophover: .small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large
 
 
 	//- section

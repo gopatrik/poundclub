@@ -392,6 +392,7 @@ if (Meteor.isClient) {
 
 				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
 				document.title = "The Artist Hunt / ♫ "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
+				Session.set("songPaused", false);
 				// Session.set("toptrack", response.tracks[0].preview_url);
 	};
 
