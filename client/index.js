@@ -388,7 +388,7 @@ if (Meteor.isClient) {
 				console.log(response)
 
 				Session.set("playingsong", {name:response.tracks[0].name, id:response.tracks[0].id, tracks:response.tracks.splice(1,response.tracks.length-1)});
-				document.title = "The Artist Hunt / "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
+				document.title = "The Artist Hunt / ♫ "+ response.tracks[0].artists[0].name + " – " + response.tracks[0].name;
 				// Session.set("toptrack", response.tracks[0].preview_url);
 	};
 
@@ -427,8 +427,9 @@ if (Meteor.isClient) {
 
 	Template.gameBoard.songname = function () {
 		var song = Session.get("playingsong");
-		if(song)
-		return song.name;
+		if(song){
+			return song.name;
+		}
 	}
 
 	Template.index.onboarding = function(){
@@ -729,6 +730,10 @@ if (Meteor.isClient) {
 
 	});
 
+	Template.spotifyControls.songPaused = function () {
+		return Session.get("songPaused");
+	}
+
 	Template.shareArtist.sharing = function () {
 		return Session.get("shareArtist");
 	};
@@ -745,7 +750,21 @@ if (Meteor.isClient) {
 	Template.musicControls.events({
 		'click .next-song': function () {
 			playNext();
+		},
+		'click .play-song':function (e) {
+			if (audio.paused == true) {
+				audio.play();
+				Session.set("songPaused", false);
+			};
+		},
+		'click .pause-song':function (e) {
+			if (audio.paused == false) {
+				audio.pause();
+				Session.set("songPaused", true);
+			};
 		}
 	});
+
+
 
 }

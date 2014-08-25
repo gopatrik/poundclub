@@ -32,12 +32,13 @@ template(name="discover")
 		section.artist-area
 			section.discoverSearch
 				//- input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+				+artistSearch
+
 				.titles.mb
 					//- p.center.medium.np Listening to
-					h1.page-title.center.np.current-song= playingsong.name
+					h1.subtle.medium.center.np.current-song= playingsong.name
 					+musicControls
 
-				+artistSearch
 
 			+relatedArtists
 
@@ -50,7 +51,6 @@ template(name="discoverOnboarding")
 
 template(name="musicControls")
 	section.center.white
-		i.medium.pointer.fa.fa-fast-forward.next-song
 		+spotifyControls
 
 template(name="shareArtist")
@@ -63,10 +63,23 @@ template(name="shareArtist")
 
 
 template(name="spotifyControls")
-	if loggedIn
-		i.fa.fa-plus.pointer.addSong
+	.pophover: i.medium.pointer.fa.fa-fast-backward.prev-song.large.small-wide-padding
+	if songPaused
+		.pophover: i.medium.pointer.fa.fa-play.play-song.large.small-wide-padding
 	else
-		i.fa.fa-plus.pointer.addSong.logInHint
+		.pophover: i.medium.pointer.fa.fa-pause.pause-song.large.small-wide-padding
+
+	if loggedIn
+		.pophover
+			i.fa.fa-plus.pointer.addSong.large.small-wide-padding
+
+	else
+		.pophover
+			i.fa.fa-plus.pointer.addSong.large.small-wide-padding
+
+	.pophover: i.medium.pointer.fa.fa-fast-forward.next-song.large.small-wide-padding
+
+
 	//- section
 	//- if loggedIn
 	//- 	p.addSong.small.bold.pointer
