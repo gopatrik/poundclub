@@ -244,7 +244,7 @@ Router.map(function() {
 				GAnalytics.pageview('/tutorial');
 			};
 
-			fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
+			// fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
 			Session.set("artistImage", "/images/onboardimage.jpg");
 			Meteor.functions.setController(Meteor.controllers.discoveryOnboardController);
 		}
