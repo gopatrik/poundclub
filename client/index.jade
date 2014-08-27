@@ -150,6 +150,7 @@ template(name="artistSearch")
 				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
 				with startSearchResult
 					+artistSearchBox
+				i.fa.fa-search.large.absoluteUpLeft.ml.subtle
 		else
 			.artistStartSearch.half.leftForm.relative
 				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
