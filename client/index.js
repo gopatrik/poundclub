@@ -362,7 +362,8 @@ if (Meteor.isClient) {
 		$.ajax({
 			url: 'https://api.spotify.com/v1/artists/'+artistId+'/related-artists',
 			success: function (response) {
-				var relatedArtists = response.artists.slice(0,3);
+				
+				var relatedArtists = response.artists.slice(1,4);
 				var randomNum1 = minmaxRandom(4, response.artists.length-1);
 				var randomNum2 = minmaxRandom(4, response.artists.length-1);
 				while(randomNum1 == randomNum2){
