@@ -5,9 +5,8 @@
 
 standard-app-packages
 insecure
-jade
-stylus-multi
-iron-router
-GAnalytics
-fast-render
-font-awesome
+stylus
+natestrauser:font-awesome
+meteorhacks:fast-render
+waitingkuo:jade
+iron:router
