@@ -639,7 +639,6 @@ if (Meteor.isClient) {
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
 
 			if(Router.current().route.name == 'discover'){ // todo: not optimal
-				console.log("discoverController")
 				setTimeout(function () {
 					Meteor.functions.setController(Meteor.controllers.discoverController);
 				},50);
@@ -649,7 +648,6 @@ if (Meteor.isClient) {
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			console.log("nocontroler")
 			Meteor.functions.setController(Meteor.controllers.noController);
 				
 			$(e.target).parent().children('ul.search-results').show();
