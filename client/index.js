@@ -87,7 +87,11 @@ Meteor.controllers = {
 
 						// loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
 
+						Session.set("previousArtist", Session.get("artist"));
+
 						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
+
+						
 
 						setTimeout(function () {
 							$("ul.related-artists").removeClass('move-down');
@@ -97,6 +101,12 @@ Meteor.controllers = {
 
 					break;
 				case 40: // down
+					//alert(Session.get("previousArtist").id)
+					Router.go('/discover/'+Session.get("previousArtist").id);
+					
+					//playNext();
+					break;
+				case 16: //shift
 					playNext();
 					break;
 			}
