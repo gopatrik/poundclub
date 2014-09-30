@@ -31,7 +31,7 @@ p
 	position relative
 	// top 50%
 	// -moz-transform translateY(10%)
-	align(b)
+	// align(b)
 
 
 section.background
@@ -97,11 +97,6 @@ ul.related-artists
 					animation: jelly .7s linear both;
 				p
 					margin-top 38px
-
-				
-
-
-				// transition all 1s
 
 			h3
 				margin-top 10px
@@ -194,21 +189,23 @@ input.round
 .largeContainer
 	width 200px
 
-button.oversized
-	border-radius 5px
-	
+button
+	outline none
+	margin 0
+	padding 0
 	border none
-	background #CE4141
+	border-radius 5px
 	color white
+	&.modal
+		background #CE4141
+
+button.oversized
 	font-size 21px
 	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 	border-bottom: 2px solid #810B0B;
 	padding 10px 20px
 	font-family sansfonts
 	font-weight bold
-	outline none
-	margin 0
-	padding 0
 
 	&:active, &:hover
 		margin-bottom -2px

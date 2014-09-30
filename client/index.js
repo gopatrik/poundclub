@@ -652,7 +652,6 @@ if (Meteor.isClient) {
 				
 			$(e.target).parent().children('ul.search-results').show();
 		}
-
 	});
 
 	Template.discoverOnboarding.events({
@@ -812,6 +811,12 @@ if (Meteor.isClient) {
 				audio.pause();
 				Session.set("songPaused", true);
 			};
+		}
+	});
+
+	Template.signUp.events({
+		'submit form.signUp': function (e) {
+			e.preventDefault();
 		}
 	});
 
