@@ -75,6 +75,9 @@ template(name="discover")
 	.absoluteUpRight
 		+shareArtist
 
+	.absoluteUpLeft
+		+artistHistory
+
 	.absoluteBottomLeft
 		+twitterHandles
 
@@ -130,6 +133,8 @@ template(name="shareArtist")
 		i.white.medium.fa.fa-twitter.share-button.pointer
 	a(href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftheartisthunt.com" target="_blank").mls
 		i.white.medium.fa.fa-facebook.share-button.pointer
+
+			
 
 
 template(name="spotifyControls")
@@ -274,6 +279,15 @@ template(name="artistBox")
 	.artistBoxContainer
 		.image(style="background-image: url(#{coverImage.url})")
 		p.center.mt.mediumRare.bold= name
+
+template(name="artistHistory")
+	if prevArray
+		ul.inline-list.nm.np
+			each prevArray
+				li
+					.image(style="background-image: url(#{thumbImage.url})").thumbImage.nm
+	
+		p.mediumRare.bold.white History		
 
 template(name="score")
 	p.center.mt-large

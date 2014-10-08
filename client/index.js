@@ -89,7 +89,11 @@ Meteor.controllers = {
 						
 
 						var prev = Session.get("prevArray");
-						prev.push(Session.get("artist"));
+						var artistWiththumb = Session.get("artist")
+
+						artistWiththumb.thumbImage = artistWiththumb.images[0];
+
+						prev.push(artistWiththumb);
 						Session.set("prevArray", prev);
 
 						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
@@ -498,6 +502,14 @@ if (Meteor.isClient) {
 
 	Template.relatedArtists.related = function () {
 		return Session.get("related");
+	};
+
+	Template.artistHistory.prevArray = function () {
+		var prev = Session.get("prevArray");
+
+		prev = prev.slice(prev.length-6,prev.length);
+		console.log(prev);
+		return prev;
 	};
 
 
