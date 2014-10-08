@@ -262,9 +262,9 @@ Router.map(function() {
 		path: '/',
 		template:'discoverOnboarding',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/tutorial');
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/tutorial');
+			// };
 
 			// fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
 			Session.set("artistImage", "/images/onboardimage.jpg");
@@ -276,9 +276,9 @@ Router.map(function() {
 		path: '/discover',
 		template:'discover',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/');
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/');
+			// };
 
 			if(!userIsIncognito()){
 
@@ -322,9 +322,9 @@ Router.map(function() {
 		path: '/discover/:artistId',
 		template:'discover',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/'+this.params.artistId);
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/'+this.params.artistId);
+			// };
 			// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
 			getArtist(this.params.artistId,function(artist){
