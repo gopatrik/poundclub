@@ -87,7 +87,15 @@ Meteor.controllers = {
 
 						// loadArtist(Session.get("related")[selectedRelatedArtistIndex-1]);
 
+						
+
+						var prev = Session.get("prevArray");
+						prev.push(Session.get("artist"));
+						Session.set("prevArray", prev);
+
 						Router.go('/discover/'+Session.get("related")[selectedRelatedArtistIndex-1].id);
+
+						
 
 						setTimeout(function () {
 							$("ul.related-artists").removeClass('move-down');
@@ -97,6 +105,20 @@ Meteor.controllers = {
 
 					break;
 				case 40: // down
+					//alert(Session.get("previousArtist").id)
+
+
+					var prev = Session.get("prevArray");
+					var a = prev.pop();
+					Session.set("prevArray", prev);
+
+					Router.go('/discover/'+a.id);
+
+					//Router.go('/discover/'+Session.get("previousArtist").id);
+					
+					//playNext();
+					break;
+				case 16: //shift
 					playNext();
 					break;
 			}
@@ -319,8 +341,10 @@ Router.map(function() {
 var selectedRelatedArtistIndex = 3;
 
 if (Meteor.isClient) {
+
+	Session.setDefault("prevArray", [])
+
 	Meteor.startup(function () {
-		
 		Session.set("splash", true);
 		Session.set("showArtistPicker", false);
 		Meteor.functions.setController(Meteor.controllers.splashController);
