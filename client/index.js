@@ -1,4 +1,3 @@
-
 Router.configure({
 	layoutTemplate: 'main'
 });
@@ -174,9 +173,9 @@ Router.map(function() {
 		path: '/game',
 		template:'index',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('home');
-			}
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('home');
+			// }
 			var array = SetupArtists.find().fetch();
 			if(array.length > 0){	
 				var randomIndex = Math.floor( Math.random() * array.length );
@@ -207,9 +206,9 @@ Router.map(function() {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('challenge');
-			}
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('challenge');
+			// }
 
 
 			getArtist(this.params.artistId1,function (artist) {
@@ -229,7 +228,7 @@ Router.map(function() {
 		path: '/highscore',
 		template:'toplist',
 		onAfterAction: function () {
-			GAnalytics.pageview('settings');
+			// GAnalytics.pageview('settings');
 			if(!Session.get("startArtist") || !Session.get("goalArtist")){
 				Router.go('home');
 			}
@@ -266,9 +265,9 @@ Router.map(function() {
 		path: '/',
 		template:'discoverOnboarding',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/tutorial');
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/tutorial');
+			// };
 
 			// fetchAndPlaySong("6uLtiSKawRYMm9jUMLQksM");
 			Session.set("artistImage", "/images/onboardimage.jpg");
@@ -280,9 +279,9 @@ Router.map(function() {
 		path: '/discover',
 		template:'discover',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/');
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/');
+			// };
 
 			if(!userIsIncognito()){
 
@@ -326,9 +325,9 @@ Router.map(function() {
 		path: '/discover/:artistId',
 		template:'discover',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('/'+this.params.artistId);
-			};
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('/'+this.params.artistId);
+			// };
 			// loadArtist();
 			Meteor.functions.setController(Meteor.controllers.discoverController);
 			getArtist(this.params.artistId,function(artist){
@@ -519,7 +518,45 @@ if (Meteor.isClient) {
 		if(song){
 			return song.name;
 		}
-	}
+	};
+
+	function validateEmail(email) { 
+	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(email);
+	};
+
+	Template.signUp.helpers({
+	  entered: function () {
+
+	    var loc = window.localStorage.getItem("email");
+
+	    if(loc == "true"){
+	      return true;
+	    };
+	  },
+	  sessionEntered:function () {
+	    return Session.get("enteredEmail");
+	  }
+	});
+
+	Template.signUp.events({
+	  'submit form.signUp': function (e,t) {
+	    e.preventDefault();
+
+	    var m = $(t.find('.email')).val();
+
+	    if(m){
+	      if(validateEmail(m)){
+	      	window.localStorage.setItem("email","true");
+	        Meteor.call('enterEmail', m);
+			Session.set("enteredEmail", true);
+	      }else{
+	        alert('invalid email');
+	      }
+	    }
+	  }
+	});
+
 
 	Template.index.onboarding = function(){
 		return Session.get("onboarding");
@@ -675,7 +712,6 @@ if (Meteor.isClient) {
 		'blur input[name=artistGoalSearchField], blur input[name=artistStartSearchField]': function (e) {
 
 			if(Router.current().route.name == 'discover'){ // todo: not optimal
-				console.log("discoverController")
 				setTimeout(function () {
 					Meteor.functions.setController(Meteor.controllers.discoverController);
 				},50);
@@ -685,12 +721,10 @@ if (Meteor.isClient) {
 			$(e.target).parent().children('ul.search-results').fadeOut();
 		},
 		'focus input[name=artistGoalSearchField], focus input[name=artistStartSearchField]': function (e) {
-			console.log("nocontroler")
 			Meteor.functions.setController(Meteor.controllers.noController);
 				
 			$(e.target).parent().children('ul.search-results').show();
 		}
-
 	});
 
 	Template.discoverOnboarding.events({
