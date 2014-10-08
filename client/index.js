@@ -1,4 +1,3 @@
-
 Router.configure({
 	layoutTemplate: 'main'
 });
