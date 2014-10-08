@@ -9,11 +9,20 @@ template(name="main")
 	+yield
 
 template(name="signUp")
-	form.signUp.right.narrow
-		p.center We are gathering people who want to help form this experience. Are you a music lover?
-		p.center.bold There are only <span class="large">63</span> beta invites left!
-		input.squared(placeholder="email@email.com")
-		button.modal.bold.center.small-wide-padding(type="submit") Join
+	unless entered
+		form.signUp.right.narrow.mb
+			p.center
+				span.bold Hey You!
+				| We are gathering
+				span.bold 100 people
+				| who want to help form this experience. Are you a music lover?
+			unless sessionEntered
+				p.center.bold There are only a few beta invites left!
+				input.squared.email(placeholder="email@email.com")
+				button.modal.bold.center.small-wide-padding(type="submit") Join
+			else
+				h2.center.bold.white You rock!
+				p.center We'll be in touch
 
 template(name="splashScreen")
 	section.center.splash.mt
@@ -62,7 +71,7 @@ template(name="discover")
 
 template(name="discoverOnboarding")
 	//- .full-center-contents
-	div
+	div.mt-large
 		.onboarding-box
 			h1.page-title.center.white.nm The Artist Hunt
 			h2.white.center.medium.center.white.mb An intuitive way to discover music

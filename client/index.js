@@ -483,7 +483,45 @@ if (Meteor.isClient) {
 		if(song){
 			return song.name;
 		}
-	}
+	};
+
+	function validateEmail(email) { 
+	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(email);
+	};
+
+	Template.signUp.helpers({
+	  entered: function () {
+
+	    var loc = window.localStorage.getItem("email");
+
+	    if(loc == "true"){
+	      return true;
+	    };
+	  },
+	  sessionEntered:function () {
+	    return Session.get("enteredEmail");
+	  }
+	});
+
+	Template.signUp.events({
+	  'submit form.signUp': function (e,t) {
+	    e.preventDefault();
+
+	    var m = $(t.find('.email')).val();
+
+	    if(m){
+	      if(validateEmail(m)){
+	      	window.localStorage.setItem("email","true");
+	        Meteor.call('enterEmail', m);
+			Session.set("enteredEmail", true);
+	      }else{
+	        alert('invalid email');
+	      }
+	    }
+	  }
+	});
+
 
 	Template.index.onboarding = function(){
 		return Session.get("onboarding");
@@ -811,12 +849,6 @@ if (Meteor.isClient) {
 				audio.pause();
 				Session.set("songPaused", true);
 			};
-		}
-	});
-
-	Template.signUp.events({
-		'submit form.signUp': function (e) {
-			e.preventDefault();
 		}
 	});
 
