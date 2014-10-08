@@ -91,7 +91,8 @@ Meteor.controllers = {
 						var prev = Session.get("prevArray");
 						var artistWiththumb = Session.get("artist")
 
-						artistWiththumb.thumbImage = artistWiththumb.images[1];
+
+						artistWiththumb.thumbImage = artistWiththumb.images[artistWiththumb.images.length-1];
 
 						prev.push(artistWiththumb);
 						Session.set("prevArray", prev);
@@ -515,7 +516,7 @@ if (Meteor.isClient) {
 		}
 
 		prev = prev.slice(begin,prev.length+1);
-		console.log(prev);
+
 		return prev;
 	};
 

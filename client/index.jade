@@ -284,10 +284,10 @@ template(name="artistHistory")
 	if prevArray
 		ul.inline-list.nm.np
 			each prevArray
-				li.nm.swosh-in
+				li.nm.swosh-in: a(href="/discover/#{id}")
 					.image(style="background-image: url(#{thumbImage.url})").thumbImage.nm.swosh-in
 	
-		p.mediumRare.bold.white History		
+		p.mediumRare.white History		
 
 template(name="score")
 	p.center.mt-large
