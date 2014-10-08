@@ -143,9 +143,9 @@ template(name="spotifyControls")
 				i.fa.fa-check.pointer.large
 
 		if songPaused
-			li.pophover: .small-width: i.medium.pointer.fa.fa-play.play-song.large
+			li.pophover: .small-width: i.large.pointer.fa.fa-play.play-song.large
 		else
-			li.pophover: .small-width: i.medium.pointer.fa.fa-pause.pause-song.large
+			li.pophover: .small-width: i.large.pointer.fa.fa-pause.pause-song.large
 
 		li.pophover: .small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large
 
@@ -265,7 +265,7 @@ template(name="gameBoard")
 
 template(name="relatedArtists")
 	if related
-		ul.related-artists.inline-list.mt-large.swosh-in
+		ul.related-artists.inline-list.mt-medium.swosh-in
 			each related
 				li
 					+artistBox
