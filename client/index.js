@@ -170,9 +170,9 @@ Router.map(function() {
 		path: '/game',
 		template:'index',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('home');
-			}
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('home');
+			// }
 			var array = SetupArtists.find().fetch();
 			if(array.length > 0){	
 				var randomIndex = Math.floor( Math.random() * array.length );
@@ -203,9 +203,9 @@ Router.map(function() {
 		path: '/challenge/:artistId1/:artistId2',
 		template:'index',
 		onAfterAction: function () {
-			if (location.host != 'localhost:3000') {
-				GAnalytics.pageview('challenge');
-			}
+			// if (location.host != 'localhost:3000') {
+			// 	GAnalytics.pageview('challenge');
+			// }
 
 
 			getArtist(this.params.artistId1,function (artist) {
@@ -225,7 +225,7 @@ Router.map(function() {
 		path: '/highscore',
 		template:'toplist',
 		onAfterAction: function () {
-			GAnalytics.pageview('settings');
+			// GAnalytics.pageview('settings');
 			if(!Session.get("startArtist") || !Session.get("goalArtist")){
 				Router.go('home');
 			}
