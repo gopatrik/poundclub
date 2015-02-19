@@ -1,5 +1,14 @@
 head
 	title The Artist Hunt
+	script.
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-38987463-3', 'auto');
+		ga('send', 'pageview');
+
 
 body
 	//- 
@@ -7,6 +16,22 @@ body
 template(name="main")
 	section.background(style="background-image: url(#{artistImage})")
 	+yield
+
+template(name="signUp")
+	unless entered
+		form.signUp.right.narrow.mb
+			p.center
+				span.bold Hey You!
+				| We are gathering
+				span.bold 100 people
+				| who want to help form this experience. Are you a music lover?
+			unless sessionEntered
+				p.center.bold There are only a few beta invites left!
+				input.squared.email(placeholder="email@email.com")
+				button.modal.bold.center.small-wide-padding(type="submit") Join
+			else
+				h2.center.bold.white You rock!
+				p.center We'll be in touch
 
 template(name="splashScreen")
 	section.center.splash.mt
@@ -50,38 +75,47 @@ template(name="discover")
 	.absoluteUpRight
 		+shareArtist
 
+	.absoluteUpLeft
+		+artistHistory
+
 	.absoluteBottomLeft
 		+twitterHandles
 
 template(name="discoverOnboarding")
-	.full-center-contents
-			.onboarding-box
-				h1.page-title.center.white.nm The Artist Hunt
-				h2.white.center.medium.center.white.mb An intuitive way to discover music
-				section
-					section.center.half
-						img(src="/images/arrowsLeftRight.png" width="180px")
-						p.center.mediumRare Navigate artists with left and right
+	//- .full-center-contents
+	div.mt-large.pb-large
+		.onboarding-box
+			h1.page-title.center.white.nm The Artist Hunt
+			h2.white.center.medium.center.white.mb An intuitive way to discover music
+			//- +signUp
+			section
+				section.center.half
+					.fat-padding
+						img(src="/images/arrowsLeftRight.png")
+					p.center.mediumRare Navigate artists with left and right
 
-					section.center.half
-						img(src="/images/arrowsUp.png" width="180px")
-						p.center.mediumRare Select an artist with up
-				section.whole
-					section.center.half
-						img(src="/images/arrowsDown.png" width="180px").pt
-						p.center.mediumRare Press down to go to the next song by the artist
+				section.center.half
+					.fat-padding
+						img(src="/images/arrowsUp.png")
+					p.center.mediumRare Select an artist with up
+			section.whole
+				section.center.half
+					.fat-padding
+						img.inline(src="/images/arrowsDown.png").pt
+					p.center.mediumRare Press down to go to the previous artist
 
-					section.center.half
-						img(src="/images/space.png" width="180px", style="margin-top:65px;")
-						p.center.mediumRare Press spacebar to add song to Spotify library
+				section.center.half
+					.fat-padding
+						img(src="/images/space.png", style="margin-top:65px;")
+					p.center.mediumRare Press spacebar to add song to Spotify library
 
-				section.mb-medium
-					p.bold.center.medium You can always jump to an artist by searching in the text field
+			section.mb-medium
+				p.bold.center.medium You can always jump to an artist by searching in the text field
 
 
-				section.mt.center
-					.pointer.inline.finish-onboarding
-						button.oversized.extra.large.bold.center.large.nm Press up to continue
+			section.mt.center
+				.pointer.inline.finish-onboarding
+					button.oversized.extra.large.bold.center.nm.modal Press up to continue
 
 
 template(name="musicControls")
@@ -97,7 +131,10 @@ template(name="shareArtist")
 	
 	a(href="http://twitter.com/share?text=The Artist Hunt: &url=http://theartisthunt.com" target="_blank")
 		i.white.medium.fa.fa-twitter.share-button.pointer
+	a(href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftheartisthunt.com" target="_blank").mls
+		i.white.medium.fa.fa-facebook.share-button.pointer
 
+			
 
 
 template(name="spotifyControls")
@@ -111,9 +148,9 @@ template(name="spotifyControls")
 				i.fa.fa-check.pointer.large
 
 		if songPaused
-			li.pophover: .small-width: i.medium.pointer.fa.fa-play.play-song.large
+			li.pophover: .small-width: i.large.pointer.fa.fa-play.play-song.large
 		else
-			li.pophover: .small-width: i.medium.pointer.fa.fa-pause.pause-song.large
+			li.pophover: .small-width: i.large.pointer.fa.fa-pause.pause-song.large
 
 		li.pophover: .small-width: i.medium.pointer.fa.fa-fast-forward.next-song.large
 
@@ -147,13 +184,13 @@ template(name="twitterHandles")
 
 template(name="artistSearch")
 	section.artistForms
-		if discoverSearch
-			.artistStartSearch.relative.discoverSearch
-				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
-				with startSearchResult
-					+artistSearchBox
-				i.fa.fa-search.large.absoluteUpLeft.ml.subtle
-		else
+		//- if discoverSearch
+		.artistStartSearch.relative.discoverSearch
+			input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
+			with startSearchResult
+				+artistSearchBox
+			i.fa.fa-search.large.absoluteUpLeft.ml.subtle
+		//- else
 			.artistStartSearch.half.leftForm.relative
 				input.squared(name="artistStartSearchField", value="#{startArtist.name}", autocomplete="off")
 				with startSearchResult
@@ -233,7 +270,7 @@ template(name="gameBoard")
 
 template(name="relatedArtists")
 	if related
-		ul.related-artists.inline-list.mt-large.swosh-in
+		ul.related-artists.inline-list.mt-medium.swosh-in
 			each related
 				li
 					+artistBox
@@ -242,6 +279,15 @@ template(name="artistBox")
 	.artistBoxContainer
 		.image(style="background-image: url(#{coverImage.url})")
 		p.center.mt.mediumRare.bold= name
+
+template(name="artistHistory")
+	if prevArray
+		ul.inline-list.nm.np
+			each prevArray
+				li.nm.swosh-in: a(href="/discover/#{id}")
+					.image(style="background-image: url(#{thumbImage.url})").thumbImage.nm.swosh-in
+	
+		p.mediumRare.white History		
 
 template(name="score")
 	p.center.mt-large
